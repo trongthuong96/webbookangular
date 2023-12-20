@@ -1,0 +1,6 @@
+  /* Bổ sung phần này để xử lý trang hiện tại và trang không thể nhấp vào */
+  .current-page,
+  .disabled {
+    cursor: not-allowed;
+    opacity: 0.5; /* Thay thế giá trị với giá trị chính xác bạn muốn sử dụng */
+  }

@@ -1,0 +1,126 @@
+import { Component, OnInit, PLATFORM_ID, Inject, TransferState, afterRender, afterNextRender } from '@angular/core';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { BookService } from '../../services/book.service';
+import BookShowModel from '../../models/book/book.one.model';
+import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { GenreShowModel } from '../../models/genre/genre.model';
+import { TitleService } from '../../services/title.service';
+import { BookShowListModel } from '../../models/book/book.list.model';
+
+@Component({
+  selector: 'app-book',
+  standalone: true,
+  imports: [
+    CommonModule, 
+    RouterLink
+  ],
+  templateUrl: './book.component.html',
+  styleUrl: './book.component.css'
+})
+export class BookComponent implements OnInit{
+  book?: BookShowModel;
+  bookByAuthor?: BookShowListModel[];
+  bookByUser?: BookShowListModel[];
+  slug!: string;
+
+  // css
+  reverseCheck = false;
+  reverse = " ";
+  checkLoadingSpin = true;
+
+  //genre localstore
+  genres?: GenreShowModel[];
+  /**
+   *
+   */
+  constructor(
+    private bookService: BookService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private titleService: TitleService,
+    @Inject(PLATFORM_ID) private platformId: Object
+    ) {}
+
+  ngOnInit(): void {
+
+    this.route.paramMap.subscribe(params => {
+      this.checkLoadingSpin = true;
+      this.reLoadPage();
+      this.slug = params.get('slug')?.toString()!;
+      // get slug
+      this.GetBookBySlug(this.slug);
+    });
+    if (isPlatformBrowser(this.platformId)) {
+      // Code chỉ chạy trên trình duyệt
+      this.loadDataForBrowser();
+    } 
+  }
+
+  private loadDataForBrowser(): void {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem("genres_info")) {
+      // Đọc dữ liệu từ Local Storage
+      const storedGenresData = localStorage.getItem('genres_info');
+      this.genres = JSON.parse(storedGenresData!);
+    }
+  }
+
+  // get id
+  GetBookById(id: number): void {
+    this.bookService.GetBookById(id).subscribe(book => {
+      this.book = book;
+    })
+  }
+
+  // get slug
+  GetBookBySlug(slug: string) {
+    this.bookService.GetBookBySlug(slug).subscribe(
+      (book) => {
+        // Xử lý kết quả thành công ở đây
+        this.book = book;
+        this.checkLoadingSpin = false;
+        this.titleService.setTitle(this.book!.title);
+        this.GetBookAuthor(book.author.id!, 1);
+        this.GetBookUser(book.applicationUser.id!, 1);
+      },
+      (error) => {
+        // Xử lý lỗi ở đây
+        if (error.status !== 0) {
+          this.router.navigate(['notfound']);
+        }
+      }
+    );
+  }
+
+  //
+  reverseChapters() {
+    this.reverseCheck = !this.reverseCheck;
+    if (this.reverseCheck)
+    {
+      this.reverse = "flex-row-reverse flex-wrap-reverse";
+    } else {
+      this.reverse = " ";
+    }
+  }
+
+  //Book/Author/2?page=1
+  GetBookAuthor(authorId: number, page: number) {
+    this.bookService.GetBookAuthor(authorId, page).subscribe(book => {
+      this.bookByAuthor = book;
+    })
+  }
+
+  //Book/User/2?page=1
+  GetBookUser(userId: string, page: number) {
+    this.bookService.GetBookUser(userId, page).subscribe(book => {
+      this.bookByUser = book;
+    })
+  }
+
+  // 
+  reLoadPage() {
+    if (isPlatformBrowser(this.platformId)) {
+      window.scrollTo(0, 0);
+    }
+  }
+}
