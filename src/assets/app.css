@@ -663,6 +663,11 @@ main {
     border-right: 1px dashed #ccc;
 }
 
+.story-item-no-image__updated-at {
+    padding: 5px 0;
+    width: 10%;
+}
+
 @media (max-width:992px) {
     .story-item-no-image__chapters {
         width: 30%;
@@ -686,14 +691,9 @@ main {
     font-size: 15px;
 }
 
-.story-item-no-image__updated-at {
-    padding: 5px 0;
-    width: 10%;
-}
-
 .story-item-no-image__status {
     border-right: 1px dashed #ccc;
-    width: 4%;
+    width: 7%;
 }
 
 

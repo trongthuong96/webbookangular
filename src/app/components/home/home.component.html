@@ -148,16 +148,16 @@
                                             </h3>
                                         </div>
                                       
-                                        <div class="story-item-no-image__status ms-2 d-flex justify-content-end">
-                                            <span class="badge text-bg-secondary text-light me-1" style="font-size: 9px;">
-                                                @if(book.status === 0) {
-                                                    <ng-container> Còn tiếp </ng-container>
-                                                } @else if (book.status === 1) {
-                                                    <ng-container> Hoàn thành </ng-container>
-                                                } @else {
-                                                    <ng-container> Tạm ngưng </ng-container>
-                                                }
-                                            </span>
+                                        <div class="story-item-no-image__status ms-2 d-none d-lg-block">
+                                               <span class="badge text-bg-secondary text-light me-1 d-flex justify-content-center" style="font-size: 9px;">
+                                                    @if(book.status === 0) {
+                                                        <ng-container> Còn tiếp </ng-container>
+                                                    } @else if (book.status === 1) {
+                                                        <ng-container> Hoàn thành </ng-container>
+                                                    } @else {
+                                                        <ng-container> Tạm ngưng </ng-container>
+                                                    }
+                                                </span>
                                         </div>
 
                                         <div class="story-item-no-image__chapters ms-2">
