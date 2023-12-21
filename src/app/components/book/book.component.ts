@@ -53,26 +53,25 @@ export class BookComponent implements OnInit{
     this.route.queryParams.subscribe(params => {
       // params['the-loai'] sẽ chứa giá trị của query parameter 'the-loai'
       this.uriValue = params['uri'];
-    });
-
-    // Kiểm tra xem có dữ liệu trong state hay không
-    if (this.uriValue != undefined && this.uriValue != null) {
-      this.checkLoadingSpin = true;
-      this.reLoadPage();
-      this.uri = new UriModel();
-      this.uri.uri = this.uriValue;
-      this.GetBookCrawlUri(this.uri);
-    } else {
-      // Xử lý khi không có dữ liệu trong state
-      this.route.paramMap.subscribe(params => {
+       // Kiểm tra xem có dữ liệu trong state hay không
+      if (this.uriValue != undefined && this.uriValue != null) {
         this.checkLoadingSpin = true;
         this.reLoadPage();
-        this.slug = params.get('slug')?.toString()!;
+        this.uri = new UriModel();
+        this.uri.uri = this.uriValue;
+        this.GetBookCrawlUri(this.uri);
+      } else {
+        // Xử lý khi không có dữ liệu trong state
+        this.route.paramMap.subscribe(params => {
+          this.checkLoadingSpin = true;
+          this.reLoadPage();
+          this.slug = params.get('slug')?.toString()!;
 
-        // get slug
-        this.GetBookBySlug(this.slug);
-      });
-    }
+          // get slug
+          this.GetBookBySlug(this.slug);
+        });
+      }
+    });
    
     if (isPlatformBrowser(this.platformId)) {
       // Code chỉ chạy trên trình duyệt
