@@ -1,10 +1,11 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { NavigationExtras, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { GenreService } from './services/genre.service';
 import { GenreShowModel } from './models/genre/genre.model';
 import { FormsModule } from '@angular/forms';
+import { SD } from './Utility/SD';
 
 @Component({
   selector: 'app-root',
@@ -69,7 +70,18 @@ export class AppComponent implements OnInit{
 
   // tim kiem
   search() {
-    // Điều hướng đến trang '/tim-kiem' với giá trị từ input
-    this.router.navigate(['/truyen'], { queryParams: { 'tu-tim-kiem': this.value } });
+    // Điều hướng đến trang '/tim-kiem' với giá trị từ input\
+    const checkUrl = SD.isUrl(this.value);
+
+    if (checkUrl) {
+
+      const slug = SD.extractSlugFromUrl(this.value);
+  
+      this.router.navigate([`/truyen/${slug}`], { queryParams: { 'uri': this.value } });
+      this.value = "";
+    } 
+    else {
+      this.router.navigate(['/truyen'], { queryParams: { 'tu-tim-kiem': this.value } });
+    }
   }
 }

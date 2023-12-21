@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { GenreShowModel } from '../../models/genre/genre.model';
 import { TitleService } from '../../services/title.service';
 import { BookShowListModel } from '../../models/book/book.list.model';
+import { UriModel } from '../../models/uri/uri.model';
 
 @Component({
   selector: 'app-book',
@@ -29,8 +30,13 @@ export class BookComponent implements OnInit{
   reverse = " ";
   checkLoadingSpin = true;
 
+  // value body crawling
+  uriValue?: string;
+  uri!: UriModel;
+
   //genre localstore
   genres?: GenreShowModel[];
+
   /**
    *
    */
@@ -40,17 +46,34 @@ export class BookComponent implements OnInit{
     private router: Router,
     private titleService: TitleService,
     @Inject(PLATFORM_ID) private platformId: Object
-    ) {}
+  ) 
+  {}
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      // params['the-loai'] sẽ chứa giá trị của query parameter 'the-loai'
+      this.uriValue = params['uri'];
+    });
 
-    this.route.paramMap.subscribe(params => {
+    // Kiểm tra xem có dữ liệu trong state hay không
+    if (this.uriValue != undefined && this.uriValue != null) {
       this.checkLoadingSpin = true;
       this.reLoadPage();
-      this.slug = params.get('slug')?.toString()!;
-      // get slug
-      this.GetBookBySlug(this.slug);
-    });
+      this.uri = new UriModel();
+      this.uri.uri = this.uriValue;
+      this.GetBookCrawlUri(this.uri);
+    } else {
+      // Xử lý khi không có dữ liệu trong state
+      this.route.paramMap.subscribe(params => {
+        this.checkLoadingSpin = true;
+        this.reLoadPage();
+        this.slug = params.get('slug')?.toString()!;
+
+        // get slug
+        this.GetBookBySlug(this.slug);
+      });
+    }
+   
     if (isPlatformBrowser(this.platformId)) {
       // Code chỉ chạy trên trình duyệt
       this.loadDataForBrowser();
@@ -90,6 +113,24 @@ export class BookComponent implements OnInit{
         }
       }
     );
+  }
+
+  // crawling book
+  GetBookCrawlUri(uri: UriModel) {
+    this.bookService.GetBookCrawlUri(uri).subscribe((book) => {
+      this.book = book;
+      this.checkLoadingSpin = false;
+        this.titleService.setTitle(this.book!.title);
+        this.GetBookAuthor(book.author.id!, 1);
+        this.GetBookUser(book.applicationUser.id!, 1);
+    },
+    (error) => {
+      // Xử lý lỗi ở đây
+      if (error.status !== 0) {
+        this.router.navigate(['notfound']);
+      }
+    }
+    )
   }
 
   //
