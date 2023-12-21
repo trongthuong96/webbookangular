@@ -632,7 +632,6 @@ main {
 }
 
 .story-item-no-image__name {
-    border-right: 1px dashed #ccc;
     padding: 10px 0;
     width: 40%
 }
@@ -688,8 +687,13 @@ main {
 }
 
 .story-item-no-image__updated-at {
-    padding: 10px 0;
-    width: 15%;
+    padding: 5px 0;
+    width: 10%;
+}
+
+.story-item-no-image__status {
+    border-right: 1px dashed #ccc;
+    width: 4%;
 }
 
 

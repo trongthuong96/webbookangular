@@ -126,15 +126,15 @@
                                             <p class="mb-0 text-center">
                                                 @for (genre of book.genres; track $index) {
                                                     <a
-                                                    title="{{genre.name}}"
-                                                    class="hover-title text-decoration-none text-secondary category-name text-one-row">{{genre.name}} </a>
+                                                    title="{{ genre.name }}"
+                                                    class="hover-title text-decoration-none text-secondary category-name text-one-row">{{ genre.name }} </a>
                                                 }
                                             </p>
                                         </div>
 
-                                        <div class="story-item-no-image__name d-flex align-items-center">
-                                            <h3 class="me-1 mb-0 d-flex align-items-center mx-2">
-        
+                                        <div class="story-item-no-image__name align-items-center d-flex">
+                                            <h3 class="me-1 mb-0 d-flex justify-content-start align-items-center mx-2">
+    
                                                 <svg style="width: 10px; margin-right: 5px;"
                                                     xmlns="http://www.w3.org/2000/svg" height="1em"
                                                     viewBox="0 0 320 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
@@ -143,35 +143,39 @@
                                                     </path>
                                                 </svg>
                                                 <a [routerLink]="['/truyen', book.slug]" (click)="reLoadPage()"
-                                                    title="{{book.title}}"
-                                                    class="text-decoration-none text-dark fs-6 hover-title text-one-row story-name">{{book.title}}</a>
+                                                    title="{{ book.title }}"
+                                                    class="text-decoration-none text-dark fs-6 hover-title text-one-row story-name"> {{ book.title }} </a>
                                             </h3>
+                                        </div>
+                                      
+                                        <div class="story-item-no-image__status ms-2 d-flex justify-content-end">
                                             <span class="badge text-bg-secondary text-light me-1" style="font-size: 9px;">
                                                 @if(book.status === 0) {
-                                                    Còn tiếp
+                                                    <ng-container> Còn tiếp </ng-container>
                                                 } @else if (book.status === 1) {
-                                                    Hoàn thành
+                                                    <ng-container> Hoàn thành </ng-container>
                                                 } @else {
-                                                    Tạm ngưng
+                                                    <ng-container> Tạm ngưng </ng-container>
                                                 }
                                             </span>
                                         </div>
+
                                         <div class="story-item-no-image__chapters ms-2">
                                             @if(book.chapterLast){
                                                 <a (click)="reLoadPage()" [routerLink]="['/truyen', book.slug, book.chapterLast.chapterIndex]"
-                                                    title="Chương {{book.chapterLast.chapNumber}}"
+                                                    title="Chương {{ book.chapterLast.chapNumber }}"
                                                     class="hover-title text-decoration-none text-secondary text-one-row">                                                
-                                                        Chương {{book.chapterLast.chapNumber}}: {{book.chapterLast.title}}                                               
+                                                        Chương {{ book.chapterLast.chapNumber }}: {{ book.chapterLast.title }}                                               
                                                 </a>
                                             }  @else {
                                                 Chưa có chương
                                             }
                                         </div>
 
-                                        <div class=".story-item-no-image__updated-at ms-2 d-none d-lg-block">
+                                        <div class="story-item-no-image__updated-at ms-2 d-none d-lg-block">
                                             <p 
-                                                title="{{book.updatedAt | timeAgo}}"
-                                                class="mb-0 text-decoration-none text-secondary category-name text-one-row" style="font-size: small;">{{book.updatedAt | timeAgo}}                                    
+                                                title="{{ book.updatedAt | timeAgo }}"
+                                                class="mb-0 text-decoration-none text-secondary category-name text-one-row" style="font-size: small;">{{ book.updatedAt | timeAgo }}                                    
                                             </p>
                                         </div>
                                     </div>

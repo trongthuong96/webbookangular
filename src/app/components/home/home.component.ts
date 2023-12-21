@@ -9,8 +9,6 @@ import { TimeAgoPipe } from '../../config/time-ago.pipe';
 import { BookShowListModel } from '../../models/book/book.list.model';
 import BookShowModel from '../../models/book/book.one.model';
 import { TitleService } from '../../services/title.service';
-import { ServerModule } from '@angular/platform-server';
-import { BrowserModule } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
