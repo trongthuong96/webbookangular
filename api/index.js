@@ -1,4 +1,4 @@
-const myModule = await import('./main');
+const myModule = import('./main');
 
 
 module.exports = myModule.app();
