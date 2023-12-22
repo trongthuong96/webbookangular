@@ -1,1 +1,0 @@
-import "/var/task/dist/webbook-gui/server/server.mjs";
