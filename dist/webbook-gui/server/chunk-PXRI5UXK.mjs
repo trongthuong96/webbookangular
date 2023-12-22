@@ -1,0 +1,3 @@
+import './polyfills.server.mjs';
+import{a as m}from"./chunk-M2O2NBTG.mjs";import"./chunk-VUEOVKYK.mjs";import"./chunk-YX3MXE65.mjs";import{Ma as c,Na as s,T as a,cb as l,db as d,nb as n,pb as p,ub as u}from"./chunk-KICQ2XIQ.mjs";import"./chunk-FME56UVT.mjs";var v=(()=>{let e=class e{constructor(o){this.bookService=o}ngOnInit(){this.GetBookById(1)}GetBookById(o){this.bookService.GetBookById(o).subscribe(t=>{this.book=t})}};e.\u0275fac=function(t){return new(t||e)(s(m))},e.\u0275cmp=a({type:e,selectors:[["app-account"]],standalone:!0,features:[u],decls:3,vars:1,template:function(t,r){t&1&&(l(0,"p"),n(1,"account works!"),d(),n(2)),t&2&&(c(2),p(`
+`,r.book==null?null:r.book.title,""))}});let i=e;return i})();export{v as AccountComponent};

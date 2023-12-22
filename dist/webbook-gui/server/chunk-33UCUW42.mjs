@@ -1,0 +1,2 @@
+import './polyfills.server.mjs';
+import{a,b as p}from"./chunk-VUEOVKYK.mjs";import{u as s}from"./chunk-YX3MXE65.mjs";import{L as o,Q as n}from"./chunk-KICQ2XIQ.mjs";var l=(()=>{let t=class t{constructor(r){this.http=r,this.urlBase=`${a.apiUrl}/${p}`}getGenres(){return this.http.get(`${this.urlBase}`)}getBooksByGenreId(r,i){return this.http.get(`${this.urlBase}/${r}?page=${i}`)}};t.\u0275fac=function(i){return new(i||t)(n(s))},t.\u0275prov=o({token:t,factory:t.\u0275fac,providedIn:"root"});let e=t;return e})();export{l as a};
