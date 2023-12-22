@@ -1,19 +1,12 @@
 {
     "version": 2,
-    "builds": [
-      {
-        "src": "dist/webbook-gui/browser",
-        "use": "@vercel/static"
-      },
-      {
-        "src": "dist/webbook-gui/server",
-        "use": "@vercel/node"
-      }
+    "public": true,
+    "rewrites": [
+      { "source": "/(.*)", "destination": "/api" }
     ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "dist/webbook-gui/browser/$1"
+    "functions": {
+      "api/index.js": {
+        "includeFiles": "dist/webbook-gui/browser/**"
       }
-    ]
+    }
   }
