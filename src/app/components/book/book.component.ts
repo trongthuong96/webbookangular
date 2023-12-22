@@ -93,11 +93,11 @@ export class BookComponent implements OnInit{
   }
 
   // get id
-  GetBookById(id: number): void {
-    this.bookService.GetBookById(id).subscribe(book => {
-      this.book = book;
-    })
-  }
+  // GetBookById(id: number): void {
+  //   this.bookService.GetBookById(id).subscribe(book => {
+  //     this.book = book;
+  //   })
+  // }
 
   GetChaptersByBookId(bookId: number) {
     this.chapterService.getChaptersByBookId(bookId).subscribe((chap) => {

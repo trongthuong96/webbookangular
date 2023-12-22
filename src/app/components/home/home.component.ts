@@ -58,11 +58,11 @@ export class HomeComponent implements OnInit{
 
   }
 
-  GetBookById(id: number): void {
-    this.bookService.GetBookById(id).subscribe(book => {
-      this.book = book;
-    })
-  }
+  // GetBookById(id: number): void {
+  //   this.bookService.GetBookById(id).subscribe(book => {
+  //     this.book = book;
+  //   })
+  // }
 
   GetBooksOrderByViewsAt(page: number): void {
     this.bookService.GetBooksOrderByViewsAt(page).subscribe(books => {
