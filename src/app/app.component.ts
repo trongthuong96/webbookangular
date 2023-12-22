@@ -82,6 +82,7 @@ export class AppComponent implements OnInit{
     } 
     else {
       this.router.navigate(['/truyen'], { queryParams: { 'tu-tim-kiem': this.value } });
+      this.value = "";
     }
   }
 }

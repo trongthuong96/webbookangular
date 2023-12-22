@@ -34,4 +34,9 @@ export class ChapterService {
   getChapterMeTruyenCV(bookSlug: string, chapterIndex: number): Observable<ChapterShowModel> {
     return this.http.get<ChapterShowModel>(`${environment.apiUrl}/Crawling/${bookSlug}/${chapterIndex}`);
   }
+
+  // GEt chapter by bookId
+  getChaptersByBookId(bookId: number): Observable<ChapterShowModel[]> {
+    return this.http.get<ChapterShowModel[]>(`${this.urlBase}/list/${bookId}`);
+  }
 }

@@ -8,6 +8,8 @@ import { GenreShowModel } from '../../models/genre/genre.model';
 import { TitleService } from '../../services/title.service';
 import { BookShowListModel } from '../../models/book/book.list.model';
 import { UriModel } from '../../models/uri/uri.model';
+import { ChapterService } from '../../services/chapter.service';
+import { ChapterShowModel } from '../../models/chapter/chapter.show.model';
 
 @Component({
   selector: 'app-book',
@@ -24,11 +26,13 @@ export class BookComponent implements OnInit{
   bookByAuthor?: BookShowListModel[];
   bookByUser?: BookShowListModel[];
   slug!: string;
+  chapters?: ChapterShowModel[];
 
   // css
   reverseCheck = false;
   reverse = " ";
   checkLoadingSpin = true;
+  checkLoadingSpinChap = true;
 
   // value body crawling
   uriValue?: string;
@@ -45,6 +49,7 @@ export class BookComponent implements OnInit{
     private route: ActivatedRoute,
     private router: Router,
     private titleService: TitleService,
+    private chapterService: ChapterService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) 
   {}
@@ -94,13 +99,23 @@ export class BookComponent implements OnInit{
     })
   }
 
+  GetChaptersByBookId(bookId: number) {
+    this.chapterService.getChaptersByBookId(bookId).subscribe((chap) => {
+      this.chapters = chap;
+      this.checkLoadingSpinChap = false;
+    });
+  }
+
   // get slug
   GetBookBySlug(slug: string) {
     this.bookService.GetBookBySlug(slug).subscribe(
       (book) => {
         // Xử lý kết quả thành công ở đây
+        this.chapters = [];
+        this.checkLoadingSpinChap = true;
         this.book = book;
         this.checkLoadingSpin = false;
+        this.GetChaptersByBookId(this.book?.id!);
         this.titleService.setTitle(this.book!.title);
         this.GetBookAuthor(book.author.id!, 1);
         this.GetBookUser(book.applicationUser.id!, 1);

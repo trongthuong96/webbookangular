@@ -15,6 +15,5 @@ export default class BookShowModel {
     updatedAt!: Date;
     genres!: GenreShowModel[];
     author!: AuthorShow;
-    chapters!: ChapterShowModel[];
     applicationUser!: UserShowModel;
 }
