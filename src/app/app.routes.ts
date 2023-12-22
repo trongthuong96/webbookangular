@@ -2,14 +2,13 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 
 export const routes: Routes = [
-    { path: '', pathMatch: 'full', redirectTo: '' },
-    // {
-    //     path: '',
-    //     loadComponent: () => import('./components/home/home.component')
-    //         .then(mod => mod.HomeComponent),
-    //     data: { reuse: true, title: "Truyện Mới"} 
-    // },
-    { path: '', component: HomeComponent, data: { reuse: true, title: "Truyện Mới"} },
+    //{ path: '', pathMatch: 'full', redirectTo: '' },
+    {
+        path: '',
+        loadComponent: () => import('./components/home/home.component')
+            .then(mod => mod.HomeComponent),
+        data: { reuse: true, title: "Truyện Mới"} 
+    },
     {
         path: 'truyen/:slug', loadComponent: () => import('./components/book/book.component')
             .then(mod => mod.BookComponent),
