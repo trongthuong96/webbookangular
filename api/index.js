@@ -1,3 +1,3 @@
 const server = require('./main');
 
-module.exports = server.app;
+module.exports = server.app();

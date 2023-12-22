@@ -1,1 +1,1 @@
-import "../dist/webbook-gui/server/server.mjs";
+import "/var/task/dist/webbook-gui/server/server.mjs";
