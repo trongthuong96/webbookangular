@@ -1,3 +1,3 @@
-const server = require('../dist/webbook-gui/server/main');
+const server = require('./main');
 
 module.exports = server.app;

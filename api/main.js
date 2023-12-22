@@ -1,0 +1,1 @@
+import "../dist/webbook-gui/server/server.mjs";
