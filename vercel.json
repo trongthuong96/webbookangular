@@ -6,7 +6,7 @@
     ],
     "functions": {
       "api/index.js": {
-        "includeFiles": "/var/task/dist/webbook-gui/server/**"
+        "includeFiles": "dist/webbook-gui/browser/**"
       }
     }
   }
