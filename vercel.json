@@ -2,8 +2,8 @@
     "version": 2,
     "public": true,
     "rewrites": [
-      { "source": "/", "destination": "/api/$1" },
-      { "source": "/(.*)", "destination": "/api/$1" }
+      { "source": "/", "destination": "/api" },
+      { "source": "/(.*)", "destination": "/api" }
     ],
     "functions": {
       "api/index.js": {
