@@ -1,3 +1,4 @@
-const server = require('./main');
+const myModule = await import('./main');
 
-module.exports = server.app();
+
+module.exports = myModule.app();
