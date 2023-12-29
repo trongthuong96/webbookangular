@@ -18,8 +18,8 @@
         <div class="chapter-actions chapter-actions-origin d-flex align-items-center justify-content-center">
         
             <a class="btn btn-success mt-2 mb-2 me-1 chapter-prev"
-            [routerLink]="['/truyen', bookSlug, chapterIndex!-1]" (click)="reLoadPage()"> 
-                <span>Chương</span>trước</a>
+            [routerLink]="['/truyen', bookSlug, chineseBookId, chapterIndex!-1]" (click)="reLoadPage()"> 
+                <span>Chương</span> trước</a>
             <button class="btn btn-success chapter_jump me-1" (click)="menuButton()">
                 <span>
                     <svg style="fill: #fff;" xmlns="http://www.w3.org/2000/svg" height="1em"
@@ -42,8 +42,8 @@
 
                 </ul>
             </div>
-            <a class="btn btn-success chapter-next" [routerLink]="['/truyen', bookSlug, chapterIndex!+1]" (click)="reLoadPage()">
-                <span>Chương</span>tiếp</a>
+            <a class="btn btn-success chapter-next" [routerLink]="['/truyen', bookSlug, chineseBookId, chapterIndex!+1]" (click)="reLoadPage()">
+                <span>Chương</span> tiếp</a>
         </div>
     </div>
     <hr class="chapter-end container-fluid">
@@ -58,15 +58,15 @@
 
     <div class="chapter-content mb-3">
     
-        <div *ngIf="!checkLoadingSpin" class="mt-2" [innerHTML]="safeHtml"></div>
+        <div *ngIf="!checkLoadingSpin" class="mt-2" style="font-size: 17px;" [innerHTML]="safeHtml"></div>
 
         <hr class="chapter-start container-fluid">
         <div class="chapter-nav text-center">
         
             <div class="chapter-actions chapter-actions-origin d-flex align-items-center justify-content-center">
             
-                    <a class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [routerLink]="['/truyen', bookSlug, chapterIndex!-1]" (click)="reLoadPage()"> 
-                        <span>Chương</span>trước</a>
+                    <a class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [routerLink]="['/truyen', chineseBookId, bookSlug, chapterIndex!-1]" (click)="reLoadPage()"> 
+                        <span>Chương</span> trước</a>
                     <button class="btn btn-success chapter_jump me-1" (click)="menuButton()">
                         <span>
                             <svg style="fill: #fff;" xmlns="http://www.w3.org/2000/svg" height="1em"
@@ -88,8 +88,8 @@
                     
                     </ul>
                 </div>
-                <a class="btn btn-success chapter-next" [routerLink]="['/truyen', bookSlug, chapterIndex!+1]" (click)="reLoadPage()">
-                    <span>Chương</span>tiếp</a>
+                <a class="btn btn-success chapter-next" [routerLink]="['/truyen', bookSlug, chineseBookId, chapterIndex!+1]" (click)="reLoadPage()">
+                    <span>Chương</span> tiếp</a>
             </div>
         </div>
         <hr class="chapter-end container-fluid">

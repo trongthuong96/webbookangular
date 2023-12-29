@@ -4,6 +4,7 @@ import { ChapterShowModel } from '../../models/chapter/chapter.show.model';
 import { ChapterService } from '../../services/chapter.service';
 import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
 import { DomSanitizer, SafeHtml, Title } from '@angular/platform-browser';
+import { DataCrawl } from '../../models/crawl/data.crawl';
 
 
 @Component({
@@ -23,6 +24,11 @@ export class ChapterComponent implements OnInit{
   chapterIndex?: number;
   safeHtml?: SafeHtml;
   checkLoadingSpin = true;
+  chineseBookId?: number;
+
+  // crawl
+  data: DataCrawl = new DataCrawl();
+
   /**
    *
    */
@@ -40,28 +46,45 @@ export class ChapterComponent implements OnInit{
     this.route.paramMap.subscribe(params => {
       this.checkLoadingSpin = true;
       this.bookSlug = params.get('slug')?.toString()!;
+
+      //chineseBookId
+      let temp1 = parseInt(params.get('chineseBookId')!);
+      if(!isNaN(temp1)) {
+        this.chineseBookId = temp1;
+        this.data.chineseBookId = temp1!;
+      }
+
       let temp = parseInt(params.get('chapterIndex')!);
       if(!isNaN(temp)) {
         this.chapterIndex = temp;
+        this.data.chapterIndex = temp;
       }
-      // get slug
-      this.getChapterMeTruyenCV(this.bookSlug, this.chapterIndex!);
+
+      this.getContentChapterCrawl(this.data);
     });
   }
 
   // get by index
-  getChapterMeTruyenCV(bookSlug: string, chapterIndex: number) {
+  // getChapterMeTruyenCV(bookSlug: string, chapterIndex: number) {
     
-    this.chapterService.getChapterMeTruyenCV(bookSlug, chapterIndex).subscribe(chap => {  
-      this.chapterModel = chap;
-      this.safeHtml = this.sanitizer.bypassSecurityTrustHtml(this.chapterModel.content);
-      this.checkLoadingSpin = false;
-      this.titleService.setTitle("Chương " + chap.chapNumber + ": " + chap.title);
-    },
-    (error) => {
-      // Xử lý lỗi ở đây
-      this.router.navigate(['/truyen',bookSlug]);
-    })
+  //   this.chapterService.getChapterMeTruyenCV(bookSlug, chapterIndex).subscribe(chap => {  
+  //     this.chapterModel = chap;
+  //     this.safeHtml = this.sanitizer.bypassSecurityTrustHtml(this.chapterModel.content);
+  //     this.checkLoadingSpin = false;
+  //     this.titleService.setTitle("Chương " + chap.chapNumber + ": " + chap.title);
+  //   },
+  //   (error) => {
+  //     // Xử lý lỗi ở đây
+  //     this.router.navigate(['/truyen',bookSlug]);
+  //   })
+  // }
+  getContentChapterCrawl(data: DataCrawl) {
+      this.chapterService.getContentChapCrawl(data).subscribe((chap) => {
+        this.chapterModel = chap;
+        this.safeHtml = this.sanitizer.bypassSecurityTrustHtml(this.chapterModel.content);
+        this.checkLoadingSpin = false;
+        this.titleService.setTitle("Chương " + chap.chapNumber + ": " + chap.title);
+      });
   }
 
   // pre or next page by key
@@ -78,10 +101,10 @@ export class ChapterComponent implements OnInit{
     // Kiểm tra nút bấm là nút trái hoặc phải
     if (event.key === 'ArrowLeft') {
       this.reLoadPage();
-      this.router.navigate(['/truyen', this.bookSlug, this.chapterIndex! - 1]);
+      this.router.navigate(['/truyen', this.bookSlug, this.chineseBookId, this.chapterIndex! - 1]);
     } else if (event.key === 'ArrowRight') {
       this.reLoadPage();
-      this.router.navigate(['/truyen', this.bookSlug, this.chapterIndex! + 1]);
+      this.router.navigate(['/truyen', this.bookSlug, this.chineseBookId, this.chapterIndex! + 1]);
     }
   }
 
@@ -94,6 +117,6 @@ export class ChapterComponent implements OnInit{
 
   menuButton() {
     this.reLoadPage();
-    this.router.navigate(['/truyen', this.bookSlug]);
+    this.router.navigate(['/truyen/', this.chapterModel!.bookSlug]);
   }
 }

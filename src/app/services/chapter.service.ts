@@ -4,6 +4,7 @@ import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { chapterUrl } from '../config/api.config';
 import { ChapterShowModel } from '../models/chapter/chapter.show.model';
+import { DataCrawl } from '../models/crawl/data.crawl';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +39,15 @@ export class ChapterService {
   // GEt chapter by bookId
   getChaptersByBookId(bookId: number): Observable<ChapterShowModel[]> {
     return this.http.get<ChapterShowModel[]>(`${this.urlBase}/list/${bookId}`);
+  }
+
+  //api/Chapter/list-chinese/6
+  getChaptersByChineseBookId(chineseBookId: number): Observable<ChapterShowModel[]> {
+    return this.http.get<ChapterShowModel[]>(`${this.urlBase}/list-chinese/${chineseBookId}`);
+  }
+
+  // api/Crawling/chap-content-crawl
+  getContentChapCrawl(data: DataCrawl): Observable<ChapterShowModel> {
+    return this.http.post<ChapterShowModel>(`${environment.apiUrl}/Crawling/chap-content-crawl`, data);
   }
 }

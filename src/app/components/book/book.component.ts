@@ -41,6 +41,9 @@ export class BookComponent implements OnInit{
   //genre localstore
   genres?: GenreShowModel[];
 
+  // chinese book id
+  chineseBookId?: number;
+
   /**
    *
    */
@@ -55,28 +58,16 @@ export class BookComponent implements OnInit{
   {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      // params['the-loai'] sẽ chứa giá trị của query parameter 'the-loai'
-      this.uriValue = params['uri'];
-       // Kiểm tra xem có dữ liệu trong state hay không
-      if (this.uriValue != undefined && this.uriValue != null) {
+     
+      // Xử lý khi không có dữ liệu trong state
+      this.route.paramMap.subscribe(params => {
         this.checkLoadingSpin = true;
         this.reLoadPage();
-        this.uri = new UriModel();
-        this.uri.uri = this.uriValue;
-        this.GetBookCrawlUri(this.uri);
-      } else {
-        // Xử lý khi không có dữ liệu trong state
-        this.route.paramMap.subscribe(params => {
-          this.checkLoadingSpin = true;
-          this.reLoadPage();
-          this.slug = params.get('slug')?.toString()!;
+        this.slug = params.get('slug')?.toString()!;
 
-          // get slug
-          this.GetBookBySlug(this.slug);
-        });
-      }
-    });
+        // get slug
+        this.GetBookBySlug(this.slug);
+      });
    
     if (isPlatformBrowser(this.platformId)) {
       // Code chỉ chạy trên trình duyệt
@@ -99,12 +90,12 @@ export class BookComponent implements OnInit{
   //   })
   // }
 
-  GetChaptersByBookId(bookId: number) {
-    this.chapterService.getChaptersByBookId(bookId).subscribe((chap) => {
-      this.chapters = chap;
-      this.checkLoadingSpinChap = false;
-    });
-  }
+  // GetChaptersByBookId(bookId: number) {
+  //   this.chapterService.getChaptersByBookId(bookId).subscribe((chap) => {
+  //     this.chapters = chap;
+  //     this.checkLoadingSpinChap = false;
+  //   });
+  // }
 
   // get slug
   GetBookBySlug(slug: string) {
@@ -115,7 +106,9 @@ export class BookComponent implements OnInit{
         this.checkLoadingSpinChap = true;
         this.book = book;
         this.checkLoadingSpin = false;
-        this.GetChaptersByBookId(this.book?.id!);
+        
+        // chapter list
+        this.GetChaptersByChineseBookId(book.chineseBooks[0].id);
         this.titleService.setTitle(this.book!.title);
         this.GetBookAuthor(book.author.id!, 1);
         this.GetBookUser(book.applicationUser.id!, 1);
@@ -127,24 +120,6 @@ export class BookComponent implements OnInit{
         }
       }
     );
-  }
-
-  // crawling book
-  GetBookCrawlUri(uri: UriModel) {
-    this.bookService.GetBookCrawlUri(uri).subscribe((book) => {
-      this.book = book;
-      this.checkLoadingSpin = false;
-        this.titleService.setTitle(this.book!.title);
-        this.GetBookAuthor(book.author.id!, 1);
-        this.GetBookUser(book.applicationUser.id!, 1);
-    },
-    (error) => {
-      // Xử lý lỗi ở đây
-      if (error.status !== 0) {
-        this.router.navigate(['notfound']);
-      }
-    }
-    )
   }
 
   //
@@ -172,6 +147,15 @@ export class BookComponent implements OnInit{
     })
   }
 
+  // get chapter by chinese book id
+  GetChaptersByChineseBookId(chineseBookId: number) {
+    this.checkLoadingSpinChap = true;
+    this.chineseBookId = chineseBookId;
+    this.chapterService.getChaptersByChineseBookId(chineseBookId).subscribe((chaps) => {
+      this.chapters = chaps;
+      this.checkLoadingSpinChap = false;
+    });
+  }
   // 
   reLoadPage() {
     if (isPlatformBrowser(this.platformId)) {

@@ -27,7 +27,7 @@
                             <div class="book-3d">
                                 <img src="{{book?.coverImage}}"
                                     alt="{{book?.title}}" class="img-fluid w-100" width="200"
-                                    height="300" loading="eager">
+                                    height="300" loading="lazy">
                             </div>
                         </div>
                         <div class="col-12 col-md-12 col-lg-9">
@@ -164,7 +164,7 @@
                 </div>
 
                 <div class="story-detail__list-chapter">
-                    <div class="head-title-global justify-content-between mb-4">
+                    <div class="head-title-global justify-content-between mb-2">
                         <div class="row">
                             <div class="col-6 col-md-6 col-lg-6 head-title-global__left">
                                 <h2 class="me-2 mb-0 border-bottom border-secondary pb-1">
@@ -189,6 +189,18 @@
                         </div>
                     </div>
                    
+                    <div class="flex items-center mb-2"> 
+                        <ul class="leading-8 space-x-1 space-y-1"> 
+                            @for (site of book?.chineseBooks; track $index) {
+                                <li class="inline"> 
+                                    <button class="btn-outline-primary inline-flex items-center rounded-full px-3 py-1 text-xs font-medium space-x-1 btn-primary cursor-not-allowed" data-bind:class="(item.id == currentSource.id) &amp;&amp; 'btn-primary cursor-not-allowed'"> 
+                                        <span (click)="GetChaptersByChineseBookId(site.id)" class="text-xs font-medium"> {{site.chineseSiteName}} </span>
+                                    </button> 
+                                </li> 
+                            }
+                        </ul> 
+                    </div>
+
 
                     @if (checkLoadingSpinChap) {
                         <div class="d-flex justify-content-center align-items-center">
@@ -207,7 +219,7 @@
                                 <!-- Sử dụng col-md-6 để tạo 2 cột khi màn hình có kích thước medium trở lên -->
                                 <div class="col-sm-6 col-md-12 col-lg-6 story-detail__list-chapter--list__item" *ngFor="let chapter of chapters">
                                     <div class="mb-3">
-                                        <a (click)="reLoadPage()" [routerLink]="[chapter.chapterIndex]" class="text-decoration-none text-dark hover-title">
+                                        <a (click)="reLoadPage()" [routerLink]="['/truyen', book!.slug, chineseBookId, chapter.chapterIndex]" class="text-decoration-none text-dark hover-title">
                                             Chương {{chapter.chapNumber}}: {{chapter.title}}
                                         </a>
                                     </div>

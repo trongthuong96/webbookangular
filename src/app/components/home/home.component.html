@@ -57,7 +57,7 @@
                             <div class="story-item">
                                 <a (click)="reLoadPage()" [routerLink]="['/truyen', book.slug]" title="{{book.title}}" class="d-block text-decoration-none">
                                     <div class="story-item__image">
-                                        <img src="{{book.coverImage}}" loading="eager" alt="{{book.title}}" class="img-fluid rounded" width="150"
+                                        <img src="{{book.coverImage}}" loading="lazy" alt="{{book.title}}" class="img-fluid rounded" width="150"
                                             height="230">
                                     </div>
                                     <h3 class="story-item__name story-name"><div class="text-one-row">{{book.title}}</div></h3>
@@ -163,7 +163,7 @@
 
                                         <div class="story-item-no-image__chapters ms-2">
                                             @if(book.chapterLast){
-                                                <a (click)="reLoadPage()" [routerLink]="['/truyen', book.slug, book.chapterLast.chapterIndex]"
+                                                <a 
                                                     title="Chương {{ book.chapterLast.chapNumber }}"
                                                     class="hover-title text-decoration-none text-secondary text-one-row">                                                
                                                         Chương {{ book.chapterLast.chapNumber }}: {{ book.chapterLast.title }}                                               
@@ -252,8 +252,8 @@
                                 <a 
                                     [routerLink]="['/truyen', book.slug]" (click)="reLoadPage()" 
                                     class="d-block story-item-full__image">
-                                    <img src="{{book?.coverImage}}" alt="Tự Cẩm" class="img-fluid w-100"
-                                        width="150" height="230" loading="eager">
+                                    <img src="{{book?.coverImage}}" alt="{{book.title}}" class="img-fluid w-100"
+                                        width="150" height="230" loading="lazy">
                                 </a>
                                 <h3 class="fs-6 story-item-full__name fw-bold text-center mb-0">
                                     <a 

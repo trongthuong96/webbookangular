@@ -14,7 +14,7 @@ export const routes: Routes = [
             data: { reuse: true } 
     },
     {
-        path: 'truyen/:slug/:chapterIndex', loadComponent: () => import('./components/chapter/chapter.component')
+        path: 'truyen/:slug/:chineseBookId/:chapterIndex', loadComponent: () => import('./components/chapter/chapter.component')
             .then(mod => mod.ChapterComponent),
             data: { reuse: true } 
     },

@@ -1,5 +1,6 @@
 import { AuthorShow } from "../author/author.show";
 import { ChapterShowModel } from "../chapter/chapter.show.model";
+import { ChineseBookModel } from "../chinese.book/chinese.book.model";
 import { GenreShowModel } from "../genre/genre.model";
 import { UserShowModel } from "../user/user.show.model";
 
@@ -16,4 +17,5 @@ export default class BookShowModel {
     genres!: GenreShowModel[];
     author!: AuthorShow;
     applicationUser!: UserShowModel;
+    chineseBooks!: ChineseBookModel[];
 }

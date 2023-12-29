@@ -6,6 +6,8 @@ import { GenreService } from './services/genre.service';
 import { GenreShowModel } from './models/genre/genre.model';
 import { FormsModule } from '@angular/forms';
 import { SD } from './Utility/SD';
+import { BookService } from './services/book.service';
+import { UriModel } from './models/uri/uri.model';
 
 @Component({
   selector: 'app-root',
@@ -22,12 +24,13 @@ export class AppComponent implements OnInit{
   checked = false;
   
   // search
-  value: string = '';
+  value: string = "";
   /**
    *
    */
   constructor(
     private genreService: GenreService,
+    private bookService: BookService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
@@ -73,16 +76,18 @@ export class AppComponent implements OnInit{
     // Điều hướng đến trang '/tim-kiem' với giá trị từ input\
     const checkUrl = SD.isUrl(this.value);
 
+    // Kiểm tra xem có phải là link không, nếu phải thì tải truyện, không phải thì tìm kiếm truyện
     if (checkUrl) {
+      var uri = new UriModel();
+      uri.uri = this.value;
 
-      const slug = SD.extractSlugFromUrl(this.value);
-  
-      this.router.navigate([`/truyen/${slug}`], { queryParams: { 'uri': this.value } });
-      this.value = "";
+      this.bookService.GetBookAndListChapterCrawl(uri).subscribe((slug) => {
+        this.router.navigate([`/truyen/${slug}`]);
+      });      
     } 
     else {
-      this.router.navigate(['/truyen'], { queryParams: { 'tu-tim-kiem': this.value } });
-      this.value = "";
+      this.router.navigate(['/truyen'], { queryParams: { 'tu-tim-kiem': this.value } });     
     }
+    this.value = "";
   }
 }

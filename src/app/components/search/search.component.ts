@@ -8,6 +8,8 @@ import { BookService } from '../../services/book.service';
 import { BookTotalPageModel } from '../../models/book/books.totalPage.model';
 import { Title } from '@angular/platform-browser';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { SD } from '../../Utility/SD';
+import { UriModel } from '../../models/uri/uri.model';
 
 @Component({
   selector: 'app-search',
@@ -50,7 +52,7 @@ export class SearchComponent implements OnInit{
     private bookService: BookService,
     private route: ActivatedRoute,
     private router: Router,
-    private titleService: Title,
+    private titleService: Title
   ) {
      /// Form search
      this.searchForm = new FormGroup({
@@ -285,30 +287,48 @@ export class SearchComponent implements OnInit{
   // Form
   submitSearch(page: number) {
     const keyword = this.searchForm.value.keyword.trim();
-    const status = this.getStatusSelection();
-    const genre = this.getGenreSelectionId();
-    const chapLength = this.getChapLengthSelection()!;
 
-    this.reLoadPage();
-    this.currentPage = page;
+    // Điều hướng đến trang '/tim-kiem' với giá trị từ input\
+    const checkUrl = SD.isUrl(keyword);
 
-    // Sử dụng Router để thay đổi URL với query parameter mới
-    this.router.navigate(['/truyen'], {
-      relativeTo: this.route,
-      queryParams: { 
-        'tu-khoa': keyword,
-        'trang-thai': status,
-        'the-loai.': genre,
-        'do-dai-chuong': chapLength,
-        page: this.currentPage 
-      },
-      //queryParamsHandling: 'merge',
-    });
-  
-    this.bookService.GetBookSearchAll(keyword, status, genre, chapLength, page).subscribe (book => {
-      this.booksTotal = book;
-      this.totalPages = this.booksTotal.totalPages;
-      this.checkLoadingSpin = false;
-    });
+    // Kiểm tra xem có phải là link không, nếu phải thì tải truyện, không phải thì tìm kiếm truyện
+    if (checkUrl) {
+      var uri = new UriModel();
+      uri.uri = keyword;
+
+      this.searchForm.get('keyword')!.setValue("");
+
+      this.bookService.GetBookAndListChapterCrawl(uri).subscribe((slug) => {
+        this.router.navigate([`/truyen/${slug}`]);
+      });  
+      
+    } 
+    else {  
+      const status = this.getStatusSelection();
+      const genre = this.getGenreSelectionId();
+      const chapLength = this.getChapLengthSelection()!;
+
+      this.reLoadPage();
+      this.currentPage = page;
+
+      // Sử dụng Router để thay đổi URL với query parameter mới
+      this.router.navigate(['/truyen'], {
+        relativeTo: this.route,
+        queryParams: { 
+          'tu-khoa': keyword,
+          'trang-thai': status,
+          'the-loai.': genre,
+          'do-dai-chuong': chapLength,
+          page: this.currentPage 
+        },
+        //queryParamsHandling: 'merge',
+      });
+    
+      this.bookService.GetBookSearchAll(keyword, status, genre, chapLength, page).subscribe (book => {
+        this.booksTotal = book;
+        this.totalPages = this.booksTotal.totalPages;
+        this.checkLoadingSpin = false;
+      });
+    }
   }
 }

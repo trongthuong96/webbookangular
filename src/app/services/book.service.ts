@@ -67,9 +67,15 @@ export class BookService {
     return this.http.get<BookShowListModel[]>(url);
   }
 
-  //api/Crawling/book
-  GetBookCrawlUri(uri: UriModel): Observable<BookShowModel> {
+  //api/Crawling/book by metruyencv
+  GetBookCrawlMetruyencv(uri: UriModel): Observable<BookShowModel> {
     const url = `${environment.apiUrl}/Crawling/book`;
     return this.http.post<BookShowModel>(url, uri);
+  }
+
+  ////api/Crawling/book-listchap-crawl crawl trang 69shu fanqie
+  GetBookAndListChapterCrawl(uri: UriModel): Observable<string> {
+    const url = `${environment.apiUrl}/Crawling/book-listchap-crawl`;
+    return this.http.post(url, uri, { responseType: 'text' });
   }
 }

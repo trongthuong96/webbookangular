@@ -8,6 +8,7 @@ import { SignatureInterceptor } from './config/SignatureInterceptor';
 import { ApiInterceptor } from './config/api.interceptor';
 import { CustomReuseStrategy } from './custom.reuse.strategy';
 import { CsrfInterceptor } from './config/CsrfInterceptor';
+import { IMAGE_CONFIG } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -36,6 +37,13 @@ export const appConfig: ApplicationConfig = {
     {
       provide: RouteReuseStrategy,
       useClass: CustomReuseStrategy,
+    },
+    {
+      provide: IMAGE_CONFIG,
+      useValue: {
+        disableImageSizeWarning: true, 
+        disableImageLazyLoadWarning: true
+      }
     },
   ],
 };
