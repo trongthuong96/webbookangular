@@ -10,7 +10,9 @@ import { SignatureService } from '../services/signature.service';
 
 @Injectable()
 export class SignatureInterceptor implements HttpInterceptor {
-    
+  
+  private lastSignatureTime: number = 0; // Lưu thời điểm cuối cùng chữ ký được tạo
+
   constructor(private signatureService: SignatureService) {}
 
   intercept(

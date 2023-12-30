@@ -16,7 +16,7 @@ export const routes: Routes = [
     {
         path: 'truyen/:slug/:chineseBookId/:chapterIndex', loadComponent: () => import('./components/chapter/chapter.component')
             .then(mod => mod.ChapterComponent),
-            data: { reuse: true } 
+           // data: { reuse: true } 
     },
     {
         path: 'truyen', loadComponent: () => import('./components/search/search.component')
@@ -26,7 +26,7 @@ export const routes: Routes = [
     {
         path: 'notfound', loadComponent: () => import('./components/notfoundpage/notfoundpage.component')
             .then(mod => mod.NotfoundpageComponent),
-            data: { reuse: true } 
+            // data: { reuse: true } 
     },
     {
         path: 'account', loadComponent: () => import('./components/account/account.component')
@@ -36,7 +36,7 @@ export const routes: Routes = [
     {
         path: '**', loadComponent: () => import('./components/notfoundpage/notfoundpage.component')
             .then(mod => mod.NotfoundpageComponent),
-            data: { reuse: true } 
+           // data: { reuse: true } 
     },
    
 ];

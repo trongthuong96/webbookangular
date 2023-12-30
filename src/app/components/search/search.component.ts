@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GenreShowModel } from '../../models/genre/genre.model';
 import { GenreService } from '../../services/genre.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -14,7 +14,12 @@ import { UriModel } from '../../models/uri/uri.model';
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, RouterLink, PaginationComponent, ReactiveFormsModule],
+  imports: [
+    CommonModule, 
+    RouterLink, 
+    PaginationComponent, 
+    ReactiveFormsModule, 
+  ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.css'
 })
@@ -52,7 +57,7 @@ export class SearchComponent implements OnInit{
     private bookService: BookService,
     private route: ActivatedRoute,
     private router: Router,
-    private titleService: Title
+    private titleService: Title,
   ) {
      /// Form search
      this.searchForm = new FormGroup({

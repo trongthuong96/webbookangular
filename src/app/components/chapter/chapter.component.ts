@@ -2,9 +2,10 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, HostListener, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ChapterShowModel } from '../../models/chapter/chapter.show.model';
 import { ChapterService } from '../../services/chapter.service';
-import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DomSanitizer, SafeHtml, Title } from '@angular/platform-browser';
 import { DataCrawl } from '../../models/crawl/data.crawl';
+import { error } from 'console';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { DataCrawl } from '../../models/crawl/data.crawl';
   standalone: true,
   imports: [
     CommonModule, 
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './chapter.component.html',
   styleUrl: './chapter.component.css'
@@ -42,7 +43,7 @@ export class ChapterComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    
+
     this.route.paramMap.subscribe(params => {
       this.checkLoadingSpin = true;
       this.bookSlug = params.get('slug')?.toString()!;
@@ -84,15 +85,18 @@ export class ChapterComponent implements OnInit{
         this.safeHtml = this.sanitizer.bypassSecurityTrustHtml(this.chapterModel.content);
         this.checkLoadingSpin = false;
         this.titleService.setTitle("Chương " + chap.chapNumber + ": " + chap.title);
-      });
+      },
+      (error) => {
+        this.router.navigate(['/truyen',this.bookSlug]);
+      }
+    );
   }
 
   // pre or next page by key
   @HostListener('window:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
     // Kiểm tra nút bấm là mũi tên trái hoặc phải
-    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-
+    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
       this.route.paramMap.subscribe(params => {
         this.bookSlug = params.get('slug')?.toString()!;
         let temp = parseInt(params.get('chapterIndex')!);
@@ -104,7 +108,16 @@ export class ChapterComponent implements OnInit{
       this.reLoadPage();
 
       if (event.key === 'ArrowLeft') {
-        this.router.navigate(['/truyen', this.bookSlug, this.chineseBookId, this.chapterIndex! - 1]);
+
+        if (this.chapterIndex! <= 1 ) {
+
+          this.router.navigate(['/truyen', this.bookSlug]);
+
+        } else {
+
+          this.router.navigate(['/truyen', this.bookSlug, this.chineseBookId, this.chapterIndex! - 1]);
+        }
+       
       } else if (event.key === 'ArrowRight') {
         this.router.navigate(['/truyen', this.bookSlug, this.chineseBookId, this.chapterIndex! + 1]);
       }
