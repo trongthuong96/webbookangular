@@ -89,24 +89,27 @@ export class ChapterComponent implements OnInit{
 
   // pre or next page by key
   @HostListener('window:keydown', ['$event'])
-  onKeyDown(event: KeyboardEvent) {
-    this.route.paramMap.subscribe(params => {
+onKeyDown(event: KeyboardEvent) {
+  this.route.paramMap.subscribe(params => {
+    this.bookSlug = params.get('slug')?.toString()!;
+    let temp = parseInt(params.get('chapterIndex')!);
+    if (!isNaN(temp)) {
+      this.chapterIndex = temp;
+    }
+  });
 
-      this.bookSlug = params.get('slug')?.toString()!;
-      let temp = parseInt(params.get('chapterIndex')!);
-      if(!isNaN(temp)) {
-        this.chapterIndex = temp;
-      }
-    });
-    // Kiểm tra nút bấm là nút trái hoặc phải
+  // Kiểm tra nút bấm là mũi tên trái hoặc phải
+  if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+    this.reLoadPage();
+
     if (event.key === 'ArrowLeft') {
-      this.reLoadPage();
       this.router.navigate(['/truyen', this.bookSlug, this.chineseBookId, this.chapterIndex! - 1]);
     } else if (event.key === 'ArrowRight') {
-      this.reLoadPage();
       this.router.navigate(['/truyen', this.bookSlug, this.chineseBookId, this.chapterIndex! + 1]);
     }
   }
+}
+
 
   reLoadPage() {
     if (isPlatformBrowser(this.platformId)) {
