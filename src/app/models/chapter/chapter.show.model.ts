@@ -10,4 +10,5 @@ export class ChapterShowModel {
     bookId!: number;
     bookTitle!: string;
     bookSlug!: string;
+    chineseBookId!: number;
 }

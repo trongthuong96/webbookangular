@@ -7,6 +7,7 @@ import { BookShowListModel } from '../models/book/book.list.model';
 import BookShowModel from '../models/book/book.one.model';
 import { BookTotalPageModel } from '../models/book/books.totalPage.model';
 import { UriModel } from '../models/uri/uri.model';
+import { DataChapCrawl } from '../models/crawl/data.chap.crawl';
 
 @Injectable({
   providedIn: 'root'
@@ -77,5 +78,11 @@ export class BookService {
   GetBookAndListChapterCrawl(uri: UriModel): Observable<string> {
     const url = `${environment.apiUrl}/Crawling/book-listchap-crawl`;
     return this.http.post(url, uri, { responseType: 'text' });
+  }
+
+  /// /api/Crawling/list-chap-crawl
+  GetListChapCrawl(data: DataChapCrawl): Observable<any> {
+    const url = `${environment.apiUrl}/Crawling/list-chap-crawl`;
+    return this.http.post(url, data);
   }
 }
