@@ -336,7 +336,7 @@ section {
     color: rgb(14 165 233/var(--tw-text-opacity))
 }
 
-/* .btn-outline-primary {
+.btn-outline-primary {
     border-width: 1px;
     --tw-border-opacity: 1;
     border-color: rgb(14 165 233/var(--tw-border-opacity));
@@ -350,12 +350,12 @@ section {
     background-color: rgb(14 165 233/var(--tw-bg-opacity));
     --tw-text-opacity: 1;
     color: rgb(255 255 255/var(--tw-text-opacity))
-} */
+}
 
-/* .bg-primary {
+.bg-primary {
     --tw-bg-opacity: 1;
     background-color: rgb(14 165 233/var(--tw-bg-opacity))
-} */
+}
 
 .box-title {
     --tw-text-opacity: 1;
