@@ -126,9 +126,12 @@
                                         <div class="story-item-no-image__categories ms-2 d-none d-lg-block">
                                             <p class="mb-0 text-center">
                                                 @for (genre of book.genres; track $index) {
-                                                    <a
-                                                    title="{{ genre.name }}"
-                                                    class="hover-title text-decoration-none text-secondary category-name text-one-row">{{ genre.name }} </a>
+                                                    @if ($index < 2) {
+                                                        <a
+                                                        title="{{ genre.name }}"
+                                                        class="hover-title text-decoration-none text-secondary category-name text-one-row">{{ genre.name }} </a>
+                                                 
+                                                    }
                                                 }
                                             </p>
                                         </div>
