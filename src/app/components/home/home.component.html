@@ -87,6 +87,8 @@
                                     </div>
                                 </a>
                             </div>
+                        } @empty {
+                            <p> Chưa có truyện! </p>
                         }
                 </div>            
             </div>
@@ -184,8 +186,9 @@
                                         </div>
                                     </div>
         
+                                } @empty {
+                                    <p> Chưa có truyện! </p>
                                 }
-                                
                             </div>
                         </div>
                     </div>
@@ -266,6 +269,8 @@
                                 </h3>
                                 <span class="story-item-full__badge badge text-bg-success">Full - {{book.chapterLast.chapterIndex}} chương</span>
                             </div>
+                        } @empty {
+                            <p> Chưa có truyện! </p>
                         }
                     </div>
                 </div>

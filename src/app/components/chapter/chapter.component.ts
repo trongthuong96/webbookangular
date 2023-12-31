@@ -134,6 +134,6 @@ export class ChapterComponent implements OnInit{
 
   menuButton() {
     this.reLoadPage();
-    this.router.navigate(['/truyen/', this.chapterModel!.bookSlug]);
+    this.router.navigate(['/truyen/', this.bookSlug]);
   }
 }
