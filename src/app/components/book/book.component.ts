@@ -105,7 +105,6 @@ export class BookComponent implements OnInit{
     this.bookService.GetBookBySlug(slug).subscribe(
       (book) => {
         // Xử lý kết quả thành công ở đây
-        if (book.title && book.title !== null) {
           this.chapters = [];
           this.book = book;
           this.checkLoadingSpin = false;
@@ -116,7 +115,7 @@ export class BookComponent implements OnInit{
           this.titleService.setTitle(this.book!.title);
           this.GetBookAuthor(book.author.id!, 1);
           this.GetBookUser(book.applicationUser.id!, 1);
-        }        
+        
       },
       (error) => {
         // Xử lý lỗi ở đây
@@ -187,9 +186,6 @@ export class BookComponent implements OnInit{
       }
     );
   }
-
-
- 
 
   // 
   reLoadPage() {

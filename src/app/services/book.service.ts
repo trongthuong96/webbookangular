@@ -37,38 +37,38 @@ export class BookService {
   }
 
   // book with slug
+  GetBookBySlug(slug: string): Observable<BookShowModel> {
+    return this.http.get<BookShowModel>(`${this.urlBase}/slug/${slug}`);
+  }
+
+  // private bookCache: Map<string, BehaviorSubject<BookShowModel>> = new Map<string, BehaviorSubject<BookShowModel>>();
+
   // GetBookBySlug(slug: string): Observable<BookShowModel> {
-  //   return this.http.get<BookShowModel>(`${this.urlBase}/slug/${slug}`);
+  //   if (this.bookCache.has(slug)) {
+  //     return this.bookCache.get(slug)!.asObservable();
+  //   } else {
+  //     var bookTemp = new BookShowModel();
+  //     const cacheSubject = new BehaviorSubject<BookShowModel>(bookTemp); // Hoặc giá trị mặc định khác nếu cần
+  //     this.bookCache.set(slug, cacheSubject);
+
+  //     return this.http.get<BookShowModel>(`${this.urlBase}/slug/${slug}`).pipe(
+  //       tap((book) => {
+  //         cacheSubject.next(book);
+  //         // Update cache with data fetched from the source
+  //         this.bookCache.get(slug)!.next(book);
+  //       }),
+  //       catchError(error => {
+  //         console.error('Error fetching chapters:', error);
+  //         return throwError('Something went wrong while fetching chapters.');
+  //       })
+  //     );
+  //   }
   // }
 
-  private bookCache: Map<string, BehaviorSubject<BookShowModel>> = new Map<string, BehaviorSubject<BookShowModel>>();
-
-  GetBookBySlug(slug: string): Observable<BookShowModel> {
-    if (this.bookCache.has(slug)) {
-      return this.bookCache.get(slug)!.asObservable();
-    } else {
-      var bookTemp = new BookShowModel();
-      const cacheSubject = new BehaviorSubject<BookShowModel>(bookTemp); // Hoặc giá trị mặc định khác nếu cần
-      this.bookCache.set(slug, cacheSubject);
-
-      return this.http.get<BookShowModel>(`${this.urlBase}/slug/${slug}`).pipe(
-        tap((book) => {
-          cacheSubject.next(book);
-          // Update cache with data fetched from the source
-          this.bookCache.get(slug)!.next(book);
-        }),
-        catchError(error => {
-          console.error('Error fetching chapters:', error);
-          return throwError('Something went wrong while fetching chapters.');
-        })
-      );
-    }
-  }
-
-  private updateBookCacheFromDataSource(slug: string, book: BookShowModel): void {
-    // Update cache with data fetched from the source for GetBookBySlug
-    this.bookCache.get(slug)!.next(book);
-  }
+  // private updateBookCacheFromDataSource(slug: string, book: BookShowModel): void {
+  //   // Update cache with data fetched from the source for GetBookBySlug
+  //   this.bookCache.get(slug)!.next(book);
+  // }
 
 
   // find book by title and author name
