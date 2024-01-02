@@ -11,7 +11,8 @@ import { UriModel } from '../../models/uri/uri.model';
 import { ChapterService } from '../../services/chapter.service';
 import { ChapterShowModel } from '../../models/chapter/chapter.show.model';
 import { DataChapCrawl } from '../../models/crawl/data.chap.crawl';
-import { error } from 'console';
+import { Console } from 'console';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-book',
@@ -104,18 +105,18 @@ export class BookComponent implements OnInit{
     this.bookService.GetBookBySlug(slug).subscribe(
       (book) => {
         // Xử lý kết quả thành công ở đây
-        this.chapters = [];
-        this.checkLoadingSpinChap = true;
-        this.book = book;
-        this.checkLoadingSpin = false;
-        
-        // chapter list
-        this.chineseBookId = book.chineseBooks[0].id;
-        this.GetChaptersByChineseBookId(this.chineseBookId);
-        this.titleService.setTitle(this.book!.title);
-        this.GetBookAuthor(book.author.id!, 1);
-        this.GetBookUser(book.applicationUser.id!, 1);
-        
+        if (book.title && book.title !== null) {
+          this.chapters = [];
+          this.book = book;
+          this.checkLoadingSpin = false;
+          
+          // chapter list
+          this.chineseBookId = book.chineseBooks[0].id;
+          this.GetChaptersByChineseBookId(this.chineseBookId);
+          this.titleService.setTitle(this.book!.title);
+          this.GetBookAuthor(book.author.id!, 1);
+          this.GetBookUser(book.applicationUser.id!, 1);
+        }        
       },
       (error) => {
         // Xử lý lỗi ở đây
@@ -156,8 +157,10 @@ export class BookComponent implements OnInit{
     this.checkLoadingSpinChap = true;
     this.chineseBookId = chineseBookId;
     this.chapterService.getChaptersByChineseBookId(chineseBookId).subscribe((chaps) => {
-      this.chapters = chaps;
-      this.checkLoadingSpinChap = false;
+      if (chaps.length !== 0) {
+        this.chapters = chaps;
+        this.checkLoadingSpinChap = false; 
+      } 
     });
   }
 
@@ -169,15 +172,20 @@ export class BookComponent implements OnInit{
     data.chineseBookId = chineseBookId;
     this.checkLoadingSpinChap = true;
 
-    this.bookService.GetListChapCrawl(data).subscribe(() => {
-      this.chapterService.getChaptersByChineseBookId(chineseBookId).subscribe((chaps) => {
+    this.chapterService.GetListChapCrawl(data).pipe(
+      switchMap(() => {
+        return this.chapterService.getChaptersByChineseBookId(chineseBookId);
+      })
+    ).subscribe(
+      (chaps) => {
         this.chapters = chaps;
         this.checkLoadingSpinChap = false;
-      });
-    },
-    (error) => {
-      this.checkLoadingSpinChap = false;
-    });
+      },
+      (error) => {
+        this.checkLoadingSpinChap = false;
+        // Xử lý lỗi
+      }
+    );
   }
 
 

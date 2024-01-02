@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { SD } from './Utility/SD';
 import { BookService } from './services/book.service';
 import { UriModel } from './models/uri/uri.model';
+import { SitemapService } from './services/sitemap.generator.service';
 
 @Component({
   selector: 'app-root',
@@ -32,6 +33,7 @@ export class AppComponent implements OnInit{
     private genreService: GenreService,
     private bookService: BookService,
     private router: Router,
+    private sitemapService: SitemapService,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 
@@ -43,8 +45,11 @@ export class AppComponent implements OnInit{
       } 
     }
     this.getGenres();
+    const sitemap = this.sitemapService.generateDynamicSitemap();
+    console.log(sitemap);
   }
 
+  // get genres
   getGenres() {
     if (isPlatformBrowser(this.platformId) && typeof localStorage !== 'undefined') {
       if(localStorage.getItem("genres_info")){
@@ -60,6 +65,7 @@ export class AppComponent implements OnInit{
     }
   }
 
+  // dark or light
   turnOnOrOffDarkLight() {
     if (this.darkLight === "") {
       this.darkLight = "dark-theme";

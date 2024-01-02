@@ -29,7 +29,7 @@ export const routes: Routes = [
             // data: { reuse: true } 
     },
     {
-        path: 'account', loadComponent: () => import('./components/account/account.component')
+        path: 'tai-khoan', loadComponent: () => import('./components/account/account.component')
             .then(mod => mod.AccountComponent),
             data: { reuse: true } 
     },

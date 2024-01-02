@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { bookUrl } from '../config/api.config';
 import { BookShowListModel } from '../models/book/book.list.model';
@@ -8,6 +8,7 @@ import BookShowModel from '../models/book/book.one.model';
 import { BookTotalPageModel } from '../models/book/books.totalPage.model';
 import { UriModel } from '../models/uri/uri.model';
 import { DataChapCrawl } from '../models/crawl/data.chap.crawl';
+import { ChapterShowModel } from '../models/chapter/chapter.show.model';
 
 @Injectable({
   providedIn: 'root'
@@ -36,9 +37,39 @@ export class BookService {
   }
 
   // book with slug
+  // GetBookBySlug(slug: string): Observable<BookShowModel> {
+  //   return this.http.get<BookShowModel>(`${this.urlBase}/slug/${slug}`);
+  // }
+
+  private bookCache: Map<string, BehaviorSubject<BookShowModel>> = new Map<string, BehaviorSubject<BookShowModel>>();
+
   GetBookBySlug(slug: string): Observable<BookShowModel> {
-    return this.http.get<BookShowModel>(`${this.urlBase}/slug/${slug}`);
+    if (this.bookCache.has(slug)) {
+      return this.bookCache.get(slug)!.asObservable();
+    } else {
+      var bookTemp = new BookShowModel();
+      const cacheSubject = new BehaviorSubject<BookShowModel>(bookTemp); // Hoặc giá trị mặc định khác nếu cần
+      this.bookCache.set(slug, cacheSubject);
+
+      return this.http.get<BookShowModel>(`${this.urlBase}/slug/${slug}`).pipe(
+        tap((book) => {
+          cacheSubject.next(book);
+          // Update cache with data fetched from the source
+          this.bookCache.get(slug)!.next(book);
+        }),
+        catchError(error => {
+          console.error('Error fetching chapters:', error);
+          return throwError('Something went wrong while fetching chapters.');
+        })
+      );
+    }
   }
+
+  private updateBookCacheFromDataSource(slug: string, book: BookShowModel): void {
+    // Update cache with data fetched from the source for GetBookBySlug
+    this.bookCache.get(slug)!.next(book);
+  }
+
 
   // find book by title and author name
   GetBookByTitle(title: string, page: number): Observable<BookTotalPageModel> {
@@ -78,11 +109,5 @@ export class BookService {
   GetBookAndListChapterCrawl(uri: UriModel): Observable<string> {
     const url = `${environment.apiUrl}/Crawling/book-listchap-crawl`;
     return this.http.post(url, uri, { responseType: 'text' });
-  }
-
-  /// /api/Crawling/list-chap-crawl
-  GetListChapCrawl(data: DataChapCrawl): Observable<any> {
-    const url = `${environment.apiUrl}/Crawling/list-chap-crawl`;
-    return this.http.post(url, data);
   }
 }
