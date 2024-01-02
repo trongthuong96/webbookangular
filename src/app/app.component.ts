@@ -45,8 +45,7 @@ export class AppComponent implements OnInit{
       } 
     }
     this.getGenres();
-    const sitemap = this.sitemapService.generateDynamicSitemap();
-    console.log(sitemap);
+    //const sitemap = this.sitemapService.generateSitemap();
   }
 
   // get genres

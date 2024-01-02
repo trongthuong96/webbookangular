@@ -1,40 +1,40 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { Router } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { SitemapStream, streamToPromise } from 'sitemap';
+//import { createWriteStream } from 'fs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SitemapService {
+  constructor() {}
 
-  constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
-    private router: Router
-  ) { }
+  async generateSitemap(): Promise<void> {
+    //const sitemap = new SitemapStream({ hostname: 'https://truyenmoi.click' });
 
-  generateDynamicSitemap(): string {
-    if (isPlatformBrowser(this.platformId)) {
-      const routes = this.router.config;
-      let sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+    // Read slugs from your .txt file
+    //const fs = require('fs');
+    //const fileData = fs.readFileSync('./src/book-slug-file.txt', 'utf8');
+    //const slugs = fileData.split('\n').map((slug: string) => slug.trim());
 
-      routes.forEach(route => {
-        if (route.path) {
-          // Customize the URL formatting based on your route structure
-          const url = `
-            <url>
-              <loc>https://truyenmoi.click/${route.path}</loc>
-              <changefreq>daily</changefreq>
-              <priority>0.9</priority>
-            </url>
-          `;
-          sitemap += url;
-        }
-      });
+    // Add slugs to the sitemap
+    // slugs.forEach((slug: any) => {
+    //   if (slug) {
+    //     const url = {
+    //       url: `truyen/${slug}`, // Assuming the slugs are formatted correctly in the file
+    //       changefreq: 'daily', // set change frequency as needed
+    //       priority: 0.9, // set priority as needed
+    //     };
+    //     sitemap.write(url);
+    //   }
+    // });
 
-      sitemap += `</urlset>`;
-      return sitemap;
-    } else {
-      return ''; // Trả về một giá trị mặc định trong môi trường server-side
-    }
+    // sitemap.end();
+
+    // const xml = await streamToPromise(sitemap).then((data: any) => data.toString());
+    //const filePath = './src/sitemap.xml'; // Path where you want to save the sitemap
+    //const writeStream = createWriteStream(filePath);
+
+    // writeStream.write(xml);
+    // writeStream.end();
   }
 }
