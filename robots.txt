@@ -2,3 +2,4 @@ User-agent: *
 Disallow: /admin/
 Disallow: /private/
 Disallow: /tai-khoan/
+Sitemap: https://www.truyenmoi.click/sitemap.xml
