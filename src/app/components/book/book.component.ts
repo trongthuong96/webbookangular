@@ -158,8 +158,9 @@ export class BookComponent implements OnInit{
     this.chapterService.getChaptersByChineseBookId(chineseBookId).subscribe((chaps) => {
       if (chaps.length !== 0) {
         this.chapters = chaps;
-        this.checkLoadingSpinChap = false; 
       } 
+      
+      this.checkLoadingSpinChap = false;
     });
   }
 
