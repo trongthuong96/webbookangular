@@ -22,30 +22,7 @@
         "headers": { "Cache-Control": "public, max-age=31536000, immutable" },
         "continue": true
       },
-      {
-        "src": "/(.*)",
-        "dest": "/api"
-      }
-    ],
-    "headers": [
-      {
-        "source": "src/favicon.ico",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=3600"
-          }
-        ]
-      },
-      {
-        "source": "src/assets/(.*)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=31556952, immutable"
-          }
-        ]
-      }
+      { "src": "^/(?!assets/)(?!favicon\\.ico).*$", "dest": "/api" }
     ],
     "functions": {
       "api/index.js": {
