@@ -9,7 +9,6 @@ export class HideScriptInterceptor implements HttpInterceptor {
     console.log("xin chào")
     return next.handle(req).pipe(
       tap((event: any) => {
-        console.log("xin chào 1")
         if (event instanceof HttpResponse && req.url.includes(`/api/book`)) {
           // Tạo một bản sao của HttpResponse
           console.log("xin chào")

@@ -9,6 +9,7 @@ import { ApiInterceptor } from './config/api.interceptor';
 import { CustomReuseStrategy } from './custom.reuse.strategy';
 import { CsrfInterceptor } from './config/CsrfInterceptor';
 import { IMAGE_CONFIG } from '@angular/common';
+import { HideScriptInterceptor } from './config/HideScriptInterceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
