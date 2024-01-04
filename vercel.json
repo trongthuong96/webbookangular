@@ -1,8 +1,14 @@
-{
+
+  {
     "version": 2,
     "public": true,
     "routes": [
-      { "src": "/(.*)", "dest": "/api" }
+      { "handle": "filesystem" },
+      { 
+        "src": "/(.*)",
+        "status": 307,
+        "headers": { "Location": "/api" }
+      }
     ],
     "functions": {
       "api/index.js": {
@@ -10,3 +16,4 @@
       }
     }
   }
+  
