@@ -1,8 +1,11 @@
 {
     "version": 2,
-    "public": false,
+    "public": true,
     "rewrites": [
       { "source": "/(.*)", "destination": "/api" }
+    ],
+    "routes": [
+      { "handle": "filesystem" }
     ],
     "functions": {
       "api/index.js": {
