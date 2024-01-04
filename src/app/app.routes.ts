@@ -6,7 +6,7 @@ export const routes: Routes = [
         path: '',
         loadComponent: () => import('./components/home/home.component')
             .then(mod => mod.HomeComponent),
-        data: { reuse: true, title: "Truyện Mới"} 
+        data: { reuse: true, title: "Truyện Mới - Nguồn Cung Cấp Truyện Đa Dạng và Dịch Nhanh"} 
     },
     {
         path: 'truyen/:slug', loadComponent: () => import('./components/book/book.component')
