@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit{
     this.GetBooksOrderByUpdatedAt(1);
     this.GetBooksStatus(1);
     
-    this.titleService.setTitle("Truyện Mới");
+    this.titleService.setTitle("Truyện Mới - Nguồn Cung Cấp Truyện Đa Dạng và Dịch Nhanh");
 
   }
 

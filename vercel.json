@@ -1,7 +1,7 @@
 {
     "version": 2,
     "public": true,
-    "rewrites": [
+    "routes": [
       { 
         "source": "/(.*)", 
         "destination": "/api"
@@ -11,5 +11,25 @@
       "api/index.js": {
         "includeFiles": "dist/webbook-gui/server/**"
       }
-    }
+    },
+    "headers": [
+      {
+        "source": "/favicon.ico",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=3600"
+          }
+        ]
+      },
+      {
+        "source": "/assets/(.*)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31556952, immutable"
+          }
+        ]
+      }
+    ]
   }
