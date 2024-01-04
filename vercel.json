@@ -2,27 +2,11 @@
     "version": 2,
     "public": true,
     "routes": [
-      {
-        "src": "src/favicon.ico",
-        "headers": { "Cache-Control": "public, max-age=3600" },
-        "continue": true
-      },
-      {
-        "src": "src/assets/(.*)",
-        "headers": { "Cache-Control": "public, max-age=31556952, immutable" },
-        "continue": true
-      },
-      {
-        "src": "/(.+\\.js)",
-        "headers": { "Cache-Control": "public, max-age=31536000, immutable" },
-        "continue": true
-      },
-      {
-        "src": "/(.+\\.css)",
-        "headers": { "Cache-Control": "public, max-age=31536000, immutable" },
-        "continue": true
-      },
-      { "src": "^/(?!assets/)(?!favicon\\.ico).*$", "dest": "/api" }
+      { "handle": "filesystem" },
+      { 
+        "src": "/(.*)", 
+        "dest": "/api"
+      }
     ],
     "functions": {
       "api/index.js": {
