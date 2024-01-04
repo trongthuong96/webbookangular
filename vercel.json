@@ -1,7 +1,7 @@
 {
     "version": 2,
     "public": true,
-    "routes": [
+    "rewrites": [
       { "source": "/(.*)", "destination": "/api" }
     ],
     "functions": {
@@ -10,4 +10,3 @@
       }
     }
   }
-  
