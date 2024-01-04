@@ -87,7 +87,6 @@ export class HomeComponent implements OnInit{
 
   SubmitAddBook() {
     this.test = this.addBookForm.value.title;
-    console.log(this.addBookForm.value.title)
   }
 
   SubmitLogin() {

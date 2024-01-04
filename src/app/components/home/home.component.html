@@ -267,7 +267,13 @@
                                         {{book.title}}
                                     </a>
                                 </h3>
-                                <span class="story-item-full__badge badge text-bg-success">Full - {{book.chapterLast.chapterIndex}} chương</span>
+                                <span class="story-item-full__badge badge text-bg-success">
+                                    @if(book.chapterLast){
+                                        Full - {{book.chapterLast.chapterIndex}} chương
+                                    } @else {
+                                        0 chương
+                                    }
+                                    </span>
                             </div>
                         } @empty {
                             <p> Chưa có truyện! </p>

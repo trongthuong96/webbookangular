@@ -18,7 +18,7 @@ import { SitemapService } from './services/sitemap.generator.service';
   styleUrl: './app.component.css' 
 })
 export class AppComponent implements OnInit{
-  title = "Truyện Mới"
+  title = "Truyện Mới - Nguồn Cung Cấp Truyện Đa Dạng và Dịch Nhanh"
 
   genreListModel: GenreShowModel[] = [];
   darkLight = "";
