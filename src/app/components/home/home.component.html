@@ -74,7 +74,7 @@
                                             }
                                         </span>
                                         <span class="story-item__badge badge text-bg-success">
-                                            @if(book.chapterLast){
+                                            @if(book.chapterLast !== undefined && book.chapterLast !== null){
                                                 {{book.chapterLast.chapterIndex}} chương
                                             } @else {
                                                 0 chương
@@ -167,7 +167,7 @@
                                         </div>
 
                                         <div class="story-item-no-image__chapters ms-2">
-                                            @if(book.chapterLast){
+                                            @if(book.chapterLast !== undefined && book.chapterLast !== null){
                                                 <a 
                                                     title="Chương {{ book.chapterLast.chapNumber }}"
                                                     class="hover-title text-decoration-none text-secondary text-one-row">                                                
@@ -268,7 +268,7 @@
                                     </a>
                                 </h3>
                                 <span class="story-item-full__badge badge text-bg-success">
-                                    @if(book.chapterLast){
+                                    @if(book.chapterLast !== undefined && book.chapterLast !== null){
                                         Full - {{book.chapterLast.chapterIndex}} chương
                                     } @else {
                                         0 chương
