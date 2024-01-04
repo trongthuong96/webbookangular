@@ -1,15 +1,16 @@
 {
-    "version": 2,
-    "public": true,
-    "rewrites": [
-      { 
-        "source": "/(.*)", 
-        "destination": "/api"
-      }
-    ],
-    "functions": {
-      "api/index.js": {
-        "includeFiles": "dist/webbook-gui/server/**"
-      }
+  "version": 2,
+  "public": true,
+  "routes": [
+    { "handle": "filesystem" },
+    { 
+      "src": "/(.*)", 
+      "dest": "/api"
+    }
+  ],
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "dist/webbook-gui/server/**"
     }
   }
+}
