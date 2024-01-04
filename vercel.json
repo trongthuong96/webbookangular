@@ -3,8 +3,8 @@
     "public": true,
     "routes": [
       { 
-        "source": "/(.*)", 
-        "destination": "/api"
+        "src": "/(.*)", 
+        "dest": "/api"
       }
     ],
     "functions": {
