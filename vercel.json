@@ -2,7 +2,8 @@
   "version": 2,
   "public": true,
   "routes": [
-    { "handle": "filesystem" },
+    { "handle": "filesystem", "src": "/(.*\\.css)" },
+    { "handle": "filesystem", "src": "/(.*\\.js)" },
     { 
       "src": "/(.*)", 
       "dest": "/api"
