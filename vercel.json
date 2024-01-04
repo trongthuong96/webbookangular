@@ -4,11 +4,7 @@
     "rewrites": [
       { 
         "source": "/(.*)", 
-        "destination": "/api"
-      },
-      { 
-        "source": "/trang-chu", 
-        "destination": "https://truyenmoi.click"
+        "destination": "/"
       }
     ],
     "functions": {
