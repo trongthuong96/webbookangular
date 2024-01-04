@@ -1,13 +1,15 @@
 {
     "version": 2,
     "public": true,
-    "routes": [
-    { "src": "^/(?!assets/)(?!favicon\\.ico).*$", "dest": "/api" },
-
-    { "src": "/favicon\\.ico", "headers": { "Cache-Control": "public, max-age=3600" }, "continue": true },
-
-    { "src": "/assets/.*", "headers": { "Cache-Control": "public, max-age=31556952, immutable" }, "continue": true }
-
+    "rewrites": [
+      { 
+        "source": "/(.*)", 
+        "destination": "/api"
+      },
+      { 
+        "source": "/trang-chu", 
+        "destination": "https://truyenmoi.click"
+      }
     ],
     "functions": {
       "api/index.js": {

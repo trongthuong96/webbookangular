@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-    //{ path: '', pathMatch: 'full', redirectTo: 'trang-chu' },
+    { path: '', pathMatch: 'full', redirectTo: 'trang-chu' },
     {
-        path: '',
+        path: 'trang-chu',
         loadComponent: () => import('./components/home/home.component')
             .then(mod => mod.HomeComponent),
         data: { reuse: true, title: "Truyện Mới - Nguồn Cung Cấp Truyện Đa Dạng và Dịch Nhanh"} 
