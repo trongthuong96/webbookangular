@@ -2,7 +2,7 @@
     cursor: not-allowed
 }
 
-.story-name h1 {
+h1 {
     font-size: 32px !important;
     font-weight: 400 !important;
 }
