@@ -1,16 +1,12 @@
 {
   "version": 2,
   "public": true,
-  "name": "webbook-gui",
   "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/api"
-    }
+    { "source": "/(.*)", "destination": "/api" }
   ],
   "functions": {
     "api/index.js": {
-      "includeFiles": "dist/webbook-gui/**"
+      "includeFiles": "dist/webbook-gui/server/**"
     }
   }
 }
