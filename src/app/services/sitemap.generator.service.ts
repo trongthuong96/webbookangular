@@ -15,14 +15,17 @@ export class SitemapService {
   //   const fs = require('fs');
   //   const fileData = fs.readFileSync('./src/book-slug-file.txt', 'utf8');
   //   const slugs = fileData.split('\n').map((slug: string) => slug.trim());
+  //   const currentDate = new Date();
+
 
   //  // Add slugs to the sitemap
   //   slugs.forEach((slug: any) => {
   //     if (slug) {
   //       const url = {
   //         url: `truyen/${slug}`, // Assuming the slugs are formatted correctly in the file
+  //         lastmod: currentDate.toISOString(),
   //         changefreq: 'daily', // set change frequency as needed
-  //         priority: 0.9, // set priority as needed
+  //         priority: 0.6, // set priority as needed
   //       };
   //       sitemap.write(url);
   //     }
