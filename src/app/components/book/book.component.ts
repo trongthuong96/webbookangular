@@ -111,7 +111,10 @@ export class BookComponent implements OnInit{
           
           // chapter list
           this.chineseBookId = book.chineseBooks[0].id;
-          this.GetChaptersByChineseBookId(this.chineseBookId);
+          if (isPlatformBrowser(this.platformId)) {
+            this.GetChaptersByChineseBookId(this.chineseBookId);
+          }
+          
           this.titleService.setTitle(this.book!.title);
           this.GetBookAuthor(book.author.id!, 1);
           this.GetBookUser(book.applicationUser.id!, 1);
