@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-//import { createWriteStream } from 'node:fs';
-import { SitemapStream, streamToPromise } from 'sitemap';
+// import { createWriteStream } from 'node:fs';
+// import { SitemapStream, streamToPromise } from 'sitemap';
 
 @Injectable({
   providedIn: 'root',
@@ -8,8 +8,8 @@ import { SitemapStream, streamToPromise } from 'sitemap';
 export class SitemapService {
   constructor() {}
 
-  async generateSitemap(): Promise<void> {
-    const sitemap = new SitemapStream({ hostname: 'https://truyenmoi.click' });
+  // async generateSitemap(): Promise<void> {
+  //   const sitemap = new SitemapStream({ hostname: 'https://truyenmoi.click' });
 
   //   //Read slugs from your .txt file
   //   const fs = require('fs');
@@ -36,5 +36,5 @@ export class SitemapService {
 
   //   writeStream.write(xml);
   //   writeStream.end();
-  }
+  // }
 }
