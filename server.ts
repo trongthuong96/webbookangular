@@ -34,11 +34,19 @@ export function app(): express.Express {
   // });
 
   // Thêm proxy vào sau đó
-//server.use(Proxy(proxyConfig));
+  //server.use(Proxy(proxyConfig));
+    // server.get('/sitemap.xml', (req, res) => {
+    //   const sitemap = sitemapService.generateDynamicSitemap();
+    //   res.header('Content-Type', 'application/xml');
+    //   res.send(sitemap);
+    // });
+    // Thêm proxy vào sau đó
+    //server.use(Proxy(proxyConfig));
+    //process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = "0";
 
-  // All regular routes use the Angular engine
-  server.get('*', (req, res, next) => {
-    const { protocol, originalUrl, baseUrl, headers } = req;
+    // All regular routes use the Angular engine
+    server.get('*', (req, res, next) => {
+      const { protocol, originalUrl, baseUrl, headers } = req;
 
     commonEngine
       .render({

@@ -1,6 +1,6 @@
 import { CommonModule, NgOptimizedImage, isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID, afterNextRender, afterRender } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { BookService } from '../../services/book.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AccountService } from '../../services/account.service';
@@ -50,6 +50,7 @@ export class HomeComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
+
     this.GetBooksOrderByViewsAt(1);
     this.GetBooksOrderByUpdatedAt(1);
     this.GetBooksStatus(1);
@@ -68,7 +69,8 @@ export class HomeComponent implements OnInit{
     this.bookService.GetBooksOrderByViewsAt(page).subscribe(books => {
       this.bookListView = books;
       this.checkLoadingSpin1 = false;
-    })
+    }, (e) => {
+    });
   }
 
   GetBooksOrderByUpdatedAt(page: number): void {

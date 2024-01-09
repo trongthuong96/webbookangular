@@ -30,7 +30,7 @@ export class TitleService {
     while (route.firstChild) {
       route = route.firstChild;
     }
-    return route.data['title'] || 'Truyện Mới';
+    return route.data['title'] || 'Truyện Mới - Nguồn Cung Cấp Truyện Đa Dạng và Dịch Nhanh';
   }
 
   setTitle(title: string): void {

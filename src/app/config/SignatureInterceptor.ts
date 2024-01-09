@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Observable, throwError, of } from 'rxjs';
+import { Observable, throwError, of, from } from 'rxjs';
 import { catchError, retryWhen, delay, mergeMap } from 'rxjs/operators';
 import { SignatureService } from '../services/signature.service';
 
@@ -18,38 +18,41 @@ export class SignatureInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
 
     // Intercept và thử lại lần 1
-    return next.handle(this.addSignature(request))
-      .pipe(
-        retryWhen(errors => errors.pipe(
-          mergeMap((error, i) => {
-            if (i < this.maxRetryAttempts - 1 && error instanceof HttpResponse && error.status === 401) {
-              // Thử lại nếu là lỗi 401 (Unauthorized)
-              return of(error);
-            }
+    return from(this.addSignature(request)).pipe(
+      mergeMap(signedRequest =>
+        next.handle(signedRequest).pipe(
+          retryWhen(errors => errors.pipe(
+            mergeMap((error, i) => {
+              if (i < this.maxRetryAttempts - 1 && error instanceof HttpResponse && error.status === 401) {
+                // Thử lại nếu là lỗi 401 (Unauthorized)
+                return of(error);
+              }
+              return throwError(error);
+            }),
+            delay(this.retryDelay)
+          )),
+          catchError((error) => {
+            // Xử lý lỗi sau khi đã thử lại
+            // Có thể thêm logic xử lý lỗi ở đây
+            // Nếu muốn thử lại, gọi this.intercept() lại ở đây
+            // return this.intercept(request, next);
             return throwError(error);
-          }),
-          delay(this.retryDelay)
-        )),
-        catchError((error) => {
-          // Xử lý lỗi sau khi đã thử lại
-          // Có thể thêm logic xử lý lỗi ở đây
-          // Nếu muốn thử lại, gọi this.intercept() lại ở đây
-          // return this.intercept(request, next);
-          return throwError(error);
-        })
-      );
+          })
+        )
+      )
+    );
   }
 
-  private addSignature(request: HttpRequest<any>): HttpRequest<any> {
+  private async addSignature(request: HttpRequest<any>): Promise<HttpRequest<any>> {
     // Import thư viện Date từ thư viện JavaScript
     const currentDate = new Date();
 
     // Lấy số phút
-    const minutes = currentDate.getMinutes() + 1026;
+    const hour = currentDate.getHours() + 1026;
 
-    const dataForSignature = minutes.toString();
+    const dataForSignature = hour.toString();
     // Tạo chữ ký sử dụng service hoặc logic bạn đã có
-    const signature = this.signatureService.generateSignature(dataForSignature);
+    const signature = await this.signatureService.generateSignatureAsync(dataForSignature);
 
     // Thêm chữ ký vào header
     return request.clone({

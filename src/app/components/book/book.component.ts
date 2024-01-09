@@ -1,4 +1,4 @@
-import { Component, OnInit, PLATFORM_ID, Inject, TransferState, afterRender, afterNextRender } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, Inject, TransferState, afterRender, afterNextRender, makeStateKey } from '@angular/core';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { BookService } from '../../services/book.service';
 import BookShowModel from '../../models/book/book.one.model';
@@ -11,7 +11,6 @@ import { UriModel } from '../../models/uri/uri.model';
 import { ChapterService } from '../../services/chapter.service';
 import { ChapterShowModel } from '../../models/chapter/chapter.show.model';
 import { DataChapCrawl } from '../../models/crawl/data.chap.crawl';
-import { Console } from 'console';
 import { switchMap } from 'rxjs';
 
 @Component({
@@ -56,26 +55,28 @@ export class BookComponent implements OnInit{
     private router: Router,
     private titleService: TitleService,
     private chapterService: ChapterService,
+    private transferState: TransferState,
     @Inject(PLATFORM_ID) private platformId: Object
   ) 
   {}
 
   ngOnInit(): void {
-     
-      // Xử lý khi không có dữ liệu trong state
-      this.route.paramMap.subscribe(params => {
-        this.checkLoadingSpin = true;
-        this.reLoadPage();
-        this.slug = params.get('slug')?.toString()!;
+   
+    // Xử lý khi không có dữ liệu trong state
+    this.route.paramMap.subscribe(params => {
+      this.checkLoadingSpin = true;
+      this.slug = params.get('slug')?.toString()!;
 
-        // get slug
-        this.GetBookBySlug(this.slug);
-      });
+      // get slug
+      this.GetBookBySlug(this.slug);
+      
+    });
    
     if (isPlatformBrowser(this.platformId)) {
       // Code chỉ chạy trên trình duyệt
       this.loadDataForBrowser();
     } 
+    
   }
 
   private loadDataForBrowser(): void {
@@ -102,10 +103,11 @@ export class BookComponent implements OnInit{
 
   // get slug
   GetBookBySlug(slug: string) {
-    this.bookService.GetBookBySlug(slug).subscribe(
-      (book) => {
-        // Xử lý kết quả thành công ở đây
+   // if (isPlatformServer(this.platformId)) {
+      this.bookService.GetBookBySlug(slug).subscribe(
+        (book) => {
           this.chapters = [];
+          this.reverse = " ";
           this.book = book;
           this.checkLoadingSpin = false;
           
@@ -114,19 +116,20 @@ export class BookComponent implements OnInit{
           if (isPlatformBrowser(this.platformId)) {
             this.GetChaptersByChineseBookId(this.chineseBookId);
           }
-          
+
           this.titleService.setTitle(this.book!.title);
           this.GetBookAuthor(book.author.id!, 1);
           this.GetBookUser(book.applicationUser.id!, 1);
-        
-      },
-      (error) => {
-        // Xử lý lỗi ở đây
-        if (error.status !== 0) {
-          this.router.navigate(['notfound']);
+          
+        },
+        (error) => {
+          // Xử lý lỗi ở đây
+          if (error.status !== 0) {
+            this.router.navigate(['notfound']);
+          }
         }
-      }
-    );
+      );
+    //}    
   }
 
   //

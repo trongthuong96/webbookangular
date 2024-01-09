@@ -55,7 +55,7 @@
                     <div class="section-stories-hot__list">                  
                         @for (book of bookListView; track $index) {
                             <div class="story-item">
-                                <a (click)="reLoadPage()" [routerLink]="['/truyen', book.slug]" title="{{book.title}}" class="d-block text-decoration-none">
+                                <a (click)="reLoadPage()" [routerLink]= "['/truyen', book.slug]" [title]="book.title" class="d-block text-decoration-none">
                                     <div class="story-item__image">
                                         <img src="{{book.coverImage}}" loading="lazy" alt="{{book.title}}" class="img-fluid rounded" width="150"
                                             height="230">

@@ -83,8 +83,8 @@
 
           "options": {
             "proxyConfig": "proxy.conf.json"
+           
           },
-          
           "configurations": {
             "production": {
               "buildTarget": "webbookGUI:build:production"

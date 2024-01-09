@@ -1,14 +1,12 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable, PLATFORM_ID, TransferState } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { bookUrl } from '../config/api.config';
 import { BookShowListModel } from '../models/book/book.list.model';
 import BookShowModel from '../models/book/book.one.model';
 import { BookTotalPageModel } from '../models/book/books.totalPage.model';
 import { UriModel } from '../models/uri/uri.model';
-import { DataChapCrawl } from '../models/crawl/data.chap.crawl';
-import { ChapterShowModel } from '../models/chapter/chapter.show.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +14,9 @@ import { ChapterShowModel } from '../models/chapter/chapter.show.model';
 export class BookService {
 
   constructor(
-    private http: HttpClient,
-  ) { }
+    private http: HttpClient
+  ) {}
+  
 
   private urlBase = `${environment.apiUrl}/${bookUrl}`;
 

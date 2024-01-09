@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "https://truyenhay.bsite.net/",
+    "target": "//localhost:7131",
     "secure": false
   }
 }

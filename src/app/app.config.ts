@@ -15,7 +15,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(
       withHttpTransferCacheOptions({
-        includePostRequests: true,
+        includePostRequests: true
       }),
     ),
     provideHttpClient(

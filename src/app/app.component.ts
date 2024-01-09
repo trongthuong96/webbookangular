@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID, TransferState, afterNextRender, makeStateKey } from '@angular/core';
+import { CommonModule, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { NavigationExtras, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { GenreService } from './services/genre.service';
@@ -8,7 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { SD } from './Utility/SD';
 import { BookService } from './services/book.service';
 import { UriModel } from './models/uri/uri.model';
-import { SitemapService } from './services/sitemap.generator.service';
+import { CsrfTokenService } from './services/csrf-token.service';
+import { SignatureService } from './services/signature.service';
 
 @Component({
   selector: 'app-root',
@@ -23,9 +24,15 @@ export class AppComponent implements OnInit{
   genreListModel: GenreShowModel[] = [];
   darkLight = "";
   checked = false;
+  cookieKey = makeStateKey<string>('cookie-data');
+  cookie = "";
   
   // search
   value: string = "";
+
+  // csrf token
+  csrfTokenKey = makeStateKey<string>('csrfToken');
+  token = "";
   /**
    *
    */
@@ -33,19 +40,29 @@ export class AppComponent implements OnInit{
     private genreService: GenreService,
     private bookService: BookService,
     private router: Router,
-    private sitemapService: SitemapService,
+    private csrfTokenService: CsrfTokenService,
+    private signatureService: SignatureService,
     @Inject(PLATFORM_ID) private platformId: Object,
-  ) {}
+  ) {
+    afterNextRender(() => {
+      this.csrfTokenService.refreshCsrfToken().subscribe(async (reponse) => {
+        this.csrfTokenService.setCsrfToken(await this.signatureService.decryptAESAsync(reponse.token));
+      });
+    });
+  }
 
   ngOnInit(): void {
+
     if (isPlatformBrowser(this.platformId) && typeof localStorage !== 'undefined') {
       if (localStorage.getItem('darkLight') === "dark-theme") {
         this.darkLight = "dark-theme";
         this.checked = true;
       } 
     }
+
     this.getGenres();
-    //const sitemap = this.sitemapService.generateSitemap();
+    // //const sitemap = this.sitemapService.generateSitemap();
+   
   }
 
   // get genres

@@ -1,49 +1,69 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID, makeStateKey } from '@angular/core';
 import {
   HttpInterceptor,
   HttpRequest,
   HttpHandler,
-  HttpEvent,
-  HttpErrorResponse
+  HttpEvent
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { CsrfTokenService } from '../services/csrf-token.service';
-import { CsrfToken } from '../models/csrftoken/csrf.token.model';
+import { isPlatformServer } from '@angular/common';
+import { environment } from '../../environments/environment.development';
 
 @Injectable()
 export class CsrfInterceptor implements HttpInterceptor {
 
-  private csrtToken!: CsrfToken;
+  cookie = "Meoco";
+  cookieKey = makeStateKey<string>('token');
 
-  constructor(private csrfTokenService: CsrfTokenService) {}
+  constructor(
+    private csrfTokenService: CsrfTokenService,
+    @Inject(PLATFORM_ID) private platformId: Object
+    ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const csrfToken = this.csrfTokenService.getCsrfToken();
-    if (csrfToken !== null) {
-      req = req.clone({
-        setHeaders: {
-          'X-CSRF-TOKEN': csrfToken
-        }
-      });
-    } 
 
-    return next.handle(req).pipe(
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 400) {
-          // Nếu lỗi 403 (Forbidden) do token CSRF hết hạn, thực hiện refresh token và thử lại yêu cầu
-          const csrfToken = this.csrfTokenService.getCsrfToken();
-          if (csrfToken !== null) {
-            req = req.clone({
-              setHeaders: {
-                'X-CSRF-TOKEN': csrfToken
-              }
-            });
-            window.location.reload()
-          } 
-        }
-        return throwError(error);
-      })
-    );
-  }  
+    if (isPlatformServer(this.platformId)) {
+    // Thêm header vào yêu cầu HTTP
+    const modifiedReq = req.clone({
+      setHeaders: {
+        "X-APP-SOURCE": environment.XAPPSOURCEVALUE
+      }
+    });
+    return next.handle(modifiedReq); // Trả về việc gọi `next.handle` với `modifiedReq`
+  } else {
+    const token = this.csrfTokenService.getCsrfToken();
+    const modifiedReq = req.clone({
+      setHeaders: {
+        "X-CSRF-TOKEN": token !== null ? token : this.cookie,
+      }
+    });
+    return next.handle(modifiedReq); // Trả về việc gọi `next.handle` với `modifiedReq`
+  }
+    
+  //   return next.handle(req).pipe(
+  //     catchError((error: HttpErrorResponse) => {
+  //       console.log("lỗi crfs1: " + this.csrfTokenService.getCsrfToken())
+  //       if (error.status === 400) {
+  //         // Nếu lỗi 403 (Forbidden) do token CSRF hết hạn, thực hiện refresh token và thử lại yêu cầu
+  //         this.csrfTokenService.refreshCsrfToken().pipe(
+  //           switchMap((response) => {
+  //             this.transferState.set(this.cookieKey, response.token);
+  //             this.csrfTokenService.setCsrfToken(response.token);
+
+  //             const modifiedRequest = req.clone({
+  //               setHeaders: {
+  //                 'X-CSRF-TOKEN': response.token,
+  //               },
+  //             });
+  //             return next.handle(modifiedRequest);
+  //           })
+  //         );
+      
+  //       }
+  //       return throwError(error);
+  //     })
+  //   );
+  // }  
+  }
 }
