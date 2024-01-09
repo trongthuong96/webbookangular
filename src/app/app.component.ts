@@ -44,14 +44,20 @@ export class AppComponent implements OnInit{
     private signatureService: SignatureService,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {
-    afterNextRender(() => {
-      this.csrfTokenService.refreshCsrfToken().subscribe(async (reponse) => {
-        this.csrfTokenService.setCsrfToken(await this.signatureService.decryptAESAsync(reponse.token));
-      });
-    });
+    // afterNextRender(() => {
+    //   this.csrfTokenService.refreshCsrfToken().subscribe(async (reponse) => {
+    //     this.csrfTokenService.setCsrfToken(await this.signatureService.decryptAESAsync(reponse.token));
+    //   });
+    // });
   }
 
   ngOnInit(): void {
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.csrfTokenService.refreshCsrfToken().subscribe(async (reponse) => {
+        this.csrfTokenService.setCsrfToken(await this.signatureService.decryptAESAsync(reponse.token));
+      });
+    }
 
     if (isPlatformBrowser(this.platformId) && typeof localStorage !== 'undefined') {
       if (localStorage.getItem('darkLight') === "dark-theme") {
