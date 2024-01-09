@@ -107,6 +107,7 @@ export class BookComponent implements OnInit{
       this.bookService.GetBookBySlug(slug).subscribe(
         (book) => {
           this.chapters = [];
+          this.reverseCheck = false;
           this.reverse = " ";
           this.book = book;
           this.checkLoadingSpin = false;
