@@ -48,7 +48,7 @@ export class SignatureInterceptor implements HttpInterceptor {
     const currentDate = new Date();
 
     // Lấy số phút
-    const hour = currentDate.getHours() + 1026;
+    const hour = currentDate.getUTCHours() + 1026;
 
     const dataForSignature = hour.toString();
     // Tạo chữ ký sử dụng service hoặc logic bạn đã có
