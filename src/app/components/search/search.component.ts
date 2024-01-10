@@ -36,9 +36,6 @@ export class SearchComponent implements OnInit{
   booksTotal?: BookTotalPageModel;
   bookParam?: string;
 
-  // form
-  keywordParam?: string;
-
   //page
   currentPage: number = 1;
   totalPages!: number;
@@ -48,6 +45,12 @@ export class SearchComponent implements OnInit{
 
   // form chapLength
   chapLengthValues = [0, 50, 100, 200, 500];
+
+  // form getALlSearch
+  keyword?: string;
+  status: number[] = [];
+  genreNumber: number = 0;
+  chapLength: number = 0;
 
   /**
    *
@@ -81,21 +84,32 @@ export class SearchComponent implements OnInit{
       this.genreValue = parseInt(this.genreParam!);
       this.currentPage = parseInt(params['page']);
       this.bookParam = params['tu-tim-kiem'];
-      this.keywordParam = params['tu-khoa'];;
+      this.keyword = params['tu-khoa'];
+      this.status = params['trang-thai'];
+      this.genreNumber =  params['the-loai.'];
+      this.chapLength = params['do-dai-chuong'];
 
       if(isNaN(this.currentPage)) {
         this.currentPage = 1;
       }
 
-      if (params['the-loai'] !== undefined) {
+      if ( this.genreParam !== undefined) {
         if(!isNaN(this.genreValue)) {
           this.getBooksByGenreId(this.genreValue, this.currentPage);
         }
       }
 
       if (this.bookParam !== undefined) {
-        this.titleService.setTitle("Danh Sách Truyện")
+        this.titleService.setTitle("Danh Sách Truyện");
         this.getBookByTitle(this.bookParam!.trim(), this.currentPage);
+      }
+
+      if (this.keyword !== undefined) {
+        this.titleService.setTitle("Danh Sách Truyện");
+        if (this.status === undefined) {
+          this.status = [0, 1, 2];
+        }
+        this.GetBookSearchAll(this.keyword, this.status, this.genreNumber, this.chapLength, this.currentPage);
       }
       
     });
@@ -118,6 +132,7 @@ export class SearchComponent implements OnInit{
 
   // get genre by id
   getBooksByGenreId(id: number, page: number) {
+    this.checkLoadingSpin = true;
     this.genreService.getBooksByGenreId(id, page).subscribe(genre => {
       this.genre = genre;
       if (genre) {
@@ -130,6 +145,7 @@ export class SearchComponent implements OnInit{
 
   // get book by title
   getBookByTitle(title: string, page: number) {
+    this.checkLoadingSpin = true;
     this.bookService.GetBookByTitle(title, page).subscribe(bookTotal => {
       this.booksTotal = bookTotal;
       this.totalPages = this.booksTotal.totalPages;
@@ -139,10 +155,8 @@ export class SearchComponent implements OnInit{
 
   // chuyển trang
   handlePageChange(page: number) {
-    this.reLoadPage();
     // Xử lý khi trang thay đổi
     this.currentPage = page;
-
     // Sử dụng Router để thay đổi URL với query parameter mới
     this.router.navigate([], {
       relativeTo: this.route,
@@ -152,12 +166,6 @@ export class SearchComponent implements OnInit{
 
     // Gọi hàm để lấy dữ liệu mới hoặc thực hiện các công việc khác cần thiết
     this.getBooksByGenreId(this.genreValue, page);
-  }
-
-   //
-   reLoadPage() {
-    this.checkLoadingSpin = true;
-    window.scrollTo(0,0);
   }
 
   //START STATUS
@@ -291,15 +299,15 @@ export class SearchComponent implements OnInit{
   
   // Form
   submitSearch(page: number) {
-    const keyword = this.searchForm.value.keyword.trim();
-
+    this.keyword = this.searchForm.value.keyword.trim();
+   
     // Điều hướng đến trang '/tim-kiem' với giá trị từ input\
-    const checkUrl = SD.isUrl(keyword);
+    const checkUrl = SD.isUrl(this.keyword!);
 
     // Kiểm tra xem có phải là link không, nếu phải thì tải truyện, không phải thì tìm kiếm truyện
     if (checkUrl) {
       var uri = new UriModel();
-      uri.uri = keyword;
+      uri.uri = this.keyword! ;
 
       this.searchForm.get('keyword')!.setValue("");
 
@@ -309,31 +317,41 @@ export class SearchComponent implements OnInit{
       
     } 
     else {  
-      const status = this.getStatusSelection();
-      const genre = this.getGenreSelectionId();
-      const chapLength = this.getChapLengthSelection()!;
+      this.status = this.getStatusSelection();
+      this.genreNumber = this.getGenreSelectionId();
+      this.chapLength = this.getChapLengthSelection()!;
 
-      this.reLoadPage();
       this.currentPage = page;
 
       // Sử dụng Router để thay đổi URL với query parameter mới
       this.router.navigate(['/truyen'], {
         relativeTo: this.route,
         queryParams: { 
-          'tu-khoa': keyword,
-          'trang-thai': status,
-          'the-loai.': genre,
-          'do-dai-chuong': chapLength,
+          'tu-khoa': this.keyword ,
+          'trang-thai': this.status,
+          'the-loai.': this.genreNumber,
+          'do-dai-chuong': this.chapLength,
           page: this.currentPage 
         },
         //queryParamsHandling: 'merge',
       });
+      
+      // GetBookSearchAll
+      this.GetBookSearchAll(this.keyword!, this.status, this.genreNumber, this.chapLength, page);
     
-      this.bookService.GetBookSearchAll(keyword, status, genre, chapLength, page).subscribe (book => {
-        this.booksTotal = book;
-        this.totalPages = this.booksTotal.totalPages;
-        this.checkLoadingSpin = false;
-      });
     }
+  }
+
+  GetBookSearchAll(keyword: string, status: number[], genre: number, chapLength: number, page: number) {
+
+    // loading
+    this.checkLoadingSpin = true;
+
+    // find book
+    this.bookService.GetBookSearchAll(keyword, status, genre, chapLength, page).subscribe (book => {
+      this.booksTotal = book;
+      this.totalPages = this.booksTotal.totalPages;
+      this.checkLoadingSpin = false;
+    });
   }
 }

@@ -104,8 +104,6 @@ export class ChapterComponent implements OnInit{
           this.chapterIndex = temp;
         }
       });
-    
-      this.reLoadPage();
 
       if (event.key === 'ArrowLeft') {
 
@@ -124,16 +122,8 @@ export class ChapterComponent implements OnInit{
     }
   }
 
-
-  reLoadPage() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.checkLoadingSpin = true;
-      window.scrollTo(0, 0);
-    }
-  }
-
   menuButton() {
-    this.reLoadPage();
+    //this.reLoadPage();
     this.router.navigate(['/truyen/', this.bookSlug]);
   }
 }

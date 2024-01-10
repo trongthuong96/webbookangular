@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, PLATFORM_ID, TransferState, afterNextRender, makeStateKey } from '@angular/core';
 import { CommonModule, isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { NavigationExtras, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { NavigationEnd, NavigationExtras, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { GenreService } from './services/genre.service';
 import { GenreShowModel } from './models/genre/genre.model';
@@ -10,6 +10,7 @@ import { BookService } from './services/book.service';
 import { UriModel } from './models/uri/uri.model';
 import { CsrfTokenService } from './services/csrf-token.service';
 import { SignatureService } from './services/signature.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -44,20 +45,19 @@ export class AppComponent implements OnInit{
     private signatureService: SignatureService,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {
-    // afterNextRender(() => {
-    //   this.csrfTokenService.refreshCsrfToken().subscribe(async (reponse) => {
-    //     this.csrfTokenService.setCsrfToken(await this.signatureService.decryptAESAsync(reponse.token));
-    //   });
-    // });
-  }
-
-  ngOnInit(): void {
-
-    if (isPlatformBrowser(this.platformId)) {
+    afterNextRender(() => {
       this.csrfTokenService.refreshCsrfToken().subscribe(async (reponse) => {
         this.csrfTokenService.setCsrfToken(await this.signatureService.decryptAESAsync(reponse.token));
       });
-    }
+      router.events.pipe(
+        filter(e => e instanceof NavigationEnd)
+     ).subscribe(() => {
+        window.scrollTo(0, 0);
+     });
+    });
+  }
+
+  ngOnInit(): void {
 
     if (isPlatformBrowser(this.platformId) && typeof localStorage !== 'undefined') {
       if (localStorage.getItem('darkLight') === "dark-theme") {

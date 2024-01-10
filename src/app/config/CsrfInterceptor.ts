@@ -24,21 +24,22 @@ export class CsrfInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     if (isPlatformServer(this.platformId)) {
-    // Thêm header vào yêu cầu HTTP
-    const modifiedReq = req.clone({
-      setHeaders: {
-        "X-APP-SOURCE": environment.XAPPSOURCEVALUE
-      }
-    });
-    return next.handle(modifiedReq); // Trả về việc gọi `next.handle` với `modifiedReq`
-  } else {
-    const token = this.csrfTokenService.getCsrfToken();
-    const modifiedReq = req.clone({
-      setHeaders: {
-        "X-CSRF-TOKEN": token !== null ? token : this.cookie,
-      }
-    });
-    return next.handle(modifiedReq); // Trả về việc gọi `next.handle` với `modifiedReq`
+      const token = this.csrfTokenService.getCsrfToken();
+      // Thêm header vào yêu cầu HTTP
+      const modifiedReq = req.clone({
+        setHeaders: {
+          "X-APP-SOURCE": environment.XAPPSOURCEVALUE
+        }
+      });
+      return next.handle(modifiedReq); // Trả về việc gọi `next.handle` với `modifiedReq`
+    } else {
+      const token = this.csrfTokenService.getCsrfToken();
+      const modifiedReq = req.clone({
+        setHeaders: {
+          "X-XSRF-TOKEN": token !== null ? token : this.cookie
+        }
+      });
+      return next.handle(modifiedReq); // Trả về việc gọi `next.handle` với `modifiedReq`
   }
     
   //   return next.handle(req).pipe(

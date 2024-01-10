@@ -77,7 +77,7 @@
                 <h3 class="uppercase">
                     @if(genreParam !== undefined){
                         Thể loại: {{genre?.name}}
-                     } @else if (bookParam !== undefined || keywordParam !== undefined) {
+                     } @else if (bookParam !== undefined || keyword !== undefined) {
                         Từ tìm kiếm: {{bookParam}}
                      } 
                 </h3>
@@ -149,7 +149,7 @@
             </div>
         </div>
 
-        <div *ngIf="(bookParam !== undefined || keywordParam !== undefined) && booksTotal !== undefined" class="box-content">
+        <div *ngIf="(bookParam !== undefined || keyword !== undefined) && booksTotal !== undefined" class="box-content">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 @for (book of booksTotal!.books; track $index) {
                     <div class="flex space-x-3 py-2 px-3">
@@ -231,7 +231,7 @@
         </ng-container>
 
          <!-- Your component content here -->
-         <ng-container *ngIf="keywordParam !== undefined && totalPages > 0">
+         <ng-container *ngIf="keyword !== undefined && totalPages > 0">
             <app-pagination [totalPages]="totalPages" [currentPage]="currentPage" (pageChange)="submitSearch($event)"></app-pagination>
         </ng-container>
     </section>

@@ -103,34 +103,33 @@ export class BookComponent implements OnInit{
 
   // get slug
   GetBookBySlug(slug: string) {
-   // if (isPlatformServer(this.platformId)) {
-      this.bookService.GetBookBySlug(slug).subscribe(
-        (book) => {
-          this.chapters = [];
-          this.reverseCheck = false;
-          this.reverse = " ";
-          this.book = book;
-          this.checkLoadingSpin = false;
-          
-          // chapter list
-          this.chineseBookId = book.chineseBooks[0].id;
-          if (isPlatformBrowser(this.platformId)) {
-            this.GetChaptersByChineseBookId(this.chineseBookId);
-          }
-
-          this.titleService.setTitle(this.book!.title);
-          this.GetBookAuthor(book.author.id!, 1);
-          this.GetBookUser(book.applicationUser.id!, 1);
-          
-        },
-        (error) => {
-          // Xử lý lỗi ở đây
-          if (error.status !== 0) {
-            this.router.navigate(['notfound']);
-          }
+    //this.reLoadPage();
+    this.bookService.GetBookBySlug(slug).subscribe(
+      (book) => {
+        this.chapters = [];
+        this.reverseCheck = false;
+        this.reverse = " ";
+        this.book = book;
+        this.checkLoadingSpin = false;
+        
+        // chapter list
+        this.chineseBookId = book.chineseBooks[0].id;
+        if (isPlatformBrowser(this.platformId)) {
+          this.GetChaptersByChineseBookId(this.chineseBookId);
         }
-      );
-    //}    
+
+        this.titleService.setTitle(this.book!.title);
+        this.GetBookAuthor(book.author.id!, 1);
+        this.GetBookUser(book.applicationUser.id!, 1);
+        
+      },
+      (error) => {
+        // Xử lý lỗi ở đây
+        if (error.status !== 0) {
+          this.router.navigate(['notfound']);
+        }
+      }
+    );
   }
 
   //
@@ -196,9 +195,9 @@ export class BookComponent implements OnInit{
   }
 
   // 
-  reLoadPage() {
-    if (isPlatformBrowser(this.platformId)) {
-      window.scrollTo(0, 0);
-    }
-  }
+  // reLoadPage() {
+  //   if (isPlatformBrowser(this.platformId)) {
+  //     window.scrollTo(0, 0);
+  //   }
+  // }
 }

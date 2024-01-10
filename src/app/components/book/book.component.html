@@ -258,7 +258,7 @@
                                 <!-- Sử dụng col-md-6 để tạo 2 cột khi màn hình có kích thước medium trở lên -->
                                 <div class="col-sm-6 col-md-12 col-lg-6 story-detail__list-chapter--list__item" *ngFor="let chapter of chapters">
                                     <div class="mb-3">
-                                        <a (click)="reLoadPage()" [routerLink]="['/truyen', book!.slug, chineseBookId, chapter.chapterIndex]" class="text-decoration-none text-dark hover-title">
+                                        <a [routerLink]="['/truyen', book!.slug, chineseBookId, chapter.chapterIndex]" class="text-decoration-none text-dark hover-title">
                                             Chương {{chapter.chapNumber}}: {{chapter.title}}
                                         </a>
                                     </div>

@@ -55,7 +55,7 @@
                     <div class="section-stories-hot__list">                  
                         @for (book of bookListView; track $index) {
                             <div class="story-item">
-                                <a (click)="reLoadPage()" [routerLink]= "['/truyen', book.slug]" [title]="book.title" class="d-block text-decoration-none">
+                                <a [routerLink]= "['/truyen', book.slug]" [title]="book.title" class="d-block text-decoration-none">
                                     <div class="story-item__image">
                                         <img src="{{book.coverImage}}" loading="lazy" alt="{{book.title}}" class="img-fluid rounded" width="150"
                                             height="230">
@@ -148,7 +148,7 @@
                                                         d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z">
                                                     </path>
                                                 </svg>
-                                                <a [routerLink]="['/truyen', book.slug]" (click)="reLoadPage()"
+                                                <a [routerLink]="['/truyen', book.slug]"
                                                     title="{{ book.title }}"
                                                     class="text-decoration-none text-dark fs-6 hover-title text-one-row story-name"> {{ book.title }} </a>
                                             </h3>
@@ -256,7 +256,7 @@
                         @for (book of bookListStatus; track $index) {
                             <div class="story-item-full text-center">
                                 <a 
-                                    [routerLink]="['/truyen', book.slug]" (click)="reLoadPage()" 
+                                    [routerLink]="['/truyen', book.slug]" 
                                     class="d-block story-item-full__image">
                                     <img src="{{book?.coverImage}}" alt="{{book.title}}" class="img-fluid w-100"
                                         width="150" height="230" loading="lazy">

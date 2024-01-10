@@ -99,11 +99,4 @@ export class HomeComponent implements OnInit{
       console.log(token);
     })
   }
-
-   //
-   reLoadPage() {
-    if (isPlatformBrowser(this.platformId)) {
-      window.scrollTo(0, 0);
-    }
-  }
 }
