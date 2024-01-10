@@ -120,7 +120,8 @@ body {
 
 .text-two-row {
     -webkit-line-clamp: 2;
-    line-clamp: 2
+    line-clamp: 2;
+    line-height: 1.5;
 }
 
 .choose-paginate .dropdown-menu.show {
@@ -587,7 +588,7 @@ main {
 .story-item-full__badge {
     left: 5px;
     position: absolute;
-    top: 5px
+    top: 5px;
 }
 
 .story-item-full__name {

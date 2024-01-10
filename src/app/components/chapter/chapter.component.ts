@@ -5,7 +5,6 @@ import { ChapterService } from '../../services/chapter.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DomSanitizer, SafeHtml, Title } from '@angular/platform-browser';
 import { DataCrawl } from '../../models/crawl/data.crawl';
-import { error } from 'console';
 
 
 @Component({
@@ -45,7 +44,6 @@ export class ChapterComponent implements OnInit{
   ngOnInit(): void {
 
     this.route.paramMap.subscribe(params => {
-      this.checkLoadingSpin = true;
       this.bookSlug = params.get('slug')?.toString()!;
 
       //chineseBookId
@@ -65,21 +63,9 @@ export class ChapterComponent implements OnInit{
     });
   }
 
-  // get by index
-  // getChapterMeTruyenCV(bookSlug: string, chapterIndex: number) {
-    
-  //   this.chapterService.getChapterMeTruyenCV(bookSlug, chapterIndex).subscribe(chap => {  
-  //     this.chapterModel = chap;
-  //     this.safeHtml = this.sanitizer.bypassSecurityTrustHtml(this.chapterModel.content);
-  //     this.checkLoadingSpin = false;
-  //     this.titleService.setTitle("Chương " + chap.chapNumber + ": " + chap.title);
-  //   },
-  //   (error) => {
-  //     // Xử lý lỗi ở đây
-  //     this.router.navigate(['/truyen',bookSlug]);
-  //   })
-  // }
+  // get content chapter
   getContentChapterCrawl(data: DataCrawl) {
+    this.checkLoadingSpin = true;
       this.chapterService.getContentChapCrawl(data).subscribe((chap) => {
         this.chapterModel = chap;
         this.safeHtml = this.sanitizer.bypassSecurityTrustHtml(this.chapterModel.content);
@@ -123,7 +109,6 @@ export class ChapterComponent implements OnInit{
   }
 
   menuButton() {
-    //this.reLoadPage();
     this.router.navigate(['/truyen/', this.bookSlug]);
   }
 }
