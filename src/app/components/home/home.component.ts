@@ -37,11 +37,6 @@ export class HomeComponent implements OnInit{
     genreBookCreate: new FormControl("")
   });
 
-  loginForm = new FormGroup({
-    email: new FormControl(""),
-    password: new FormControl("")
-  })
-
   constructor(
     private bookService: BookService,
     private accountService: AccountService,
@@ -89,14 +84,5 @@ export class HomeComponent implements OnInit{
 
   SubmitAddBook() {
     this.test = this.addBookForm.value.title;
-  }
-
-  SubmitLogin() {
-    this.loginModel.email = this.loginForm.value.email;
-    this.loginModel.password = this.loginForm.value.password;
-    console.log(this.loginModel);
-    this.accountService.login(this.loginModel).subscribe(token => {
-      console.log(token);
-    })
   }
 }

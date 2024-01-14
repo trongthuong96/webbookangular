@@ -1,16 +1,47 @@
-{
-    "version": 2,
-    "public": true,
-    "routes": [
-      { "handle": "filesystem" } ,
-      { 
-        "src": "/(.*)", 
-        "dest": "/api"
-      }
-    ],
-    "functions": {
-      "api/index.js": {
-        "includeFiles": "dist/webbook-gui/server/**"
-      }
-    }
-  }
+
+<!-- Đăng Ký Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="registerModalLabel">Đăng Ký</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+          <form id="registrationForm">
+              <!-- Your registration form fields go here -->
+              <div class="form-group mb-4">
+                  <label for="registerEmail">Email</label>
+                  <input type="text" class="form-control" id="registerEmail" placeholder="Nhập email">
+              </div>
+              <div class="form-group mb-4">
+                  <label for="registerPassword">Mật Khẩu: <p class="text-xs">Ít nhất có: 6 ký tự, 1 hoa, 1 thường, 1 đặc biệt, 1 số</p></label>
+                  <div class="input-group">
+                      <input type="password" class="form-control" id="registerPassword" placeholder="Nhập mật khẩu">
+                      <button type="button" class="btn btn-secondary btn-sm show-password-btn">
+                          <i class="fas fa-eye"></i>
+                      </button>
+                  </div>
+              </div>
+              
+              
+              <div class="form-group mb-4">
+                  <label for="registerPasswordConfirm">Xác Nhận Mật Khẩu</label>
+                  <div class="input-group">
+                      <input type="password" class="form-control" id="registerPasswordConfirm" placeholder="Nhập lại mật khẩu">
+                      <button type="button" class="btn btn-secondary btn-sm show-passwordConfirm-btn">
+                          <i class="fas fa-eye"></i>
+                      </button>
+                  </div>
+                  <small id="passwordMatchError" class="form-text text-danger d-none">Mật khẩu không khớp.</small>
+              </div>
+
+              <button type="button" class="btn btn-primary" id="registerButton">Đăng Ký</button>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>

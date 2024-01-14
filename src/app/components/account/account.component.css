@@ -1,0 +1,28 @@
+.btn-secondary {
+    --tw-bg-opacity: 1;
+    background-color: rgb(106, 109, 114);
+    --tw-text-opacity: 1;
+    color: rgba(255, 255, 255, var(--tw-text-opacity));
+}
+
+
+.dark-theme .btn-secondary {
+    --tw-bg-opacity: 1;
+    background-color: rgb(51 65 85/var(--tw-bg-opacity));
+    --tw-text-opacity: 1;
+    color: rgb(148 163 184/var(--tw-text-opacity))
+}
+
+.avatar-wrapper {
+    width: 40px; /* Điều chỉnh kích thước của hình tròn */
+    height: 40px;
+    overflow: hidden;
+    border-radius: 50%; /* Biến hình thành hình tròn */
+    cursor: pointer;
+}
+
+.navbar-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo hình ảnh đầy đủ trong vùng giới hạn của hình tròn */
+}

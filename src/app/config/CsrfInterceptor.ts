@@ -23,6 +23,11 @@ export class CsrfInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
+    if (req.url === "https://api.imgbb.com/1/upload?key=640e7f433be1b12335a85baa19a880b9")
+    {
+      return next.handle(req);
+    }
+
     if (isPlatformServer(this.platformId)) {
       const token = this.csrfTokenService.getCsrfToken();
       // Thêm header vào yêu cầu HTTP

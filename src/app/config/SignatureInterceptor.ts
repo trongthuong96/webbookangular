@@ -53,9 +53,13 @@ export class SignatureInterceptor implements HttpInterceptor {
     const dataForSignature = hour.toString();
     // Tạo chữ ký sử dụng service hoặc logic bạn đã có
     const signature = await this.signatureService.generateSignatureAsync(dataForSignature);
-
-    // Thêm chữ ký vào header
-    return request.clone({
+    
+    if (request.url === "https://api.imgbb.com/1/upload?key=640e7f433be1b12335a85baa19a880b9")
+    {
+      return request;
+    }
+     // Thêm chữ ký vào header
+     return request.clone({
       setHeaders: {
         'Content-Type': 'application/json',
         'X-Signature': signature,

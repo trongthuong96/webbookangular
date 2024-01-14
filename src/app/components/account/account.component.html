@@ -1,2 +1,120 @@
-<p>account works!</p>
-{{book?.title}}
+@if (userProfile.id !== undefined){
+    <!-- Avatar dropdown -->
+    <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+            <div class="avatar-wrapper dropdown-toggle active" data-bs-toggle="dropdown" aria-expanded="false">
+                <img [src]="userProfile.avatar ? userProfile.avatar : './assets/images/avatar.png'" alt="Avatar" class="navbar-avatar">
+            </div>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                    <a class="dropdown-item" [routerLink]="['tai-khoan/thong-tin']">Thông tin người dùng</a>
+                </li>
+                <!-- <li>
+                    <a class="dropdown-item" href="#">Tùy chọn khác</a>
+                </li> -->
+                <li>
+                    <a type="button" class="dropdown-item" (click)="logOut() ">Đăng xuất</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+}
+@else {
+     <!-- Your HTML content -->
+     <div class="navbar-nav mb-2 mb-lg-0">
+        <div>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registerModal"> Đăng Ký </button>
+            <button type="button" class="btn btn-primary ml-2" data-bs-toggle="modal" data-bs-target="#loginModal"> Đăng Nhập </button>
+        </div>
+    </div>
+}
+ 
+<!-- Đăng Ký Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="registerModalLabel">Đăng Ký</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+  
+        <div class="modal-body">
+            <form id="registrationForm" [formGroup]="registerForm">
+                <!-- Your registration form fields go here -->
+                <div class="form-group mb-4">
+                    <label for="registerEmail">Email: <i class="text-danger">*</i></label>
+                    <input type="text" class="form-control" id="registerEmail" formControlName="registerEmail" placeholder="Nhập email">
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="registerUsername">Tên Tài Khoản: <i class="text-danger">*</i></label>
+                    <input type="text" class="form-control" id="registerUsername" formControlName="registerUsername" placeholder="Nhập tên tài khoản">
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="registerPassword">Mật Khẩu: <i class="text-danger">*</i><p class="text-xs">Ít nhất có: 6 ký tự, 1 hoa, 1 thường, 1 đặc biệt, 1 số</p></label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="registerPassword" formControlName="registerPassword" placeholder="Nhập mật khẩu">
+                        <button type="button" class="btn btn-secondary btn-sm show-password-btn">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                
+                <div class="form-group mb-4">
+                    <label for="registerPasswordConfirm">Xác Nhận Mật Khẩu: <i class="text-danger">*</i></label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="registerPasswordConfirm" formControlName="registerPasswordConfirm" placeholder="Nhập lại mật khẩu">
+                        <button type="button" class="btn btn-secondary btn-sm show-passwordConfirm-btn">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                    <small id="passwordMatchError" class="form-text text-danger d-none">Mật khẩu không khớp.</small>
+                </div>
+
+                <button type="button" class="btn btn-primary" id="registerButton" (click)="submitRegister()">Đăng Ký</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Đăng Nhập Modal -->
+<div class="modal fade" tabindex="-1" id="loginModal" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Đăng Nhập</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Your login form goes here -->
+                <form [formGroup]="loginForm" id="loginForm">
+                    <!-- Your login form fields go here -->
+                    <div class="form-group mb-4">
+                        <label for="loginEmail">Tên Đăng Nhập: <i class="text-danger">*</i></label>
+                        <input type="text" class="form-control" id="loginEmail" formControlName="loginEmail" placeholder="Nhập email hoặc tên tài khoản">
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="loginPassword">Mật Khẩu: <i class="text-danger">*</i></label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="loginPassword" formControlName="loginPassword" placeholder="Nhập mật khẩu">
+                            <button type="button" class="btn btn-secondary btn-sm show-password-login-btn">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Add more form fields as needed -->
+
+                    <button type="button" class="btn btn-primary" id="loginButton" (click)="submitLogin()">Đăng Nhập</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

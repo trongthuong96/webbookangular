@@ -21,7 +21,7 @@
                 <a class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [routerLink]="['/truyen', bookSlug]"> 
                     <span>Chương</span> trước</a>
             } @else {
-                <a class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [routerLink]="['/truyen', bookSlug, chineseBookId,  chapterIndex!-1]"> 
+                <a class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [routerLink]="['/truyen', bookSlug, bookId, chineseBookId,  chapterIndex!-1]"> 
                     <span>Chương</span> trước</a>
             }
             <button class="btn btn-success chapter_jump me-1" (click)="menuButton()">
@@ -46,7 +46,7 @@
 
                 </ul>
             </div>
-            <a class="btn btn-success chapter-next" [routerLink]="['/truyen', bookSlug, chineseBookId, chapterIndex!+1]">
+            <a class="btn btn-success chapter-next" [routerLink]="['/truyen', bookSlug, bookId, chineseBookId, chapterIndex!+1]">
                 <span>Chương</span> tiếp</a>
         </div>
     </div>
@@ -73,7 +73,7 @@
                         <a class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [routerLink]="['/truyen', bookSlug]"> 
                             <span>Chương</span> trước</a>
                     } @else {
-                        <a class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [routerLink]="['/truyen', bookSlug, chineseBookId,  chapterIndex!-1]"> 
+                        <a class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [routerLink]="['/truyen', bookSlug, bookId, chineseBookId,  chapterIndex!-1]"> 
                             <span>Chương</span> trước</a>
                     }
                    
@@ -98,7 +98,7 @@
                     
                     </ul>
                 </div>
-                <a class="btn btn-success chapter-next" [routerLink]="['/truyen', bookSlug, chineseBookId, chapterIndex!+1]">
+                <a class="btn btn-success chapter-next" [routerLink]="['/truyen', bookSlug, bookId, chineseBookId, chapterIndex!+1]">
                     <span>Chương</span> tiếp</a>
             </div>
         </div>

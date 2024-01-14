@@ -1,37 +1,59 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable, afterNextRender } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment.development';
-// import { loginUrl, registerUrl, logoutUrl, userProfileUrl } from '../config/api.config';
 import { LoginModel } from '../models/user/login.model';
-// import { RegisterModel } from '../models/user/register.model';
-// import { UserProfileModel } from '../models/user/user-profile.model';
 import { loginUrl, registerUrl } from '../config/api.config';
+import { UserProfileModel } from '../models/user/user.profile.model';
+import { CookieService } from 'ngx-cookie-service';
+import { RegisterModel } from '../models/user/register.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
 
+  // Thêm mã xác thực vào header nếu cần
+  private headers = new HttpHeaders({
+    'Authorization': 'Bearer ' + this.cookieService.get(environment.UserCookie)  // Hàm này để lấy token từ cookie hoặc nơi bạn đã lưu
+  });
+
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private cookieService: CookieService
   ) {}
 
-  private urlBase = `${environment.apiUrl}`;  
+  private urlBase = `${environment.apiUrl}/account`;  
 
-  login(user: LoginModel): Observable<string> {
-    return this.http.post<string>(`${this.urlBase}/${loginUrl}`, user);
+  login(user: LoginModel): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.urlBase}/${loginUrl}`, user);
   }
 
-  // register(user: RegisterModel): Observable<string> {
-  //   return this.getDataFromServer<string>(`/${registerUrl}`, user);
-  // }
+  register(user: RegisterModel): Observable<RegisterReponse> {
+    return this.http.post<RegisterReponse>(`${this.urlBase}/${registerUrl}`, user);
+  }
 
-  // logout(): Observable<void> {
-  //   return this.getDataFromServer<void>(`/${logoutUrl}`);
-  // }
+  getUserProfile(): Observable<UserProfileModel> {
+    return this.http.get<UserProfileModel>(`${this.urlBase}/profile`, {headers: this.headers});
+  }
 
-  // getUserProfile(): Observable<UserProfileModel> {
-  //   return this.getDataFromServer<UserProfileModel>(`/${userProfileUrl}`);
-  // }
+  editUserProfile(userProfile: UserProfileModel): Observable<Reponse> {
+    return this.http.put<Reponse>(`${this.urlBase}/edit`, userProfile, {headers: this.headers});
+  }
 }
+
+// Assuming your server response includes a token
+interface LoginResponse {
+  token: string;
+}
+
+interface RegisterReponse {
+  message: string;
+  token: string;
+}
+
+interface Reponse {
+  message: string;
+}
+
+

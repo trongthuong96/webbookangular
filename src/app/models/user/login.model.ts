@@ -1,4 +1,4 @@
 export class LoginModel {
-    email: string | undefined | null;
+    EmailOrUserName: string | undefined | null;
     password: string | undefined | null;
 }

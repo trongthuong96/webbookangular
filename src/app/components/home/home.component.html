@@ -15,24 +15,11 @@
 </form>
 <br /> -->
 
-<!-- <form [formGroup]="loginForm" (submit)="SubmitLogin()">
-    <label for="email">Email</label>
-    <input id="email" type="text" formControlName="email">
-
-    <label for="password">Password</label>
-    <input id="password" type="text" formControlName="password">
-
-    <button type="submit" class="primary">Add</button>
-    <img src="./assets/images/88x31.png">
-</form> -->
-
-
-
     <div class="section-stories-hot mb-3">
         <div class="container">
             <div class="row">
                 <div class="head-title-global d-flex justify-content-between mb-2">
-                    <div class="col-6 col-md-4 col-lg-4 head-title-global__left d-flex align-items-center">
+                    <div class="col-sm-12 col-md-7 col-lg-8 head-title-global__left d-flex align-items-center">
                         <h2 class="me-2 mb-0 border-bottom border-secondary pb-1">
                             <a class="d-block text-decoration-none text-dark fs-4 story-name"
                                 title="Truyện Hot">Truyện Đọc Nhiều</a>
@@ -60,7 +47,7 @@
                                         <img src="{{book.coverImage}}" loading="lazy" alt="{{book.title}}" class="img-fluid rounded" width="150"
                                             height="230">
                                     </div>
-                                    <h3 class="story-item__name story-name"><div class="text-two-row">{{book.title}}</div></h3>
+                                    <h3 class="story-item__name story-name rounded"><div class="text-two-row">{{book.title}}</div></h3>
 
                                     <div class="list-badge">
                                         <span
@@ -139,15 +126,12 @@
                                         </div>
 
                                         <div class="story-item-no-image__name align-items-center d-flex">
+
+                                            <img itemprop="image" loading="lazy"
+                                                class="ml-1 rounded" alt="{{book.title}}" width="30px" height="40px" 
+                                                src="{{book.coverImage}}">
+
                                             <h3 class="me-1 mb-0 d-flex justify-content-start align-items-center mx-2">
-    
-                                                <svg style="width: 10px; margin-right: 5px;"
-                                                    xmlns="http://www.w3.org/2000/svg" height="1em"
-                                                    viewBox="0 0 320 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                                                    <path
-                                                        d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z">
-                                                    </path>
-                                                </svg>
                                                 <a [routerLink]="['/truyen', book.slug]"
                                                     title="{{ book.title }}"
                                                     class="text-decoration-none text-dark fs-6 hover-title text-two-row story-name"> {{ book.title }} </a>
@@ -254,14 +238,14 @@
                 <div class="col-12">
                     <div class="section-stories-full__list">
                         @for (book of bookListStatus; track $index) {
-                            <div class="story-item-full text-center">
+                            <div class="story-item-full text-center" title="{{book.title}}">
                                 <a 
                                     [routerLink]="['/truyen', book.slug]" 
                                     class="d-block story-item-full__image">
-                                    <img src="{{book?.coverImage}}" alt="{{book.title}}" class="img-fluid w-100"
+                                    <img src="{{book?.coverImage}}" alt="{{book.title}}" class="img-fluid w-100 rounded"
                                         width="150" height="230" loading="lazy">
                                 </a>
-                                <h3 class="fs-6 story-item-full__name fw-bold text-center mb-0">
+                                <h3 class="fs-6 story-item-full__name fw-bold text-center mb-0 rounded">
                                     <a 
                                         class="text-decoration-none text-two-row story-name">
                                         {{book.title}}

@@ -39,3 +39,72 @@ document.addEventListener('click', function (e) {
         collapseDescription()
     }
 })
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("click", function (event) {
+      var navbarToggler = document.querySelector(".navbar-toggler");
+      var navbarCollapse = document.querySelector(".navbar-collapse");
+
+      if (navbarToggler.contains(event.target) || navbarCollapse.contains(event.target)) {
+        // Click diễn ra trong Navbar, không làm gì cả
+      } else {
+        // Click diễn ra bên ngoài Navbar, đóng Navbar nếu đang mở
+        if (navbarCollapse.classList.contains("show")) {
+          navbarToggler.click();
+        }
+      }
+    });
+  });
+
+  // Lấy button và input
+const passwordInput = document.getElementById('registerPassword'); 
+const showBtn = document.querySelector('.show-password-btn');
+
+// Xử lý click để toggle
+showBtn.addEventListener('click', function() {
+  // Đổi type password/text
+  passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password'; 
+  
+  // Đổi icon eye <i class="fa-regular fa-eye-slash"></i>
+  eyeIcon(this)
+})
+
+
+const passwordConfirmInput = document.getElementById('registerPasswordConfirm'); 
+const showConfirmBtn = document.querySelector('.show-passwordConfirm-btn');
+
+// Xử lý click để toggle
+showConfirmBtn.addEventListener('click', function() {
+    // Đổi type password/text
+    passwordConfirmInput.type = passwordConfirmInput.type === 'password' ? 'text' : 'password'; 
+    
+    // Đổi icon eye <i class="fa-regular fa-eye-slash"></i>
+    eyeIcon(this)
+})
+
+const passwordLoginInput = document.getElementById('loginPassword'); 
+const showLoginBtn = document.querySelector('.show-password-login-btn');
+
+// Xử lý click để toggle
+showLoginBtn.addEventListener('click', function() {
+    // Đổi type password/text
+    passwordLoginInput.type = passwordLoginInput.type === 'password' ? 'text' : 'password'; 
+    
+    // Đổi icon eye <i class="fa-regular fa-eye-slash"></i>
+    eyeIcon(this)
+})
+
+function eyeIcon(btn) {
+// Đổi icon eye <i class="fa-regular fa-eye-slash"></i>
+const eyeIcon = btn.querySelector('i');
+    // Đổi icon eye
+    if (eyeIcon.classList.contains('fa-eye')) {
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash');
+    
+    } else {
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+    }
+}

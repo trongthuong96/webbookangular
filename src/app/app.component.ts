@@ -11,11 +11,12 @@ import { UriModel } from './models/uri/uri.model';
 import { CsrfTokenService } from './services/csrf-token.service';
 import { SignatureService } from './services/signature.service';
 import { filter } from 'rxjs';
+import { AccountComponent } from './components/account/account.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, HomeComponent, RouterLink, FormsModule],
+  imports: [CommonModule, RouterOutlet, HomeComponent, RouterLink, FormsModule, AccountComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css' 
 })
@@ -46,9 +47,9 @@ export class AppComponent implements OnInit{
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {
     afterNextRender(() => {
-      this.csrfTokenService.refreshCsrfToken().subscribe(async (reponse) => {
-        this.csrfTokenService.setCsrfToken(await this.signatureService.decryptAESAsync(reponse.token));
-      });
+      // this.csrfTokenService.refreshCsrfToken().subscribe(async (reponse) => {
+      //   this.csrfTokenService.setCsrfToken(await this.signatureService.decryptAESAsync(reponse.token));
+      // });
       router.events.pipe(
         filter(e => e instanceof NavigationEnd)
      ).subscribe(() => {

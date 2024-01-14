@@ -109,6 +109,7 @@ export class SearchComponent implements OnInit{
         if (this.status === undefined) {
           this.status = [0, 1, 2];
         }
+
         this.GetBookSearchAll(this.keyword, this.status, this.genreNumber, this.chapLength, this.currentPage);
       }
       

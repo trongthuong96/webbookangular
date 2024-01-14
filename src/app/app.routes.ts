@@ -14,7 +14,7 @@ export const routes: Routes = [
             data: { reuse: true } 
     },
     {
-        path: 'truyen/:slug/:chineseBookId/:chapterIndex', loadComponent: () => import('./components/chapter/chapter.component')
+        path: 'truyen/:slug/:bookId/:chineseBookId/:chapterIndex', loadComponent: () => import('./components/chapter/chapter.component')
             .then(mod => mod.ChapterComponent),
            // data: { reuse: true } 
     },
@@ -24,13 +24,18 @@ export const routes: Routes = [
             data: { reuse: true } 
     },
     {
+        path: 'nguon-nhung', loadComponent: () => import('./components/embeddable.website/embeddable.website.component')
+            .then(mod => mod.EmbeddableWebsiteComponent),
+            data: { reuse: true } 
+    },
+    {
         path: 'notfound', loadComponent: () => import('./components/notfoundpage/notfoundpage.component')
             .then(mod => mod.NotfoundpageComponent),
             // data: { reuse: true } 
     },
     {
-        path: 'tai-khoan', loadComponent: () => import('./components/account/account.component')
-            .then(mod => mod.AccountComponent),
+        path: 'tai-khoan/thong-tin', loadComponent: () => import('./components/user.profile/user.profile.component')
+            .then(mod => mod.UserProfileComponent),
             data: { reuse: true } 
     },
     {

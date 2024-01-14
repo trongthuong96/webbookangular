@@ -25,6 +25,7 @@ export class ChapterComponent implements OnInit{
   safeHtml?: SafeHtml;
   checkLoadingSpin = true;
   chineseBookId?: number;
+  bookId?: number;
 
   // crawl
   data: DataCrawl = new DataCrawl();
@@ -51,6 +52,13 @@ export class ChapterComponent implements OnInit{
       if(!isNaN(temp1)) {
         this.chineseBookId = temp1;
         this.data.chineseBookId = temp1!;
+      }
+
+      //chineseBookId
+      let temp2 = parseInt(params.get('bookId')!);
+      if(!isNaN(temp2)) {
+        this.bookId = temp2;
+        this.data.bookId = temp2!;
       }
 
       let temp = parseInt(params.get('chapterIndex')!);
@@ -99,11 +107,11 @@ export class ChapterComponent implements OnInit{
 
         } else {
 
-          this.router.navigate(['/truyen', this.bookSlug, this.chineseBookId, this.chapterIndex! - 1]);
+          this.router.navigate(['/truyen', this.bookSlug, this.bookId, this.chineseBookId, this.chapterIndex! - 1]);
         }
        
       } else if (event.key === 'ArrowRight') {
-        this.router.navigate(['/truyen', this.bookSlug, this.chineseBookId, this.chapterIndex! + 1]);
+        this.router.navigate(['/truyen', this.bookSlug, this.bookId, this.chineseBookId, this.chapterIndex! + 1]);
       }
     }
   }

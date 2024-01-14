@@ -31,11 +31,11 @@ export const appConfig: ApplicationConfig = {
       useClass: ApiInterceptor,
       multi: true,
     },
-    { 
-      provide: HTTP_INTERCEPTORS, 
-      useClass: CsrfInterceptor, 
-      multi: true 
-    },
+    // { 
+    //   provide: HTTP_INTERCEPTORS, 
+    //   useClass: CsrfInterceptor, 
+    //   multi: true 
+    // },
     {
       provide: RouteReuseStrategy,
       useClass: CustomReuseStrategy,
