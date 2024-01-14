@@ -23,7 +23,7 @@ export class CsrfInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    if (req.url === "https://api.imgbb.com/1/upload?key=640e7f433be1b12335a85baa19a880b9")
+    if (req.url === environment.apiUrlImage)
     {
       return next.handle(req);
     }

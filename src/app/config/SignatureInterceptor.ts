@@ -3,6 +3,7 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse } fr
 import { Observable, throwError, of, from } from 'rxjs';
 import { catchError, retryWhen, delay, mergeMap } from 'rxjs/operators';
 import { SignatureService } from '../services/signature.service';
+import { environment } from '../../environments/environment.development';
 
 @Injectable()
 export class SignatureInterceptor implements HttpInterceptor {
@@ -54,7 +55,7 @@ export class SignatureInterceptor implements HttpInterceptor {
     // Tạo chữ ký sử dụng service hoặc logic bạn đã có
     const signature = await this.signatureService.generateSignatureAsync(dataForSignature);
     
-    if (request.url === "https://api.imgbb.com/1/upload?key=640e7f433be1b12335a85baa19a880b9")
+    if (request.url === environment.apiUrlImage)
     {
       return request;
     }

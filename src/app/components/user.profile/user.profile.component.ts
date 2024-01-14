@@ -104,7 +104,11 @@ export class UserProfileComponent implements OnInit{
     
       // Nếu người dùng chọn Yes, thực hiện lưu thông tin
       if (isConfirmed) {
-        this.uploadImage(this.userProfile);
+        if (this.selectedFile) {
+          this.uploadImage(this.userProfile);
+        } else {
+          this.editUserProfile(this.userProfile);
+        }        
       }
     }
     else {
