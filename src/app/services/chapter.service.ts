@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { chapterUrl } from '../config/api.config';
 import { ChapterShowModel } from '../models/chapter/chapter.show.model';
 import { DataCrawl } from '../models/crawl/data.crawl';
 import { DataChapCrawl } from '../models/crawl/data.chap.crawl';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,14 @@ export class ChapterService {
   private cache: Map<number, BehaviorSubject<ChapterShowModel[]>> = new Map<number, BehaviorSubject<ChapterShowModel[]>>();
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private cookieService: CookieService
   ) { }
+
+  // Thêm mã xác thực vào header nếu cần
+  private headers = new HttpHeaders({
+    'Authorization': 'Bearer ' + this.cookieService.get(environment.UserCookie)  // Hàm này để lấy token từ cookie hoặc nơi bạn đã lưu
+  });
 
   private urlBase = `${environment.apiUrl}/${chapterUrl}`
   // Get all chapters
@@ -81,6 +88,6 @@ export class ChapterService {
 
   // api/Crawling/chap-content-crawl
   getContentChapCrawl(data: DataCrawl): Observable<ChapterShowModel> {
-    return this.http.post<ChapterShowModel>(`${environment.apiUrl}/Crawling/chap-content-crawl`, data);
+    return this.http.post<ChapterShowModel>(`${environment.apiUrl}/Crawling/chap-content-crawl`, data, {headers: this.headers});
   }
 }
