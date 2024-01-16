@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, PLATFORM_ID, afterNextRender } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AccountService } from '../../services/account.service';
 import { LoginModel } from '../../models/user/login.model';
@@ -6,9 +6,8 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RegisterModel } from '../../models/user/register.model';
 import { CookieService } from 'ngx-cookie-service';
 import { UserProfileModel } from '../../models/user/user.profile.model';
-import { ActivatedRoute, NavigationExtras, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment.development';
-import { response } from 'express';
 import { SD } from '../../Utility/SD';
 
 @Component({

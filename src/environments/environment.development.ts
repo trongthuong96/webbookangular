@@ -8,6 +8,7 @@ export const environment = {
     XAPPSOURCENAME: "X-APP-SOURCE",
     UserCookie: "uToken",
     UserProfileLocal: "userProfile",
-    apiUrlImage: "https://api.imgbb.com/1/upload"
+    apiUrlImage: "https://api.imgbb.com/1/upload",
+    bookReading: "BookReading",
   };
   

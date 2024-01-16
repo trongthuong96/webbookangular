@@ -132,15 +132,16 @@
                             <p class="mb-1">
                                 <strong>Tác giả:</strong>
                                 <a
-                                    class="text-decoration-none text-dark hover-title">{{book?.author?.name}}</a>
+                                    class="text-decoration-none hover-title">&nbsp;{{book?.author?.name}}
+                                </a>
                             </p>
                             <div class="d-flex align-items-center mb-1 flex-wrap">
                                 <strong class="me-1">Thể loại:</strong>
                                 <div class="d-flex align-items-center flex-warp">
                                     @for (genre of book?.genres; track $index) {
                                         <a
-                                            class="text-decoration-none text-dark hover-title  me-1 "
-                                            style="width: max-content;">{{genre.name}},
+                                            class="text-decoration-none hover-title me-1 "
+                                            style="width: max-content;">{{genre.name}}<i *ngIf="$index + 1 < book?.genres!.length">,</i>
                                         </a>
                                     }
                                 </div>
@@ -162,7 +163,7 @@
                                 <strong class="me-1">Tên trung:</strong>
                                 <div class="d-flex align-items-center flex-warp">
                                     <a href="https://www.google.com/search?q={{book!.chineseBooks[0].chineseTitle}}" target="_blank"
-                                        class="text-decoration-none text-dark hover-title  me-1 "
+                                        class="text-decoration-none hover-title me-1 "
                                         style="width: max-content;">{{book!.chineseBooks[0].chineseTitle}}
                                         <i class="fas fa-search"></i>
                                     </a> 
@@ -256,13 +257,22 @@
                                 <div class="col-sm-6 col-md-12 col-lg-6 story-detail__list-chapter--list__item" *ngIf="chapters!.length % 2 !== 0 && reverseCheck"></div>
                     
                                 <!-- Sử dụng col-md-6 để tạo 2 cột khi màn hình có kích thước medium trở lên -->
-                                <div class="col-sm-6 col-md-12 col-lg-6 story-detail__list-chapter--list__item" *ngFor="let chapter of chapters">
-                                    <div class="mb-3">
-                                        <a [routerLink]="['/truyen', book!.slug, book!.id, chineseBookId, chapter.chapterIndex]" class="text-decoration-none text-dark hover-title">
-                                           Chương {{chapter.chapNumber}}: {{chapter.title}}
-                                        </a>
+                                @for (chapter of chapters; track $index) {
+                                    <div class="col-sm-6 col-md-12 col-lg-6 story-detail__list-chapter--list__item">
+                                        <div class="mb-3">
+                                            @if (bookRead !== null && bookRead !== undefined && ($index + 1) <= bookRead!.chapterIndex) {
+                                                <a [routerLink]="['/truyen', book!.slug, book!.id, chineseBookId, chapter.chapterIndex]" class="text-decoration-none text-custom hover-title">
+                                                    Chương {{chapter.chapNumber}}: {{chapter.title}}
+                                                </a>
+                                            } @else {
+                                                <a [routerLink]="['/truyen', book!.slug, book!.id, chineseBookId, chapter.chapterIndex]" class="text-decoration-none hover-title">
+                                                    Chương {{chapter.chapNumber}}: {{chapter.title}}
+                                                </a>
+                                            }
+                                           
+                                        </div>
                                     </div>
-                                </div>
+                                }
                             </div>
                         </div>
                     </div>

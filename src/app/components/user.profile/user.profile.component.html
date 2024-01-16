@@ -21,7 +21,8 @@
                     <label for="avatarInput">
                         <img class="img-account-profile rounded-circle mb-2" [src]="userProfile.avatar ? userProfile.avatar : './assets/images/avatar.png'" alt>
                         <div class="small font-italic text-muted">File ảnh không lớn hơn 1Mb</div>
-                        <div class="small font-italic text-muted mb-4">Nhấp vào ảnh để đổi avatar</div>
+                        <div class="small font-italic text-muted">Nhấp vào ảnh để đổi avatar</div>
+                        <div class="small font-italic text-muted mb-4">Bấm lưu thông tin để lưu</div>
                     </label>
             
                     <input type="file" id="avatarInput" (change)="onFileSelected($event)" style="display: none;" />
@@ -38,7 +39,7 @@
                     <form [formGroup]="profileForm" (submit)="submitSaveChange()">
 
                         <div class="mb-3">
-                            <label class="small mb-1" for="inputUsername">Tên tài khoản</label>
+                            <label class="small mb-1" for="inputUsername">Tên tài khoản <i class="text-xs">(chỉ xem)</i></label>
                             <input class="form-control" id="inputUsername" [value]="userProfile.userName" type="text"
                                 disabled>
                         </div>
@@ -58,6 +59,9 @@
                                 <label class="small mb-1" for="inputBirthday">Ngày sinh</label>
                                 <input class="form-control" id="inputBirthday" formControlName="inputBirthday" type="text"
                                     placeholder="Nhập ngày sinh dạng dd/MM/yyyy">
+                                <div class="form-text text-danger" *ngIf="profileForm.get('inputBirthday')?.hasError('invalidDate')">
+                                    Ngày sinh không hợp lệ. Vui lòng nhập theo định dạng dd/MM/yyyy.
+                                </div>
                             </div>
                         </div>
 
@@ -86,13 +90,13 @@
                         <div class="row gx-3 mb-3">
 
                             <div class="col-md-6">
-                                <label class="small mb-1" for="inputCreatedAt">Ngày tạo</label>
+                                <label class="small mb-1" for="inputCreatedAt">Ngày tạo <i class="text-xs">(chỉ xem)</i></label>
                                 <input class="form-control" id="inputCreatedAt" type="text"  [value]="createdAt | date: 'HH:mm:ss dd/MM/yyyy' : 'GMT+7' "
                                    disabled>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="small mb-1" for="inputUpdatedAt">Ngày cập nhập</label>
+                                <label class="small mb-1" for="inputUpdatedAt">Ngày cập nhập <i class="text-xs">(chỉ xem)</i></label>
                                 <input class="form-control" id="inputUpdatedAt" type="text" [value]="updatedAt | date:'HH:mm:ss dd/MM/yyyy' : 'GMT+7' "
                                     disabled>
                             </div>
@@ -101,7 +105,7 @@
 
                         <div class="d-flex justify-content-end">
                             <!-- Button "Lưu thông tin" được đặt sang bên phải -->
-                            <button class="btn btn-primary" type="submit" [disabled]="!profileForm.valid"> Lưu thông tin </button>
+                            <button class="btn btn-primary" type="submit" [disabled]="!profileForm.valid || waitingForResponse"> Lưu thông tin </button>
                         </div>
                     </form>
                 </div>

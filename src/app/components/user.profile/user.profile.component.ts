@@ -5,9 +5,10 @@ import { CommonModule, DatePipe, isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment.development';
 import { AccountService } from '../../services/account.service';
-import * as moment from 'moment';
 import { ImageService } from '../../services/image.service';
 import { FreeImageHost } from '../../models/image/freeImage.model';
+import { SD } from '../../Utility/SD';
+import { parseISO } from 'date-fns';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class UserProfileComponent implements OnInit{
 
   createdAt!: Date;
   updatedAt!: Date;
+  waitingForResponse = false;
 
   // image
   selectedFile: File | null = null;
@@ -38,7 +40,7 @@ export class UserProfileComponent implements OnInit{
   // user form profile
   profileForm = new FormGroup({
     inputFullName: new FormControl("", [Validators.required]),
-    inputBirthday: new FormControl(""),
+    inputBirthday: new FormControl("", [SD.dateValidator]),
     inputEmail: new FormControl("", [Validators.required, Validators.email]),
     inputPhone: new FormControl("", [Validators.pattern(/^[0-9]{10}$/)])
   })
@@ -59,15 +61,15 @@ export class UserProfileComponent implements OnInit{
         // Chuyển đổi chuỗi thành đối tượng
         this.userProfile = JSON.parse(storedUserProfile);
 
-        // Thêm "Z" vào cuối chuỗi để làm rõ là giờ UTC
-        let dateStringWithZ = this.userProfile.createdAt + 'Z';
+      // Chuyển đổi createdAt
+      let dateStringWithZ = this.userProfile.createdAt + 'Z';
+      this.createdAt = parseISO(dateStringWithZ);
 
-        // Chuyển đổi chuỗi ngày giờ sang đối tượng Date trong Angular
-        this.createdAt = moment.utc(dateStringWithZ).toDate();
+      // Xử lý updatedAt
+      const formattedValue = this.userProfile.updatedAt.toString().replace("Z", "");
+      dateStringWithZ = formattedValue + 'Z';
 
-        const formattedValue = this.userProfile.updatedAt.toString().replace("Z", "");
-        dateStringWithZ = formattedValue + 'Z';
-        this.updatedAt = moment.utc(dateStringWithZ).toDate();
+      this.updatedAt = parseISO(dateStringWithZ);
 
         this.profileForm.get('inputFullName')!.setValue(this.userProfile.fullName);
         this.profileForm.get('inputEmail')!.setValue(this.userProfile.email);
@@ -81,6 +83,9 @@ export class UserProfileComponent implements OnInit{
   }
 
   submitSaveChange() {
+    // button reponse
+    this.waitingForResponse = true;
+
     // Kiểm tra xem form có hợp lệ không
     if (this.profileForm.valid) {
       this.userProfile.email = this.profileForm.value.inputEmail!;
@@ -123,6 +128,7 @@ export class UserProfileComponent implements OnInit{
         (response) => {
           localStorage.setItem(environment.UserProfileLocal, JSON.stringify(this.userProfile));
           window.location.reload();
+          this.waitingForResponse = false;
           alert("Lưu thành công!");
         },
         (error) => {
@@ -131,6 +137,7 @@ export class UserProfileComponent implements OnInit{
           } else if (error.error.message === "Email already exists") {
             alert("Email đã tồn tại!");
           }
+          this.waitingForResponse = false;
         }
       );
     
@@ -172,6 +179,5 @@ export class UserProfileComponent implements OnInit{
         }
       );
     }
-  }
-  
+  }  
 }

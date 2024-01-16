@@ -181,8 +181,12 @@ body {
     color: #ff7f7f !important
 }
 
-.dark-theme .story-detail, .dark-theme .story-detail a {
-    color: #fff !important
+.dark-theme .story-detail {
+    color: #e6e4e4 !important
+}
+
+.dark-theme .story-detail .text-custom {
+    color: rgb(206, 207, 169);
 }
 
 .dark-theme .story-detail .info-more .info-more--more {
@@ -214,7 +218,7 @@ body {
 }
 
 .dark-theme .chapter-wrapper .chapter-content, .dark-theme .chapter-wrapper p {
-    color: #fff !important
+    color: #ffffffc7 !important
 }
 
 .dark-theme .chapter-actions ul {

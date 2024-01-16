@@ -12,6 +12,7 @@ import { CsrfTokenService } from './services/csrf-token.service';
 import { SignatureService } from './services/signature.service';
 import { filter } from 'rxjs';
 import { AccountComponent } from './components/account/account.component';
+import { environment } from '../environments/environment.development';
 
 @Component({
   selector: 'app-root',
@@ -50,16 +51,30 @@ export class AppComponent implements OnInit{
       // this.csrfTokenService.refreshCsrfToken().subscribe(async (reponse) => {
       //   this.csrfTokenService.setCsrfToken(await this.signatureService.decryptAESAsync(reponse.token));
       // });
+      const bookRead = localStorage.getItem(environment.bookReading);
+      if (bookRead === undefined || bookRead === null) {
+        this.GetBookReadingsByUserId();
+      }
+
       router.events.pipe(
         filter(e => e instanceof NavigationEnd)
-     ).subscribe(() => {
+      ).subscribe(() => {
         window.scrollTo(0, 0);
-     });
+      });
     });
   }
 
   ngOnInit(): void {
+    // const timestamp = 1705293871.042;
+    // const date = new Date(timestamp * 1000); // Convert from seconds to milliseconds
+    // console.log(date.toLocaleString()); // Display the date in a readable format
 
+    // const dateString = "2056-01-20T12:30:00"; // Thay thế chuỗi này bằng ngày cụ thể bạn muốn chuyển đổi
+    // const date = new Date(dateString);
+    // const timestamp = date.getTime() / 1000; // Chia cho 1000 để chuyển từ mili giây sang giây
+    // console.log(timestamp);
+
+    
     if (isPlatformBrowser(this.platformId) && typeof localStorage !== 'undefined') {
       if (localStorage.getItem('darkLight') === "dark-theme") {
         this.darkLight = "dark-theme";
@@ -118,5 +133,12 @@ export class AppComponent implements OnInit{
       this.router.navigate(['/truyen'], { queryParams: { 'tu-tim-kiem': this.value } });     
     }
     this.value = "";
+  }
+
+  // book reading
+  GetBookReadingsByUserId() {
+    this.bookService.GetBookReadingsByUserId().subscribe((bookList) => {
+      localStorage.setItem(environment.bookReading,  JSON.stringify(bookList));
+    })
   }
 }

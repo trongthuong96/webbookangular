@@ -6,3 +6,8 @@ h1 {
     font-size: 32px !important;
     font-weight: 400 !important;
 }
+
+.text-custom {
+   color: rgb(107, 107, 107);
+}
+

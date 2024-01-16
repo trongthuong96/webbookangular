@@ -1,3 +1,5 @@
+import { AbstractControl } from "@angular/forms";
+
 export class SD {
     static isUrl(input: string): boolean {
         const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/;
@@ -57,6 +59,32 @@ export class SD {
     const regex = /^[a-zA-Z0-9]+$/;
   
     return regex.test(userName);
+  }
+
+    // Hàm validator cho ngày sinh
+  static dateValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    const inputValue = control.value;
+  
+    // Kiểm tra xem giá trị là một ngày hợp lệ theo định dạng dd/MM/yyyy hay không
+    if (inputValue) {
+      const regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+      const match = inputValue.match(regex);
+  
+      if (!match) {
+        return { invalidDate: true };
+      }
+  
+      const day = parseInt(match[1], 10);
+      const month = parseInt(match[2], 10);
+      const year = parseInt(match[3], 10);
+  
+      // Kiểm tra xem ngày, tháng, năm có hợp lệ không
+      if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1900) {
+        return { invalidDate: true };
+      }
+    }
+  
+    return null;
   }
 }
 

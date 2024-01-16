@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID, TransferState } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
@@ -7,6 +7,8 @@ import { BookShowListModel } from '../models/book/book.list.model';
 import BookShowModel from '../models/book/book.one.model';
 import { BookTotalPageModel } from '../models/book/books.totalPage.model';
 import { UriModel } from '../models/uri/uri.model';
+import { CookieService } from 'ngx-cookie-service';
+import { BookReadingModel } from '../models/book.reading/book.reading.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +16,14 @@ import { UriModel } from '../models/uri/uri.model';
 export class BookService {
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private cookieService: CookieService
   ) {}
   
+  // Thêm mã xác thực vào header nếu cần
+  private headers = new HttpHeaders({
+    'Authorization': 'Bearer ' + this.cookieService.get(environment.UserCookie)  // Hàm này để lấy token từ cookie hoặc nơi bạn đã lưu
+  });
 
   private urlBase = `${environment.apiUrl}/${bookUrl}`;
 
@@ -107,6 +114,12 @@ export class BookService {
   ////api/Crawling/book-listchap-crawl crawl trang 69shu fanqie
   GetBookAndListChapterCrawl(uri: UriModel): Observable<string> {
     const url = `${environment.apiUrl}/Crawling/book-listchap-crawl`;
-    return this.http.post(url, uri, { responseType: 'text' });
+    return this.http.post(url, uri, { responseType: 'text', headers: this.headers });
+  }
+
+  //api/BookReading
+  GetBookReadingsByUserId(): Observable<BookReadingModel[]> {
+    const url = `${environment.apiUrl}/BookReading`;
+    return this.http.get<BookReadingModel[]>(url, { headers: this.headers });
   }
 }

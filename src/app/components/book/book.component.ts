@@ -1,8 +1,8 @@
-import { Component, OnInit, PLATFORM_ID, Inject, TransferState, afterRender, afterNextRender, makeStateKey } from '@angular/core';
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { Component, OnInit, PLATFORM_ID, Inject, TransferState, ChangeDetectionStrategy } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { BookService } from '../../services/book.service';
 import BookShowModel from '../../models/book/book.one.model';
-import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { GenreShowModel } from '../../models/genre/genre.model';
 import { TitleService } from '../../services/title.service';
@@ -11,7 +11,9 @@ import { UriModel } from '../../models/uri/uri.model';
 import { ChapterService } from '../../services/chapter.service';
 import { ChapterShowModel } from '../../models/chapter/chapter.show.model';
 import { DataChapCrawl } from '../../models/crawl/data.chap.crawl';
-import { switchMap } from 'rxjs';
+import { filter, switchMap } from 'rxjs';
+import { BookReadingModel } from '../../models/book.reading/book.reading.model';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-book',
@@ -46,6 +48,10 @@ export class BookComponent implements OnInit{
   // chinese book id
   chineseBookId?: number;
 
+  // book read lacalStorage
+  bookListRead!: BookReadingModel[];
+  bookRead?: BookReadingModel;
+
   /**
    *
    */
@@ -61,7 +67,7 @@ export class BookComponent implements OnInit{
   {}
 
   ngOnInit(): void {
-   
+    
     // Xử lý khi không có dữ liệu trong state
     this.route.paramMap.subscribe(params => {
       this.checkLoadingSpin = true;
@@ -75,8 +81,12 @@ export class BookComponent implements OnInit{
     if (isPlatformBrowser(this.platformId)) {
       // Code chỉ chạy trên trình duyệt
       this.loadDataForBrowser();
+
+      const booksRead = localStorage.getItem(environment.bookReading);
+      if (booksRead) {
+        this.bookListRead = JSON.parse(booksRead);
+      }
     } 
-    
   }
 
   private loadDataForBrowser(): void {
@@ -115,13 +125,15 @@ export class BookComponent implements OnInit{
         // chapter list
         this.chineseBookId = book.chineseBooks[0].id;
         if (isPlatformBrowser(this.platformId)) {
+
+          // chapter list
           this.GetChaptersByChineseBookId(this.chineseBookId);
         }
 
         this.titleService.setTitle(this.book!.title);
         this.GetBookAuthor(book.author.id!, 1);
         this.GetBookUser(book.applicationUser.id!, 1);
-        
+
       },
       (error) => {
         // Xử lý lỗi ở đây
@@ -130,6 +142,13 @@ export class BookComponent implements OnInit{
         }
       }
     );
+  }
+
+  // change color chapter of book reading
+  changeColorChapterTitle() {
+    if (this.bookRead !== null && this.bookRead !== undefined) {
+
+    }
   }
 
   //
@@ -161,10 +180,26 @@ export class BookComponent implements OnInit{
   GetChaptersByChineseBookId(chineseBookId: number) {
     this.checkLoadingSpinChap = true;
     this.chineseBookId = chineseBookId;
+    
+
+    //start book reading
+    this.bookRead = undefined;
+
+    // Kiểm tra xem có sách nào có các thuộc tính giống với sách cần thêm hay không
+    const existingBook = this.bookListRead.find(bookRead =>
+      bookRead.bookId === this.book!.id &&
+      bookRead.chineseBookId === chineseBookId
+    );
+
+    if (existingBook) {
+      this.bookRead = existingBook;
+    }
+    //end book reading
+
     this.chapterService.getChaptersByChineseBookId(chineseBookId).subscribe((chaps) => {
       if (chaps.length !== 0) {
         this.chapters = chaps;
-      } 
+    } 
       
       this.checkLoadingSpinChap = false;
     });
