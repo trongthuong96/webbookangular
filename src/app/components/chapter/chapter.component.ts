@@ -136,11 +136,7 @@ export class ChapterComponent implements OnInit{
         this.router.navigate(['/truyen', this.bookSlug, this.bookId, this.chineseBookId, this.chapterIndex! + 1]);
       }
     }
-  }
-
-  menuButton() {
-    this.router.navigate(['/truyen/', this.bookSlug]);
-  }
+  } 
 
   // bookRead localStorage
   addBookReadLocal() {

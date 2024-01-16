@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, PLATFORM_ID, TransferState, afterNextRender, makeStateKey } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit, PLATFORM_ID, Renderer2, TransferState, afterNextRender, makeStateKey } from '@angular/core';
 import { CommonModule, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { NavigationEnd, NavigationExtras, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
@@ -21,7 +21,7 @@ import { environment } from '../environments/environment.development';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css' 
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit, AfterViewInit{
   title = "Truyện Mới - Nguồn Cung Cấp Truyện Đa Dạng và Dịch Nhanh"
 
   genreListModel: GenreShowModel[] = [];
@@ -43,6 +43,7 @@ export class AppComponent implements OnInit{
     private genreService: GenreService,
     private bookService: BookService,
     private router: Router,
+    private renderer: Renderer2,
     private csrfTokenService: CsrfTokenService,
     private signatureService: SignatureService,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -85,6 +86,18 @@ export class AppComponent implements OnInit{
     this.getGenres();
     // //const sitemap = this.sitemapService.generateSitemap();
    
+  }
+
+  ngAfterViewInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      // Check if the platform is a browser before manipulating the DOM
+      const scriptElement = document.getElementById('ng-state');
+
+      if (scriptElement) {
+        // If the script tag exists, remove it from the DOM
+        this.renderer.removeChild(document.body, scriptElement);
+      }
+    }
   }
 
   // get genres
