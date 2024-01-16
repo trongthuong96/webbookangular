@@ -145,23 +145,26 @@ export class ChapterComponent implements OnInit{
   // bookRead localStorage
   addBookReadLocal() {
     const tempBooks = localStorage.getItem(environment.bookReading);
-
-    if (tempBooks !== null) {
+    
+    if (tempBooks !== 'null' && tempBooks !== null) {
       this.booksReadLocal = JSON.parse(tempBooks);
-    }
 
-   // Kiểm tra xem có sách nào có các thuộc tính giống với sách cần thêm hay không
-    const existingBook = this.booksReadLocal.find(book =>
-      book.bookId === this.bookRead.bookId &&
-      book.chineseBookId === this.bookRead.chineseBookId
-    );
+      // Kiểm tra xem có sách nào có các thuộc tính giống với sách cần thêm hay không
+      const existingBook = this.booksReadLocal.find(book =>
+        book.bookId === this.bookRead.bookId &&
+        book.chineseBookId === this.bookRead.chineseBookId
+      );
 
-    if (existingBook) {
-      // Nếu đã tồn tại, thực hiện cập nhật
-      existingBook.chapNumber = this.bookRead.chapNumber; // Cập nhật các thuộc tính khác nếu cần
-      existingBook.chapTitle = this.bookRead.chapTitle;
-      existingBook.chapterIndex = this.bookRead.chapterIndex;
-      existingBook.updatedAt = new Date();
+      if (existingBook) {
+        // Nếu đã tồn tại, thực hiện cập nhật
+        existingBook.chapNumber = this.bookRead.chapNumber; // Cập nhật các thuộc tính khác nếu cần
+        existingBook.chapTitle = this.bookRead.chapTitle;
+        existingBook.chapterIndex = this.bookRead.chapterIndex;
+        existingBook.updatedAt = new Date();
+      } else {
+        // Nếu không tồn tại, thực hiện thêm mới
+        this.booksReadLocal.push(this.bookRead);
+      }
     } else {
       // Nếu không tồn tại, thực hiện thêm mới
       this.booksReadLocal.push(this.bookRead);

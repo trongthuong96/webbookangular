@@ -185,15 +185,18 @@ export class BookComponent implements OnInit{
     //start book reading
     this.bookRead = undefined;
 
-    // Kiểm tra xem có sách nào có các thuộc tính giống với sách cần thêm hay không
-    const existingBook = this.bookListRead.find(bookRead =>
-      bookRead.bookId === this.book!.id &&
-      bookRead.chineseBookId === chineseBookId
-    );
+    if (this.bookListRead) {
+      // Kiểm tra xem có sách nào có các thuộc tính giống với sách cần thêm hay không
+      const existingBook = this.bookListRead.find(bookRead =>
+        bookRead.bookId === this.book!.id &&
+        bookRead.chineseBookId === chineseBookId
+      );
 
-    if (existingBook) {
-      this.bookRead = existingBook;
+      if (existingBook) {
+        this.bookRead = existingBook;
+      }
     }
+   
     //end book reading
 
     this.chapterService.getChaptersByChineseBookId(chineseBookId).subscribe((chaps) => {
