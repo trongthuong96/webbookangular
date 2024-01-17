@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { GenreShowModel } from '../../models/genre/genre.model';
 import { GenreService } from '../../services/genre.service';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { BookService } from '../../services/book.service';
 import { BookTotalPageModel } from '../../models/book/books.totalPage.model';
@@ -10,6 +10,7 @@ import { Title } from '@angular/platform-browser';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { SD } from '../../Utility/SD';
 import { UriModel } from '../../models/uri/uri.model';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-search',
@@ -23,7 +24,7 @@ import { UriModel } from '../../models/uri/uri.model';
   templateUrl: './search.component.html',
   styleUrl: './search.component.css'
 })
-export class SearchComponent implements OnInit{
+export class SearchComponent implements OnInit, AfterViewInit{
 
   genre?: GenreShowModel;
   genreValue!: number;
@@ -131,8 +132,22 @@ export class SearchComponent implements OnInit{
     this.addChapLengthRadioButtons(this.chapLengthValues);
   }
 
+  ngAfterViewInit(): void {
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd)
+    ).subscribe(() => {
+      
+      if (this.router.url.includes('/truyen?')) {
+        const page = this.router.url.split('?')[1].split('page=')[1];
+        console.log(this.router.url.split('?')[1].split('page='))
+        this.currentPage = parseInt(page);
+      }
+    });
+   }
+
   // get genre by id
   getBooksByGenreId(id: number, page: number) {
+    console.log("1")
     this.checkLoadingSpin = true;
     this.genreService.getBooksByGenreId(id, page).subscribe(genre => {
       this.genre = genre;
@@ -164,9 +179,6 @@ export class SearchComponent implements OnInit{
       queryParams: { page: this.currentPage },
       queryParamsHandling: 'merge',
     });
-
-    // Gọi hàm để lấy dữ liệu mới hoặc thực hiện các công việc khác cần thiết
-    this.getBooksByGenreId(this.genreValue, page);
   }
 
   //START STATUS

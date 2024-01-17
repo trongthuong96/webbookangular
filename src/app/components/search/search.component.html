@@ -222,18 +222,8 @@
 
 
        <!-- Your component content here -->
-        <ng-container *ngIf="genreParam !== undefined && totalPages > 0">
+        <ng-container *ngIf="(genreParam !== undefined || bookParam !== undefined || keyword !== undefined) && totalPages > 0">
             <app-pagination [totalPages]="totalPages" [currentPage]="currentPage" (pageChange)="handlePageChange($event)"></app-pagination>
-        </ng-container>
-
-        <!-- Your component content here -->
-        <ng-container *ngIf="bookParam !== undefined && totalPages > 0">
-            <app-pagination [totalPages]="totalPages" [currentPage]="currentPage" (pageChange)="handlePageChange($event)"></app-pagination>
-        </ng-container>
-
-         <!-- Your component content here -->
-         <ng-container *ngIf="keyword !== undefined && totalPages > 0">
-            <app-pagination [totalPages]="totalPages" [currentPage]="currentPage" (pageChange)="submitSearch($event)"></app-pagination>
         </ng-container>
     </section>
 </div>

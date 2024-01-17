@@ -1,4 +1,4 @@
-import { Component, OnInit, PLATFORM_ID, Inject, TransferState, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, Inject, TransferState, afterNextRender, AfterViewInit } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { BookService } from '../../services/book.service';
 import BookShowModel from '../../models/book/book.one.model';
@@ -25,7 +25,7 @@ import { environment } from '../../../environments/environment.development';
   templateUrl: './book.component.html',
   styleUrl: './book.component.css'
 })
-export class BookComponent implements OnInit{
+export class BookComponent implements OnInit, AfterViewInit{
   book?: BookShowModel;
   bookByAuthor?: BookShowListModel[];
   bookByUser?: BookShowListModel[];
@@ -89,6 +89,31 @@ export class BookComponent implements OnInit{
     } 
   }
 
+  ngAfterViewInit(): void {
+    
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd)
+    ).subscribe(() => {
+      if (/^\/truyen\/[^\/]+$/.test(this.router.url)) {
+        const booksRead = localStorage.getItem(environment.bookReading);
+        if (booksRead) {
+          this.bookListRead = JSON.parse(booksRead);
+          if (this.bookListRead) {
+            // Kiểm tra xem có sách nào có các thuộc tính giống với sách cần thêm hay không
+            const existingBook = this.bookListRead.find(bookRead =>
+              bookRead.bookId === this.book!.id &&
+              bookRead.chineseBookId === this.chineseBookId
+            );
+      
+            if (existingBook) {
+              this.bookRead = existingBook;
+            }
+          }
+        }
+      }
+    });
+  }
+
   private loadDataForBrowser(): void {
     if (typeof localStorage !== 'undefined' && localStorage.getItem("genres_info")) {
       // Đọc dữ liệu từ Local Storage
@@ -124,11 +149,11 @@ export class BookComponent implements OnInit{
         
         // chapter list
         this.chineseBookId = book.chineseBooks[0].id;
-        if (isPlatformBrowser(this.platformId)) {
+        //if (isPlatformBrowser(this.platformId)) {
 
           // chapter list
           this.GetChaptersByChineseBookId(this.chineseBookId);
-        }
+        //}
 
         this.titleService.setTitle(this.book!.title);
         this.GetBookAuthor(book.author.id!, 1);

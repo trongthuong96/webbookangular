@@ -1,12 +1,13 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, HostListener, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { AfterViewInit, Component, HostListener, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ChapterShowModel } from '../../models/chapter/chapter.show.model';
 import { ChapterService } from '../../services/chapter.service';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
 import { DomSanitizer, SafeHtml, Title } from '@angular/platform-browser';
 import { DataCrawl } from '../../models/crawl/data.crawl';
 import { BookReadingModel } from '../../models/book.reading/book.reading.model';
 import { environment } from '../../../environments/environment.development';
+import { filter } from 'rxjs';
 
 
 @Component({
@@ -19,7 +20,7 @@ import { environment } from '../../../environments/environment.development';
   templateUrl: './chapter.component.html',
   styleUrl: './chapter.component.css'
 })
-export class ChapterComponent implements OnInit{
+export class ChapterComponent implements OnInit, AfterViewInit{
 
   chapterModel?: ChapterShowModel;
   bookSlug?: string;
@@ -34,7 +35,7 @@ export class ChapterComponent implements OnInit{
 
   // book read
   booksReadLocal: BookReadingModel[] = [];
-  bookRead!: BookReadingModel;
+  bookRead?: BookReadingModel;
 
   /**
    *
@@ -74,10 +75,27 @@ export class ChapterComponent implements OnInit{
       }
 
       this.getContentChapterCrawl(this.data);
-      this.bookRead.bookId = this.bookId!;
-      this.bookRead.chineseBookId = this.chineseBookId!;
-      this.bookRead.bookSlug = this.bookSlug!;
+      this.bookRead!.bookId = this.bookId!;
+      this.bookRead!.chineseBookId = this.chineseBookId!;
+      this.bookRead!.bookSlug = this.bookSlug!;
       
+    });
+  }
+
+  ngAfterViewInit(): void {
+    
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd)
+    ).subscribe(() => {
+      if (/^\/truyen\/[^\/]+\/\d+\/\d+\/\d+$/.test(this.router.url)) {
+       
+        const matchResult = this.router.url.match(/\/(\d+)\/?$/);
+        if (matchResult) {
+          if (this.bookRead!.chapterIndex === parseInt(matchResult[1])) {
+            this.addBookReadLocal();
+          }
+        }
+      }
     });
   }
 
@@ -91,11 +109,11 @@ export class ChapterComponent implements OnInit{
         this.titleService.setTitle("Chương " + chap.chapNumber + ": " + chap.title);
 
         // bookRead localStorage
-        this.bookRead.bookTitle = this.chapterModel.bookTitle;
-        this.bookRead.chapNumber = this.chapterModel.chapNumber;
-        this.bookRead.chapTitle = this.chapterModel.title;
-        this.bookRead.chapterIndex = this.chapterModel.chapterIndex;
-        this.bookRead.updatedAt = new Date();
+        this.bookRead!.bookTitle = this.chapterModel.bookTitle;
+        this.bookRead!.chapNumber = this.chapterModel.chapNumber;
+        this.bookRead!.chapTitle = this.chapterModel.title;
+        this.bookRead!.chapterIndex = this.chapterModel.chapterIndex;
+        this.bookRead!.updatedAt = new Date();
 
         if (isPlatformBrowser(this.platformId)) {
           this.addBookReadLocal();
@@ -138,6 +156,11 @@ export class ChapterComponent implements OnInit{
     }
   } 
 
+  // menu
+  menuButton() {
+    this.router.navigate(['/truyen/', this.bookSlug]);
+  }
+
   // bookRead localStorage
   addBookReadLocal() {
     const tempBooks = localStorage.getItem(environment.bookReading);
@@ -147,26 +170,27 @@ export class ChapterComponent implements OnInit{
 
       // Kiểm tra xem có sách nào có các thuộc tính giống với sách cần thêm hay không
       const existingBook = this.booksReadLocal.find(book =>
-        book.bookId === this.bookRead.bookId &&
-        book.chineseBookId === this.bookRead.chineseBookId
+        book.bookId === this.bookRead!.bookId &&
+        book.chineseBookId === this.bookRead!.chineseBookId
       );
 
       if (existingBook) {
         // Nếu đã tồn tại, thực hiện cập nhật
-        existingBook.chapNumber = this.bookRead.chapNumber; // Cập nhật các thuộc tính khác nếu cần
-        existingBook.chapTitle = this.bookRead.chapTitle;
-        existingBook.chapterIndex = this.bookRead.chapterIndex;
+        existingBook.chapNumber = this.bookRead!.chapNumber; // Cập nhật các thuộc tính khác nếu cần
+        existingBook.chapTitle = this.bookRead!.chapTitle;
+        existingBook.chapterIndex = this.bookRead!.chapterIndex;
         existingBook.updatedAt = new Date();
       } else {
         // Nếu không tồn tại, thực hiện thêm mới
-        this.booksReadLocal.push(this.bookRead);
+        this.booksReadLocal.push(this.bookRead!);
       }
     } else {
       // Nếu không tồn tại, thực hiện thêm mới
-      this.booksReadLocal.push(this.bookRead);
+      this.booksReadLocal.push(this.bookRead!);
     }
 
     // Lưu mảng vào localStorage
     localStorage.setItem(environment.bookReading, JSON.stringify(this.booksReadLocal));
+    
   }
 }

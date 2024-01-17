@@ -8,7 +8,6 @@ import { FormsModule } from '@angular/forms';
 import { SD } from './Utility/SD';
 import { BookService } from './services/book.service';
 import { UriModel } from './models/uri/uri.model';
-import { CsrfTokenService } from './services/csrf-token.service';
 import { SignatureService } from './services/signature.service';
 import { filter } from 'rxjs';
 import { AccountComponent } from './components/account/account.component';
@@ -44,7 +43,6 @@ export class AppComponent implements OnInit, AfterViewInit{
     private bookService: BookService,
     private router: Router,
     private renderer: Renderer2,
-    private csrfTokenService: CsrfTokenService,
     private signatureService: SignatureService,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {
@@ -143,7 +141,7 @@ export class AppComponent implements OnInit, AfterViewInit{
       });      
     } 
     else {
-      this.router.navigate(['/truyen'], { queryParams: { 'tu-tim-kiem': this.value } });     
+      this.router.navigate(['/truyen'], { queryParams: { 'tu-tim-kiem': this.value, 'page': 1 } });     
     }
     this.value = "";
   }

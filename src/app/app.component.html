@@ -3,7 +3,7 @@
     <header class="header">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-              <a class="navbar-brand" href="/">Truyện Mới</a>
+              <a class="navbar-brand" [routerLink]="['/']">Truyện Mới</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -17,7 +17,7 @@
                         <ul class="dropdown-menu dropdown-menu-custom">
                             @for (genre of genreListModel; track $index) {
                                 <li>
-                                    <a class="dropdown-item" [routerLink]="['/truyen/']" [queryParams]="{ 'the-loai': genre.id }">
+                                    <a class="dropdown-item" [routerLink]="['/truyen/']" [queryParams]="{ 'the-loai': genre.id, 'page': 1 }">
                                         {{genre.name}}
                                     </a>
                                 </li>
@@ -116,7 +116,7 @@
                         <li class="me-1">
                             <span class="badge text-bg-light">
                                 <a class="text-dark text-decoration-none"
-                                    [routerLink]="['/truyen/']" [queryParams]="{ 'the-loai': genre.id }" 
+                                    [routerLink]="['/truyen/']" [queryParams]="{ 'the-loai': genre.id, 'page': 1  }" 
                                     title="{{genre.name}}">
                                     {{genre.name}}
                                 </a>
