@@ -139,7 +139,7 @@ export class SearchComponent implements OnInit, AfterViewInit{
       
       if (this.router.url.includes('/truyen?')) {
         const page = this.router.url.split('?')[1].split('page=')[1];
-        console.log(this.router.url.split('?')[1].split('page='))
+        //console.log(this.router.url.split('?')[1].split('page='))
         this.currentPage = parseInt(page);
       }
     });
@@ -147,7 +147,6 @@ export class SearchComponent implements OnInit, AfterViewInit{
 
   // get genre by id
   getBooksByGenreId(id: number, page: number) {
-    console.log("1")
     this.checkLoadingSpin = true;
     this.genreService.getBooksByGenreId(id, page).subscribe(genre => {
       this.genre = genre;

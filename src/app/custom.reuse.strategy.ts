@@ -60,8 +60,6 @@ export class CustomReuseStrategy implements RouteReuseStrategy {
   }
 
   shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
-    console.log(this.getRouteKey(future))
-    console.log(this.getRouteKey(curr))
     return this.getRouteKey(future) === this.getRouteKey(curr);
   }
 

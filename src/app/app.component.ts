@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Inject, OnInit, PLATFORM_ID, Renderer2, TransferState, afterNextRender, makeStateKey } from '@angular/core';
-import { CommonModule, isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { NavigationEnd, NavigationExtras, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { GenreService } from './services/genre.service';
 import { GenreShowModel } from './models/genre/genre.model';
@@ -8,7 +8,6 @@ import { FormsModule } from '@angular/forms';
 import { SD } from './Utility/SD';
 import { BookService } from './services/book.service';
 import { UriModel } from './models/uri/uri.model';
-import { SignatureService } from './services/signature.service';
 import { filter } from 'rxjs';
 import { AccountComponent } from './components/account/account.component';
 import { environment } from '../environments/environment.development';
@@ -43,7 +42,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     private bookService: BookService,
     private router: Router,
     private renderer: Renderer2,
-    private signatureService: SignatureService,
+
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {
     afterNextRender(() => {

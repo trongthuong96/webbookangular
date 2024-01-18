@@ -1,4 +1,4 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, isDevMode } from '@angular/core';
 import { RouteReuseStrategy, provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -8,25 +8,26 @@ import { SignatureInterceptor } from './config/SignatureInterceptor';
 import { ApiInterceptor } from './config/api.interceptor';
 import { CustomReuseStrategy } from './custom.reuse.strategy';
 import { IMAGE_CONFIG } from '@angular/common';
+import { provideServiceWorker } from '@angular/service-worker';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideClientHydration(
-      withHttpTransferCacheOptions({
+        withHttpTransferCacheOptions({
         includePostRequests: true
-      }),
-    ),
+    })),
+    
     provideHttpClient(withFetch(), withInterceptorsFromDi()),
     {
-      provide: HTTP_INTERCEPTORS,
-      useClass: SignatureInterceptor,
-      multi: true,
+        provide: HTTP_INTERCEPTORS,
+        useClass: SignatureInterceptor,
+        multi: true,
     },
     {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ApiInterceptor,
-      multi: true,
+        provide: HTTP_INTERCEPTORS,
+        useClass: ApiInterceptor,
+        multi: true,
     },
     // { 
     //   provide: HTTP_INTERCEPTORS, 
@@ -34,15 +35,19 @@ export const appConfig: ApplicationConfig = {
     //   multi: true 
     // },
     {
-      provide: RouteReuseStrategy,
-      useClass: CustomReuseStrategy,
+        provide: RouteReuseStrategy,
+        useClass: CustomReuseStrategy,
     },
     {
-      provide: IMAGE_CONFIG,
-      useValue: {
-        disableImageSizeWarning: true, 
-        disableImageLazyLoadWarning: true
-      }
+        provide: IMAGE_CONFIG,
+        useValue: {
+            disableImageSizeWarning: true,
+            disableImageLazyLoadWarning: true
+        }
     },
-  ],
+    provideServiceWorker('ngsw-worker.js', {
+        enabled: !isDevMode(),
+        registrationStrategy: 'registerWhenStable:30000'
+    })
+],
 };
