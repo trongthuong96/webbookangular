@@ -1,15 +1,27 @@
 {
-  "name": "webbookGUI",
-  "short_name": "webbookGUI",
+  "name": "webbook",
+  "short_name": "webbook",
   "theme_color": "#1976d2",
-  "background_color": "#fafafa",
+  "background_color": "#514f4f",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
   "icons": [
     {
-      "src": "assets/icons/icon-72x72.png",
-      "sizes": "72x72",
+      "src": "assets/icons/icon-77x77.png",
+      "sizes": "77x77",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "assets/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "assets/icons/icon-192x192.png",
+      "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable any"
     }
