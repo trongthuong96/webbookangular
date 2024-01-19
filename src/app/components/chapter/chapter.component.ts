@@ -156,11 +156,6 @@ export class ChapterComponent implements OnInit, AfterViewInit{
     }
   } 
 
-  // menu
-  menuButton() {
-    this.router.navigate(['/truyen/', this.bookSlug]);
-  }
-
   // bookRead localStorage
   addBookReadLocal() {
     const tempBooks = localStorage.getItem(environment.bookReading);

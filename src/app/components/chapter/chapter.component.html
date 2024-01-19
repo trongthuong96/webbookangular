@@ -10,9 +10,9 @@
     <a [routerLink]="['/truyen', bookSlug]" class="text-decoration-none">
         <h1 class="text-center text-success"> {{ chapterModel.bookTitle }} </h1>
     </a>
-    <a class="text-decoration-none px-1">
+    <div class="text-decoration-none px-1 mt-2 mb-2">
         <h4 class="text-center text-dark">Chương {{chapterModel.chapNumber}}: {{chapterModel.title}}</h4>
-    </a>
+    </div>
     <hr class="chapter-start container-fluid">
     <div class="chapter-nav text-center">
         <div class="chapter-actions chapter-actions-origin d-flex align-items-center justify-content-center">
@@ -24,7 +24,7 @@
                 <a class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [routerLink]="['/truyen', bookSlug, bookId, chineseBookId,  chapterIndex!-1]"> 
                     <span>Chương</span> trước</a>
             }
-            <a class="btn btn-success chapter_jump me-1" (click)="menuButton()">
+            <a class="btn btn-success chapter_jump me-1" [routerLink]="['/truyen', bookSlug]">
                 <span>
                     <i class="fa-solid fa-bars"></i>
                 </span>
@@ -71,7 +71,7 @@
                             <span>Chương</span> trước</a>
                     }
                    
-                    <a class="btn btn-success chapter_jump me-1" (click)="menuButton()">
+                    <a class="btn btn-success chapter_jump me-1" [routerLink]="['/truyen', bookSlug]">
                         <span>
                             <i class="fa-solid fa-bars"></i>
                         </span>
