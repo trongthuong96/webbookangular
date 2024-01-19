@@ -21,8 +21,8 @@
                 <div class="head-title-global d-flex justify-content-between mb-2">
                     <div class="col-sm-12 col-md-7 col-lg-8 head-title-global__left d-flex align-items-center">
                         <h2 class="me-2 mb-0 border-bottom border-secondary pb-1">
-                            <a class="d-block text-decoration-none text-dark fs-4 story-name"
-                                title="Truyện Hot">Truyện Đọc Nhiều</a>
+                            <p class="d-block text-decoration-none text-dark fs-4 story-name"
+                                title="Truyện Hot">Truyện Đọc Nhiều</p>
                         </h2>
                         <i class="fa-solid fa-fire-flame-curved"></i>
                     </div>
@@ -89,9 +89,9 @@
                         <div class="head-title-global d-flex justify-content-between mb-2">
                             <div class="col-6 col-md-4 col-lg-4 head-title-global__left d-flex align-items-center">
                                 <h1 class="me-2 mb-0 border-bottom border-secondary pb-1">
-                                    <a
+                                    <p
                                         class="d-block text-decoration-none text-dark fs-4 story-name"
-                                        title="Truyện Mới">Truyện Mới</a>
+                                        title="Truyện Mới">Truyện Mới</p>
                                 </h1>
                             </div>
                         </div>
@@ -116,9 +116,12 @@
                                             <p class="mb-0 text-center">
                                                 @for (genre of book.genres; track $index) {
                                                     @if ($index < 2) {
-                                                        <a
-                                                        title="{{ genre.name }}"
-                                                        class="hover-title text-decoration-none text-secondary category-name text-one-row">{{ genre.name }} </a>
+                                                        <i
+                                                            title="{{ genre.name }}"
+                                                            class="hover-title text-decoration-none text-secondary category-name text-one-row text-xs"
+                                                        >
+                                                            {{ genre.name }} 
+                                                        </i>
                                                  
                                                     }
                                                 }
@@ -128,7 +131,7 @@
                                         <div class="story-item-no-image__name align-items-center d-flex">
 
                                             <img itemprop="image" loading="lazy"
-                                                class="ml-1 rounded" width="30px" height="40px" 
+                                                class="ml-1 rounded" alt="" width="30px" height="40px" 
                                                 src="{{book.coverImage}}">
 
                                             <h3 class="me-1 mb-0 d-flex justify-content-start align-items-center mx-2">
@@ -152,11 +155,11 @@
 
                                         <div class="story-item-no-image__chapters ms-2">
                                             @if(book.chapterLast !== undefined && book.chapterLast !== null){
-                                                <a 
+                                                <p 
                                                     title="Chương {{ book.chapterLast.chapNumber }}"
-                                                    class="hover-title text-decoration-none text-secondary text-two-row">                                                
+                                                    class="hover-title text-decoration-none text-secondary text-two-row text-xm">                                                
                                                         Chương {{ book.chapterLast.chapNumber }}: {{ book.chapterLast.title }}                                               
-                                                </a>
+                                                </p>
                                             }  @else {
                                                 Chưa có chương
                                             }
@@ -244,20 +247,21 @@
                                     class="d-block story-item-full__image">
                                     <img src="{{book?.coverImage}}" alt="{{book.title}}" class="img-fluid w-100 rounded"
                                         width="150" height="230" loading="lazy">
-                                </a>
-                                <h3 class="fs-6 story-item-full__name fw-bold text-center mb-0 rounded">
-                                    <a 
-                                        class="text-decoration-none text-two-row story-name">
-                                        {{book.title}}
-                                    </a>
-                                </h3>
-                                <span class="story-item-full__badge badge text-bg-success">
-                                    @if(book.chapterLast !== undefined && book.chapterLast !== null){
-                                        Full - {{book.chapterLast.chapterIndex}} chương
-                                    } @else {
-                                        0 chương
-                                    }
+                               
+                                    <h3 class="fs-6 story-item-full__name fw-bold text-center mb-0 rounded">
+                                        <p 
+                                            class="text-xs text-white text-two-row story-name">
+                                            {{book.title}}
+                                        </p>
+                                    </h3>
+                                    <span class="story-item-full__badge badge text-bg-success">
+                                        @if(book.chapterLast !== undefined && book.chapterLast !== null){
+                                            Full - {{book.chapterLast.chapterIndex}} chương
+                                        } @else {
+                                            0 chương
+                                        }
                                     </span>
+                                </a>
                             </div>
                         } @empty {
                             <p> Chưa có truyện! </p>

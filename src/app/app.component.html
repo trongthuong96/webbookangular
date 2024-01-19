@@ -114,13 +114,15 @@
                 <ul class="col-12 col-md-7 list-unstyled d-flex flex-wrap list-tag">
                     @for (genre of genreListModel; track $index) {
                         <li class="me-1">
-                            <span class="badge text-bg-light">
-                                <a class="text-dark text-decoration-none"
-                                    [routerLink]="['/truyen/']" [queryParams]="{ 'the-loai': genre.id, 'page': 1  }" 
-                                    title="{{genre.name}}">
+                           
+                            <a class="text-dark text-decoration-none"
+                                [routerLink]="['/truyen/']" [queryParams]="{ 'the-loai': genre.id, 'page': 1  }" 
+                                title="{{genre.name}}">
+                                <span class="badge text-bg-light">
                                     {{genre.name}}
-                                </a>
-                            </span>
+                                </span>
+                            </a>
+                           
                         </li>
                     }
               
