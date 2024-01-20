@@ -91,7 +91,7 @@
                             <div class="flex-shrink-0"> <a [routerLink]="['/truyen', book.slug]"
                                     class="text-title font-semibold"> <img class="h-32 w-24 shadow-lg rounded"
                                         src="{{book.coverImage}}"
-                                        alt="Ta thật sự là Văn Sao Công" loading="lazy"> </a> </div>
+                                        alt="" loading="lazy"> </a> </div>
                             <div class="grow space-y-2">
                                 <div class="flex items-center space-x-1"> <a
                                         [routerLink]="['/truyen', book.slug]"
@@ -100,7 +100,12 @@
                                 <div class="mt-1 space-y-1">
                                     <div class="flex justify-between text-gray-500">
                                         <div class="flex items-center space-x-1"> 
-                                            <i class="fa-solid fa-user"></i>
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg> 
                                             <a [routerLink]="['/']"
                                                 target="_blank"><span class="text-xs truncate hover-title text-dec"> {{book.authorName}} </span></a> </div>
                                         <div> 
@@ -117,7 +122,12 @@
                                     </div>
                                     <div class="flex justify-between text-gray-500">
                                         <div class="flex items-center space-x-1"> 
-                                            <i class="fa-solid fa-layer-group"></i>
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                <path
+                                                    d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z">
+                                                </path>
+                                            </svg> 
                                             <a [routerLink]="['/truyen']" [queryParams]="{ 'the-loai': genre?.id  }" target="_blank">
                                                 <span class="text-xs truncate text-dec"> 
                                                     {{genre?.name}}
@@ -159,12 +169,14 @@
                             <div class="text-gray-500 text-sm text-overflow-multiple-lines text-dec" [innerHTML]="book.description"></div>
                             <div class="mt-1 space-y-1">
                                 <div class="flex justify-between text-gray-500">
-                                    <div class="flex items-center space-x-1"> <svg xmlns="http://www.w3.org/2000/svg"
+                                    <div class="flex items-center space-x-1"> 
+                                        <svg xmlns="http://www.w3.org/2000/svg"
                                             class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd"
                                                 d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
                                                 clip-rule="evenodd"></path>
-                                        </svg> <a href="https://nhungtruyen.com/tac-gia/toan-chuyen-hong-hoa"
+                                        </svg> 
+                                        <a [routerLink]="['/']"
                                             target="_blank"><span class="text-xs truncate hover-title text-dec"> {{book.authorName}} </span></a> </div>
                                     <div> 
                                         <span class="text-xs bg-gray-200 py-1 px-2">
@@ -179,19 +191,22 @@
                                     </div>
                                 </div>
                                 <div class="flex justify-between text-gray-500">
-                                    <div class="flex items-center space-x-1"> <svg xmlns="http://www.w3.org/2000/svg"
+                                    <div class="flex items-center space-x-1"> 
+                                        <svg xmlns="http://www.w3.org/2000/svg"
                                             class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                             <path
                                                 d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z">
                                             </path>
                                         </svg> 
-                                            <a target="_blank">
+                                        @for (genre of book.genres; track $index) {
+                                            <a target="_blank" [routerLink]="['/truyen']" [queryParams]="{ 'the-loai': genre.id  }">
                                                 <span class="text-xs truncate text-dec"> 
-                                                    @for (genre of book.genres; track $index) {
+                                                    
                                                         {{genre.name}} &nbsp;
-                                                    }
+                                                    
                                                 </span>
                                             </a>
+                                        }
                                     </div>
                                     <div>
                                         <i class="fa-solid fa-bars"></i>
