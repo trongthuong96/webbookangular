@@ -47,7 +47,9 @@ export class AppComponent implements OnInit, AfterViewInit{
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {
     afterNextRender(() => {
-     
+      // this.csrfTokenService.refreshCsrfToken().subscribe(async (reponse) => {
+      //   this.csrfTokenService.setCsrfToken(await this.signatureService.decryptAESAsync(reponse.token));
+      // });
       const bookRead = localStorage.getItem(environment.bookReading);
       if (bookRead === undefined || bookRead === null) {
         this.GetBookReadingsByUserId();
