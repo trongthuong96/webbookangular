@@ -10,7 +10,8 @@
       "cacheConfig": {
         "maxSize": 1000000,
         "maxAge": "365d",
-        "strategy": "freshness"
+        "strategy": "freshness",
+        "timeout": "0u"
       }
     }
   ],
@@ -21,6 +22,7 @@
       "resources": {
         "files": [
           "/favicon.ico",
+          "/index1.html",
           "/manifest.webmanifest",
           "/*.css",
           "/*.js"
