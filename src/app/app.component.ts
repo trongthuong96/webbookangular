@@ -50,6 +50,14 @@ export class AppComponent implements OnInit, AfterViewInit{
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {
     afterNextRender(() => {
+       // csrf token
+      this.csrfTokenService.refreshCsrfToken().subscribe();
+
+       // book reading
+       const bookRead = localStorage.getItem(environment.bookReading);
+       if (bookRead === undefined || bookRead === null) {
+         this.GetBookReadingsByUserId();
+       }
       // scroll top
       router.events.pipe(
         filter(e => e instanceof NavigationEnd)
@@ -68,7 +76,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     // const date = new Date(dateString);
     // const timestamp = date.getTime() / 1000; // Chia cho 1000 để chuyển từ mili giây sang giây
     // console.log(timestamp);
-    this.csrfTokenService.refreshCsrfToken().subscribe();
+
     
     if (isPlatformBrowser(this.platformId)) {
 
@@ -77,19 +85,10 @@ export class AppComponent implements OnInit, AfterViewInit{
       //   this.csrfTokenService.setCsrfToken(await this.signatureService.decryptAESAsync(reponse.token));
       // });
 
-      
-
       if (localStorage.getItem('darkLight') === "dark-theme") {
         this.darkLight = "dark-theme";
         this.checked = true;
       } 
-
-      // book reading
-      const bookRead = localStorage.getItem(environment.bookReading);
-      if (bookRead === undefined || bookRead === null) {
-        this.GetBookReadingsByUserId();
-      }
-
     }
 
     this.getGenres();
