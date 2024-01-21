@@ -22,7 +22,7 @@ import { CookieService } from 'ngx-cookie-service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css' 
 })
-export class AppComponent implements OnInit, AfterViewInit{
+export class AppComponent implements OnInit{
   title = "Truyện Mới - Nguồn Cung Cấp Truyện Đa Dạng và Dịch Nhanh"
 
   genreListModel: GenreShowModel[] = [];
@@ -97,18 +97,6 @@ export class AppComponent implements OnInit, AfterViewInit{
    
     // //const sitemap = this.sitemapService.generateSitemap();
    
-  }
-
-  ngAfterViewInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      // Check if the platform is a browser before manipulating the DOM
-      const scriptElement = document.getElementById('ng-state');
-
-      if (scriptElement) {
-        // If the script tag exists, remove it from the DOM
-        this.renderer.removeChild(document.body, scriptElement);
-      }
-    }
   }
 
   // get genres
