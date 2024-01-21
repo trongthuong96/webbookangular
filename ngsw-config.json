@@ -22,7 +22,7 @@
       "resources": {
         "files": [
           "/favicon.ico",
-          "/index1.html",
+          "/index.html",
           "/manifest.webmanifest",
           "/*.css",
           "/*.js"
