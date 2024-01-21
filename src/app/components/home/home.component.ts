@@ -62,15 +62,15 @@ export class HomeComponent implements OnInit, AfterViewInit{
 
         this.combineRequests(1);
 
-        // console.log("check home")
+        console.log("check home")
 
-        // if (this.swUpdate.isEnabled) {
-        //   this.swUpdate.checkForUpdate().then(() => {
-        //     this.swUpdate.activateUpdate().then(() => {
-        //       console.log('Update complete.');
-        //     });
-        //   });      
-        // }
+        if (this.swUpdate.isEnabled) {
+          this.swUpdate.checkForUpdate().then(() => {
+            this.swUpdate.activateUpdate().then(() => {
+              console.log('Update complete.');
+            });
+          });      
+        }
        
       }
     });
