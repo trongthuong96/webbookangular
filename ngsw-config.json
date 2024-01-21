@@ -1,6 +1,5 @@
 {
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
-  "index": "/index1.html",
   "dataGroups": [
     {
       "name": "api-cache",
@@ -22,7 +21,7 @@
       "resources": {
         "files": [
           "/favicon.ico",
-          "/index.html",
+          "/index1.html",
           "/manifest.webmanifest",
           "/*.css",
           "/*.js"
