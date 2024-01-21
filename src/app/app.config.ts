@@ -9,6 +9,7 @@ import { ApiInterceptor } from './config/api.interceptor';
 import { CustomReuseStrategy } from './custom.reuse.strategy';
 import { IMAGE_CONFIG } from '@angular/common';
 import { provideServiceWorker } from '@angular/service-worker';
+import { CsrfInterceptor } from './config/CsrfInterceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -29,11 +30,11 @@ export const appConfig: ApplicationConfig = {
         useClass: ApiInterceptor,
         multi: true,
     },
-    // { 
-    //   provide: HTTP_INTERCEPTORS, 
-    //   useClass: CsrfInterceptor, 
-    //   multi: true 
-    // },
+    { 
+      provide: HTTP_INTERCEPTORS, 
+      useClass: CsrfInterceptor, 
+      multi: true 
+    },
     {
         provide: RouteReuseStrategy,
         useClass: CustomReuseStrategy,

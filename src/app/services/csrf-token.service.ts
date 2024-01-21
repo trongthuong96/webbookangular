@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable, map, tap } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { CookieService } from 'ngx-cookie-service';
 import { CsrfToken } from '../models/csrftoken/csrf.token.model';
@@ -30,18 +30,8 @@ export class CsrfTokenService {
     }
   }
 
-  refreshCsrfToken(): Observable<any> {
+  refreshCsrfToken(): Observable<CsrfToken> {
     // Gửi yêu cầu HTTP để lấy token mới từ server
-    return this.http.get<any>(`${environment.apiUrl}/csrf/refresh-token`, { observe: 'response',  withCredentials: true })
-      .pipe(
-        map((response: HttpResponse<any>) => {
-          // Lấy response headers từ đối tượng HttpResponse
-          const customHeaderValue = response.headers.keys();
-          console.log(`Giá trị của Custom-Header: ${customHeaderValue}`);
-          
-          // Trả về dữ liệu từ phản hồi
-          return response.body;
-        })
-      );
-  }  
+    return this.http.post<CsrfToken>(`${environment.apiUrl}/csrf/refresh-token`, {}, {  withCredentials: true  });
+  }
 }

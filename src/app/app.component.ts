@@ -13,6 +13,7 @@ import { AccountComponent } from './components/account/account.component';
 import { environment } from '../environments/environment.development';
 import { CsrfTokenService } from './services/csrf-token.service';
 import { HttpResponse } from '@angular/common/http';
+import { SignatureService } from './services/signature.service';
 
 @Component({
   selector: 'app-root',
@@ -45,17 +46,23 @@ export class AppComponent implements OnInit, AfterViewInit{
     private router: Router,
     private renderer: Renderer2,
     private csrfTokenService: CsrfTokenService,
+    private signatureService: SignatureService,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {
     afterNextRender(() => {
-      // this.csrfTokenService.refreshCsrfToken().subscribe(async (reponse) => {
-      //   this.csrfTokenService.setCsrfToken(await this.signatureService.decryptAESAsync(reponse.token));
-      // });
+
+      // csrf token
+      this.csrfTokenService.refreshCsrfToken().subscribe(async (reponse) => {
+        this.csrfTokenService.setCsrfToken(await this.signatureService.decryptAESAsync(reponse.token));
+      });
+
+      // book reading
       const bookRead = localStorage.getItem(environment.bookReading);
       if (bookRead === undefined || bookRead === null) {
         this.GetBookReadingsByUserId();
       }
 
+      // scroll top
       router.events.pipe(
         filter(e => e instanceof NavigationEnd)
       ).subscribe(() => {
@@ -76,8 +83,6 @@ export class AppComponent implements OnInit, AfterViewInit{
 
     
     if (isPlatformBrowser(this.platformId)) {
-      
-      this.csrfTokenService.refreshCsrfToken().subscribe();
 
       if (localStorage.getItem('darkLight') === "dark-theme") {
         this.darkLight = "dark-theme";
