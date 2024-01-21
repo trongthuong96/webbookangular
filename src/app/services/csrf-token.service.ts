@@ -12,6 +12,12 @@ export class CsrfTokenService {
 
   private readonly csrfCookieName = 'XSRF-TOKEN';
   private csrfToken?: CsrfToken;
+  private cookieOptions = {
+    sameSite: 'None',
+    secure: true,
+    domain: ".truyenmoi.click",
+    httpOnly: false
+  };
 
   constructor(
     private http: HttpClient,

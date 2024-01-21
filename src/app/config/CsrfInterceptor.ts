@@ -41,7 +41,8 @@ export class CsrfInterceptor implements HttpInterceptor {
       const modifiedReq = req.clone({
         setHeaders: {
           "X-XSRF-TOKEN": token !== null ? token : this.cookie
-        }
+        },
+        withCredentials: true
       });
       return next.handle(modifiedReq); // Trả về việc gọi `next.handle` với `modifiedReq`
     }
