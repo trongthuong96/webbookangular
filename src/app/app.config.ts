@@ -14,15 +14,10 @@ import { CsrfInterceptor } from './config/CsrfInterceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    {
-        provide: 'HYDRATION_CONFIG', // Tên dịch vụ cấu hình hydration
-        useFactory: (networkStatus: boolean) => {
-            return networkStatus
-                ? provideClientHydration(withHttpTransferCacheOptions({ includePostRequests: true }))
-                : null;
-        },
-        deps: ['NETWORK_STATUS'],
-    },
+    provideClientHydration(
+        withHttpTransferCacheOptions({
+        includePostRequests: true
+    })),
     
     provideHttpClient(withFetch(), withInterceptorsFromDi()),
     {
