@@ -32,7 +32,7 @@ export class CsrfTokenService {
 
   refreshCsrfToken(): Observable<any> {
     // Gửi yêu cầu HTTP để lấy token mới từ server
-    return this.http.get<any>(`${environment.apiUrl}/csrf/refresh-token`, { observe: 'response' })
+    return this.http.get<any>(`${environment.apiUrl}/csrf/refresh-token`, { observe: 'response',  withCredentials: true })
       .pipe(
         map((response: HttpResponse<any>) => {
           // Lấy response headers từ đối tượng HttpResponse
