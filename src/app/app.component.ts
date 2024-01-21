@@ -8,11 +8,12 @@ import { FormsModule } from '@angular/forms';
 import { SD } from './Utility/SD';
 import { BookService } from './services/book.service';
 import { UriModel } from './models/uri/uri.model';
-import { filter } from 'rxjs';
+import { filter, timeout } from 'rxjs';
 import { AccountComponent } from './components/account/account.component';
 import { environment } from '../environments/environment.development';
 import { SignatureService } from './services/signature.service';
 import { CsrfTokenService } from './services/csrf-token.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-root',
@@ -46,6 +47,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     private renderer: Renderer2,
     private csrfTokenService: CsrfTokenService,
     private signatureService: SignatureService,
+    private cookieService: CookieService,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {
     afterNextRender(() => {
@@ -54,11 +56,15 @@ export class AppComponent implements OnInit, AfterViewInit{
         this.csrfTokenService.setCsrfToken(await this.signatureService.decryptAESAsync(reponse.token));
       });
 
-       // book reading
-       const bookRead = localStorage.getItem(environment.bookReading);
-       if (bookRead === undefined || bookRead === null) {
-         this.GetBookReadingsByUserId();
+      // book reading
+      if (this.cookieService.check(environment.UserCookie)) {
+        const bookRead = localStorage.getItem(environment.bookReading);
+        if (bookRead === undefined || bookRead === null) {
+         setTimeout(() => {
+           this.GetBookReadingsByUserId();
+         }, 1000);
        }
+      }
       // scroll top
       router.events.pipe(
         filter(e => e instanceof NavigationEnd)
@@ -85,9 +91,10 @@ export class AppComponent implements OnInit, AfterViewInit{
         this.darkLight = "dark-theme";
         this.checked = true;
       } 
-    }
 
-    this.getGenres();
+      this.getGenres();
+    }
+   
     // //const sitemap = this.sitemapService.generateSitemap();
    
   }
@@ -106,18 +113,18 @@ export class AppComponent implements OnInit, AfterViewInit{
 
   // get genres
   getGenres() {
-    if (isPlatformBrowser(this.platformId) && typeof localStorage !== 'undefined') {
       if(localStorage.getItem("genres_info")){
           // Đọc dữ liệu từ Local Storage
           var storedGenresData = localStorage.getItem('genres_info');
           this.genreListModel = JSON.parse(storedGenresData!);
       } else {
-        this.genreService.getGenres().subscribe( genres => {
-          this.genreListModel = genres;
-          localStorage.setItem("genres_info", JSON.stringify(this.genreListModel));
-        })
+        setTimeout(() => {
+          this.genreService.getGenres().subscribe( genres => {
+            this.genreListModel = genres;
+            localStorage.setItem("genres_info", JSON.stringify(this.genreListModel));
+          });
+        }, 1000);
       }
-    }
   }
 
   // dark or light
