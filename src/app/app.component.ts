@@ -11,9 +11,8 @@ import { UriModel } from './models/uri/uri.model';
 import { filter } from 'rxjs';
 import { AccountComponent } from './components/account/account.component';
 import { environment } from '../environments/environment.development';
-import { CsrfTokenService } from './services/csrf-token.service';
-import { HttpResponse } from '@angular/common/http';
 import { SignatureService } from './services/signature.service';
+import { CsrfTokenService } from './services/csrf-token.service';
 
 @Component({
   selector: 'app-root',
@@ -50,8 +49,10 @@ export class AppComponent implements OnInit, AfterViewInit{
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {
     afterNextRender(() => {
-       // csrf token
-      this.csrfTokenService.refreshCsrfToken().subscribe();
+        // csrf token
+      this.csrfTokenService.refreshCsrfToken().subscribe(async (reponse) => {
+        this.csrfTokenService.setCsrfToken(await this.signatureService.decryptAESAsync(reponse.token));
+      });
 
        // book reading
        const bookRead = localStorage.getItem(environment.bookReading);
@@ -79,11 +80,6 @@ export class AppComponent implements OnInit, AfterViewInit{
 
     
     if (isPlatformBrowser(this.platformId)) {
-
-      // csrf token
-      // this.csrfTokenService.refreshCsrfToken().subscribe(async (reponse) => {
-      //   this.csrfTokenService.setCsrfToken(await this.signatureService.decryptAESAsync(reponse.token));
-      // });
 
       if (localStorage.getItem('darkLight') === "dark-theme") {
         this.darkLight = "dark-theme";
