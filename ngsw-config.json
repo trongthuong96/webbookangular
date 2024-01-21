@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
-  "index": "/index.html",
+  "index": "/index1.html",
   "dataGroups": [
     {
       "name": "api-cache",
@@ -9,9 +9,9 @@
       ],
       "cacheConfig": {
         "maxSize": 1000000,
+        "timeout": "0u",
         "maxAge": "365d",
-        "strategy": "freshness",
-        "timeout": "0u"
+        "strategy": "freshness"
       }
     }
   ],
@@ -22,7 +22,6 @@
       "resources": {
         "files": [
           "/favicon.ico",
-          "/index1.html",
           "/manifest.webmanifest",
           "/*.css",
           "/*.js"
