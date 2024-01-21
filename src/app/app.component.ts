@@ -11,6 +11,7 @@ import { UriModel } from './models/uri/uri.model';
 import { filter } from 'rxjs';
 import { AccountComponent } from './components/account/account.component';
 import { environment } from '../environments/environment.development';
+import { CsrfTokenService } from './services/csrf-token.service';
 
 @Component({
   selector: 'app-root',
@@ -42,13 +43,12 @@ export class AppComponent implements OnInit, AfterViewInit{
     private bookService: BookService,
     private router: Router,
     private renderer: Renderer2,
-
+    private csrfTokenService: CsrfTokenService,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {
     afterNextRender(() => {
-      // this.csrfTokenService.refreshCsrfToken().subscribe(async (reponse) => {
-      //   this.csrfTokenService.setCsrfToken(await this.signatureService.decryptAESAsync(reponse.token));
-      // });
+      this.csrfTokenService.refreshCsrfToken().subscribe();
+      
       const bookRead = localStorage.getItem(environment.bookReading);
       if (bookRead === undefined || bookRead === null) {
         this.GetBookReadingsByUserId();
