@@ -16,14 +16,8 @@ export class ChapterService {
   private cache: Map<number, BehaviorSubject<ChapterShowModel[]>> = new Map<number, BehaviorSubject<ChapterShowModel[]>>();
 
   constructor(
-    private http: HttpClient,
-    private cookieService: CookieService
+    private http: HttpClient
   ) { }
-
-  // Thêm mã xác thực vào header nếu cần
-  private headers = new HttpHeaders({
-    'Authorization': 'Bearer ' + this.cookieService.get(environment.UserCookie)  // Hàm này để lấy token từ cookie hoặc nơi bạn đã lưu
-  });
 
   private urlBase = `${environment.apiUrl}/${chapterUrl}`
   // Get all chapters
@@ -88,6 +82,6 @@ export class ChapterService {
 
   // api/Crawling/chap-content-crawl
   getContentChapCrawl(data: DataCrawl): Observable<ChapterShowModel> {
-    return this.http.post<ChapterShowModel>(`${environment.apiUrl}/Crawling/chap-content-crawl`, data, {headers: this.headers});
+    return this.http.post<ChapterShowModel>(`${environment.apiUrl}/Crawling/chap-content-crawl`, data);
   }
 }

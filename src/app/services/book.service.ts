@@ -16,14 +16,8 @@ import { BookReadingModel } from '../models/book.reading/book.reading.model';
 export class BookService {
 
   constructor(
-    private http: HttpClient,
-    private cookieService: CookieService
+    private http: HttpClient
   ) {}
-  
-  // Thêm mã xác thực vào header nếu cần
-  private headers = new HttpHeaders({
-    'Authorization': 'Bearer ' + this.cookieService.get(environment.UserCookie)  // Hàm này để lấy token từ cookie hoặc nơi bạn đã lưu
-  });
 
   private urlBase = `${environment.apiUrl}/${bookUrl}`;
 
@@ -114,12 +108,12 @@ export class BookService {
   ////api/Crawling/book-listchap-crawl crawl trang 69shu fanqie
   GetBookAndListChapterCrawl(uri: UriModel): Observable<string> {
     const url = `${environment.apiUrl}/Crawling/book-listchap-crawl`;
-    return this.http.post(url, uri, { responseType: 'text', headers: this.headers });
+    return this.http.post(url, uri, { responseType: 'text' });
   }
 
   //api/BookReading
   GetBookReadingsByUserId(): Observable<BookReadingModel[]> {
     const url = `${environment.apiUrl}/BookReading`;
-    return this.http.get<BookReadingModel[]>(url, { headers: this.headers });
+    return this.http.get<BookReadingModel[]>(url);
   }
 }

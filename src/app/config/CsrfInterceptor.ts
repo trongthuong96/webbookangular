@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { isPlatformServer } from '@angular/common';
 import { environment } from '../../environments/environment.development';
 import { CsrfTokenService } from '../services/csrf-token.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class CsrfInterceptor implements HttpInterceptor {
@@ -18,6 +19,7 @@ export class CsrfInterceptor implements HttpInterceptor {
 
   constructor(
     private csrfTokenService: CsrfTokenService,
+    private cookieService: CookieService,
     @Inject(PLATFORM_ID) private platformId: Object
     ) {}
 
@@ -40,7 +42,10 @@ export class CsrfInterceptor implements HttpInterceptor {
       const token = this.csrfTokenService.getCsrfToken();
       const modifiedReq = req.clone({
         setHeaders: {
-          "X-XSRF-TOKEN": token !== null ? token : this.cookie
+          // csrf token
+          "X-XSRF-TOKEN": token !== null ? token : this.cookie,
+          // author token
+          'Authorization': 'Bearer ' + this.cookieService.get(environment.UserCookie)
         },
         withCredentials: true
       });

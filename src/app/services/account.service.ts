@@ -13,14 +13,8 @@ import { RegisterModel } from '../models/user/register.model';
 })
 export class AccountService {
 
-  // Thêm mã xác thực vào header nếu cần
-  private headers = new HttpHeaders({
-    'Authorization': 'Bearer ' + this.cookieService.get(environment.UserCookie)  // Hàm này để lấy token từ cookie hoặc nơi bạn đã lưu
-  });
-
   constructor(
-    private http: HttpClient,
-    private cookieService: CookieService
+    private http: HttpClient
   ) {}
 
   private urlBase = `${environment.apiUrl}/account`;  
@@ -34,11 +28,11 @@ export class AccountService {
   }
 
   getUserProfile(): Observable<UserProfileModel> {
-    return this.http.get<UserProfileModel>(`${this.urlBase}/profile`, {headers: this.headers});
+    return this.http.get<UserProfileModel>(`${this.urlBase}/profile`);
   }
 
   editUserProfile(userProfile: UserProfileModel): Observable<Reponse> {
-    return this.http.put<Reponse>(`${this.urlBase}/edit`, userProfile, {headers: this.headers});
+    return this.http.put<Reponse>(`${this.urlBase}/edit`, userProfile);
   }
 }
 
