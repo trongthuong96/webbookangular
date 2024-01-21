@@ -68,7 +68,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     // const date = new Date(dateString);
     // const timestamp = date.getTime() / 1000; // Chia cho 1000 để chuyển từ mili giây sang giây
     // console.log(timestamp);
-
+    this.csrfTokenService.refreshCsrfToken().subscribe();
     
     if (isPlatformBrowser(this.platformId)) {
 
@@ -77,7 +77,7 @@ export class AppComponent implements OnInit, AfterViewInit{
       //   this.csrfTokenService.setCsrfToken(await this.signatureService.decryptAESAsync(reponse.token));
       // });
 
-      this.csrfTokenService.refreshCsrfToken().subscribe();
+      
 
       if (localStorage.getItem('darkLight') === "dark-theme") {
         this.darkLight = "dark-theme";
