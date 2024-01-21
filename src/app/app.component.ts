@@ -12,6 +12,7 @@ import { filter } from 'rxjs';
 import { AccountComponent } from './components/account/account.component';
 import { environment } from '../environments/environment.development';
 import { CsrfTokenService } from './services/csrf-token.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -76,19 +77,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     
     if (isPlatformBrowser(this.platformId)) {
       
-      this.csrfTokenService.refreshCsrfToken().subscribe((response) => {
-        // Lấy giá trị từ header 'Set-Cookie'
-        const setCookieHeader = response.headers.get('Set-Cookie');
-
-        // Tách các giá trị cookie
-        const cookies = setCookieHeader.split(';');
-
-        // Lặp qua từng giá trị cookie để lấy giá trị cụ thể
-        cookies.forEach((cookie: { split: (arg0: string) => [any, any]; }) => {
-          const [name, value] = cookie.split('=');
-          console.log(`Tên Cookie: ${name.trim()}, Giá Trị: ${value.trim()}`);
-        });
-      });
+      this.csrfTokenService.refreshCsrfToken().subscribe();
 
       if (localStorage.getItem('darkLight') === "dark-theme") {
         this.darkLight = "dark-theme";
