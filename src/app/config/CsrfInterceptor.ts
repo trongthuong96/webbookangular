@@ -6,9 +6,9 @@ import {
   HttpEvent
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CsrfTokenService } from '../services/csrf-token.service';
 import { isPlatformServer } from '@angular/common';
 import { environment } from '../../environments/environment.development';
+import { CsrfTokenService } from '../services/csrf-token.service';
 
 @Injectable()
 export class CsrfInterceptor implements HttpInterceptor {

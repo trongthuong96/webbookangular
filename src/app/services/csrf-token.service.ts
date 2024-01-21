@@ -11,13 +11,6 @@ import { CsrfToken } from '../models/csrftoken/csrf.token.model';
 export class CsrfTokenService {
 
   private readonly csrfCookieName = 'XSRF-TOKEN';
-  private csrfToken?: CsrfToken;
-  private cookieOptions = {
-    sameSite: 'None',
-    secure: true,
-    domain: ".truyenmoi.click",
-    httpOnly: false
-  };
 
   constructor(
     private http: HttpClient,
@@ -30,7 +23,7 @@ export class CsrfTokenService {
 
   setCsrfToken(token: string | null): void {
     if (token) {
-      this.cookieService.set(this.csrfCookieName, token);
+      this.cookieService.set(this.csrfCookieName, token, undefined, "/");
     } else {
       this.cookieService.delete(this.csrfCookieName);
     }
