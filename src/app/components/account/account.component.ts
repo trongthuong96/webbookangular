@@ -45,17 +45,19 @@ export class AccountComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
-    if (this.cookieService.check(environment.UserCookie)){
-      if (localStorage.getItem(environment.UserProfileLocal)) {
-        const storedUserProfile = localStorage.getItem(environment.UserProfileLocal);
-      
-        if (storedUserProfile) {
-          // Chuyển đổi chuỗi thành đối tượng
-          this.userProfile = JSON.parse(storedUserProfile)!;
+    if (isPlatformBrowser(this.platformId)) {
+      if (this.cookieService.check(environment.UserCookie)){
+        if (localStorage.getItem(environment.UserProfileLocal)) {
+          const storedUserProfile = localStorage.getItem(environment.UserProfileLocal);
+        
+          if (storedUserProfile) {
+            // Chuyển đổi chuỗi thành đối tượng
+            this.userProfile = JSON.parse(storedUserProfile)!;
+          }
+  
+        } else {
+          this.getUserProfile();
         }
-
-      } else {
-        this.getUserProfile();
       }
     }
   }
