@@ -9,7 +9,7 @@
       ],
       "cacheConfig": {
         "maxSize": 1000000,
-        "timeout": "0u",
+        "timeout": "500u",
         "maxAge": "365d",
         "strategy": "freshness"
       }
