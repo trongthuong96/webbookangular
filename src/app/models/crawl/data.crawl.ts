@@ -1,5 +1,5 @@
 export class DataCrawl {
-    bookId!: number;
-    chineseBookId!: number;
-    chapterIndex!: number;
-  }
+  bookId!: number;
+  chineseBookId!: number;
+  chapterIndex!: number;
+}

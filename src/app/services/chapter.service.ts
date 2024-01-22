@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { chapterUrl } from '../config/api.config';
@@ -82,6 +82,13 @@ export class ChapterService {
 
   // api/Crawling/chap-content-crawl
   getContentChapCrawl(data: DataCrawl): Observable<ChapterShowModel> {
-    return this.http.post<ChapterShowModel>(`${environment.apiUrl}/Crawling/chap-content-crawl`, data);
+    // Chuyển đổi đối tượng DataCrawl thành HttpParams
+    const params = new HttpParams()
+      .set('bookId', data.bookId)
+      .set('chineseBookId', data.chineseBookId)
+      .set('chapterIndex', data.chapterIndex);
+
+    // Thực hiện request với phương thức GET và truyền tham số qua URL
+    return this.http.get<ChapterShowModel>(`${environment.apiUrl}/Crawling/chap-content-crawl`, { params });
   }
 }
