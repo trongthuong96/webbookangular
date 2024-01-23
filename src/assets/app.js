@@ -60,40 +60,44 @@ document.addEventListener("DOMContentLoaded", function () {
   // Lấy button và input
 const passwordInput = document.getElementById('registerPassword'); 
 const showBtn = document.querySelector('.show-password-btn');
-
-// Xử lý click để toggle
-showBtn.addEventListener('click', function() {
-  // Đổi type password/text
-  passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password'; 
-  
-  // Đổi icon eye <i class="fa-regular fa-eye-slash"></i>
-  eyeIcon(this)
-})
-
+if (showBtn) {
+    // Xử lý click để toggle
+    showBtn.addEventListener('click', function() {
+    // Đổi type password/text
+    passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password'; 
+    
+    // Đổi icon eye <i class="fa-regular fa-eye-slash"></i>
+    eyeIcon(this)
+    })
+}
 
 const passwordConfirmInput = document.getElementById('registerPasswordConfirm'); 
 const showConfirmBtn = document.querySelector('.show-passwordConfirm-btn');
 
-// Xử lý click để toggle
-showConfirmBtn.addEventListener('click', function() {
-    // Đổi type password/text
-    passwordConfirmInput.type = passwordConfirmInput.type === 'password' ? 'text' : 'password'; 
-    
-    // Đổi icon eye <i class="fa-regular fa-eye-slash"></i>
-    eyeIcon(this)
-})
+if (showConfirmBtn) {
+    // Xử lý click để toggle
+    showConfirmBtn.addEventListener('click', function() {
+        // Đổi type password/text
+        passwordConfirmInput.type = passwordConfirmInput.type === 'password' ? 'text' : 'password'; 
+        
+        // Đổi icon eye <i class="fa-regular fa-eye-slash"></i>
+        eyeIcon(this)
+    })
+}
 
 const passwordLoginInput = document.getElementById('loginPassword'); 
 const showLoginBtn = document.querySelector('.show-password-login-btn');
 
-// Xử lý click để toggle
-showLoginBtn.addEventListener('click', function() {
-    // Đổi type password/text
-    passwordLoginInput.type = passwordLoginInput.type === 'password' ? 'text' : 'password'; 
-    
-    // Đổi icon eye <i class="fa-regular fa-eye-slash"></i>
-    eyeIcon(this)
-})
+if (showLoginBtn) {
+    // Xử lý click để toggle
+    showLoginBtn.addEventListener('click', function() {
+        // Đổi type password/text
+        passwordLoginInput.type = passwordLoginInput.type === 'password' ? 'text' : 'password'; 
+        
+        // Đổi icon eye <i class="fa-regular fa-eye-slash"></i>
+        eyeIcon(this)
+    })
+}
 
 function eyeIcon(btn) {
 // Đổi icon eye <i class="fa-regular fa-eye-slash"></i>
