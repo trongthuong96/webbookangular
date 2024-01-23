@@ -11,7 +11,7 @@ import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular
 import { SD } from '../../Utility/SD';
 import { UriModel } from '../../models/uri/uri.model';
 import { filter } from 'rxjs';
-import { NgHttpLoaderModule } from 'ng-http-loader';
+import { NgHttpLoaderModule, SpinnerVisibilityService } from 'ng-http-loader';
 import { RestoreScrollPositonDirective } from '../../directives/restore.scroll.positon.directive';
 
 @Component({
@@ -65,6 +65,7 @@ export class SearchComponent implements OnInit, AfterViewInit{
     private route: ActivatedRoute,
     private router: Router,
     private titleService: Title,
+    private spinner: SpinnerVisibilityService
   ) {
      /// Form search
      this.searchForm = new FormGroup({
@@ -155,7 +156,10 @@ export class SearchComponent implements OnInit, AfterViewInit{
       if (genre) {
         this.totalPages! = genre!.totalPages;
         this.titleService.setTitle(genre.name);
+        this.spinner.hide();
       }
+    }, (e) => {
+      this.spinner.hide();
     });
   }
 
@@ -164,6 +168,9 @@ export class SearchComponent implements OnInit, AfterViewInit{
     this.bookService.GetBookByTitle(title, page).subscribe(bookTotal => {
       this.booksTotal = bookTotal;
       this.totalPages = this.booksTotal.totalPages;
+      this.spinner.hide();
+    }, (e) => {
+      this.spinner.hide();
     });
   }
 
@@ -359,6 +366,10 @@ export class SearchComponent implements OnInit, AfterViewInit{
     this.bookService.GetBookSearchAll(keyword, status, genre, chapLength, page).subscribe (book => {
       this.booksTotal = book;
       this.totalPages = this.booksTotal.totalPages;
+      this.spinner.hide();
+    },
+    (e) => {
+      this.spinner.hide();
     });
   }
 }

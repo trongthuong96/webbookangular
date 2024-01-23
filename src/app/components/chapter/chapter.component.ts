@@ -8,7 +8,7 @@ import { DataCrawl } from '../../models/crawl/data.crawl';
 import { BookReadingModel } from '../../models/book.reading/book.reading.model';
 import { environment } from '../../../environments/environment.development';
 import { filter } from 'rxjs';
-import { NgHttpLoaderModule } from 'ng-http-loader';
+import { NgHttpLoaderModule, SpinnerVisibilityService } from 'ng-http-loader';
 import { RestoreScrollPositonDirective } from '../../directives/restore.scroll.positon.directive';
 
 
@@ -50,6 +50,7 @@ export class ChapterComponent implements OnInit, AfterViewInit{
     private router: Router,
     private titleService: Title,
     @Inject(PLATFORM_ID) private platformId: Object,
+    private spinner: SpinnerVisibilityService
   ) {}
 
   ngOnInit(): void {
@@ -120,6 +121,7 @@ export class ChapterComponent implements OnInit, AfterViewInit{
           this.addBookReadLocal();
         }
       
+        this.spinner.hide();
       },
       (error) => {
         this.router.navigate(['/truyen',this.bookSlug]);
