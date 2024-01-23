@@ -31,6 +31,6 @@ export class CsrfTokenService {
 
   refreshCsrfToken(): Observable<CsrfToken> {
     // Gửi yêu cầu HTTP để lấy token mới từ server
-    return this.http.post<CsrfToken>(`${environment.apiUrl}/csrf/refresh-token`, {}, {  withCredentials: true  });
+    return this.http.get<CsrfToken>(`${environment.apiUrl}/csrf/refresh-token`, {  withCredentials: true  });
   }
 }

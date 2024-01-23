@@ -52,52 +52,32 @@ export class HomeComponent implements OnInit{
 
   ngOnInit(): void {
 
-    this.GetBooksOrderByViewsAt(1);
-    this.GetBooksOrderByUpdatedAt(1);
-    this.GetBooksStatus(1);
-
+    this.combineRequests(1);
+    
     this.titleService.setTitle("Truyện Mới - Nguồn Cung Cấp Truyện Đa Dạng và Dịch Nhanh");
+
   }
 
-  // combineRequests(page: number): void {
-  //   const booksOrderByViews$ = this.bookService.GetBooksOrderByViewsAt(page);
-  //   const booksOrderByUpdatedAt$ = this.bookService.GetBooksOrderByUpdatedAt(page);
-  //   const booksStatus$ = this.bookService.GetBookStatus(page);
+  combineRequests(page: number): void {
+    const booksOrderByViews$ = this.bookService.GetBooksOrderByViewsAt(page);
+    const booksOrderByUpdatedAt$ = this.bookService.GetBooksOrderByUpdatedAt(page);
+    const booksStatus$ = this.bookService.GetBookStatus(page);
   
-  //   forkJoin({
-  //     booksOrderByViews: booksOrderByViews$,
-  //     booksOrderByUpdatedAt: booksOrderByUpdatedAt$,
-  //     booksStatus: booksStatus$
-  //   }).subscribe({
-  //     next: (results: any) => {
-  //       this.bookListView = results.booksOrderByViews;
-  //       this.bookListUpdateAt = results.booksOrderByUpdatedAt;
-  //       this.bookListStatus = results.booksStatus; 
-  //     },
-  //     error: (error) => {
-  //       // Xử lý lỗi nếu cần
-  //     }
-  //   });
-  // }
-
-  GetBooksOrderByViewsAt(page: number): void {
-    this.bookService.GetBooksOrderByViewsAt(page).subscribe(books => {
-      this.bookListView = books;
-    })
+    forkJoin({
+      booksOrderByViews: booksOrderByViews$,
+      booksOrderByUpdatedAt: booksOrderByUpdatedAt$,
+      booksStatus: booksStatus$
+    }).subscribe({
+      next: (results: any) => {
+        this.bookListView = results.booksOrderByViews;
+        this.bookListUpdateAt = results.booksOrderByUpdatedAt;
+        this.bookListStatus = results.booksStatus; 
+      },
+      error: (error) => {
+        // Xử lý lỗi nếu cần
+      }
+    });
   }
-
-  GetBooksOrderByUpdatedAt(page: number): void {
-    this.bookService.GetBooksOrderByUpdatedAt(page).subscribe(books => {
-      this.bookListUpdateAt = books;
-    })
-  }
-
-  GetBooksStatus(page: number): void {
-    this.bookService.GetBookStatus(page).subscribe(books => {
-      this.bookListStatus = books;
-    })
-  }
-
 
   SubmitAddBook() {
     this.test = this.addBookForm.value.title;
