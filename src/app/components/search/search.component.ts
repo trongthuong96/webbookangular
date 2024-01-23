@@ -10,7 +10,7 @@ import { Title } from '@angular/platform-browser';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { SD } from '../../Utility/SD';
 import { UriModel } from '../../models/uri/uri.model';
-import { filter } from 'rxjs';
+import { filter, fromEvent, take } from 'rxjs';
 import { NgHttpLoaderModule, SpinnerVisibilityService } from 'ng-http-loader';
 import { RestoreScrollPositonDirective } from '../../directives/restore.scroll.positon.directive';
 
@@ -184,6 +184,25 @@ export class SearchComponent implements OnInit, AfterViewInit{
       queryParams: { page: this.currentPage },
       queryParamsHandling: 'merge',
     });
+  }
+
+   // scroll when change page
+   scrollChangePage() {
+    // Cuộn đến một phần tử cụ thể có id là 'elementId'
+    const element = document.getElementById('filter-result');
+    if (element) {
+      const scroll$ = fromEvent(document, 'scroll').pipe(
+        take(1), // Chỉ lắng nghe 1 lần scroll
+     );
+   
+     scroll$.subscribe({
+       next: () => {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'auto' });
+        });
+       }
+     })
+    }    
   }
 
   //START STATUS

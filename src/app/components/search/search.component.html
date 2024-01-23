@@ -225,7 +225,7 @@
 
        <!-- Your component content here -->
         <ng-container *ngIf="(genreParam !== undefined || bookParam !== undefined || keyword !== undefined) && totalPages > 0">
-            <app-pagination [totalPages]="totalPages" [currentPage]="currentPage" (pageChange)="handlePageChange($event)"></app-pagination>
+            <app-pagination [totalPages]="totalPages" [currentPage]="currentPage" (pageChange)="handlePageChange($event)" (click)="scrollChangePage()"></app-pagination>
         </ng-container>
     </section>
 </div>
