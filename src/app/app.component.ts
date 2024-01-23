@@ -88,6 +88,15 @@ export class AppComponent implements OnInit{
       } 
     }
 
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('message', (event) => {
+        // Xử lý phản hồi từ Service Worker
+        if (event.data.type === 'fetchResponse') {
+          console.log('Phản hồi từ Service Worker:', event.data.data);
+        }
+      });
+    }
+
     // //const sitemap = this.sitemapService.generateSitemap();
    
   }
@@ -99,10 +108,12 @@ export class AppComponent implements OnInit{
       // Đọc dữ liệu từ Local Storage
       this.genreListModel = JSON.parse(storedGenresData);
     } else {
-      this.genreService.getGenres().subscribe(genres => {
-        this.genreListModel = genres;
-        localStorage.setItem("genres_info", JSON.stringify(this.genreListModel));
-      });
+      setTimeout(() => {
+        this.genreService.getGenres().subscribe(genres => {
+          this.genreListModel = genres;
+          localStorage.setItem("genres_info", JSON.stringify(this.genreListModel));
+        });
+      }, 1000)
     }
   }
 
