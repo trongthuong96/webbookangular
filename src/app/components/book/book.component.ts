@@ -14,7 +14,7 @@ import { DataChapCrawl } from '../../models/crawl/data.chap.crawl';
 import { filter, switchMap } from 'rxjs';
 import { BookReadingModel } from '../../models/book.reading/book.reading.model';
 import { environment } from '../../../environments/environment.development';
-import { NgHttpLoaderModule } from 'ng-http-loader';
+import { NgHttpLoaderModule, SpinnerVisibilityService } from 'ng-http-loader';
 import { RestoreScrollPositonDirective } from '../../directives/restore.scroll.positon.directive';
 
 @Component({
@@ -64,7 +64,8 @@ export class BookComponent implements OnInit, AfterViewInit{
     private titleService: TitleService,
     private chapterService: ChapterService,
     private transferState: TransferState,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private spinner: SpinnerVisibilityService
   ) 
   {}
 
@@ -226,7 +227,10 @@ export class BookComponent implements OnInit, AfterViewInit{
     this.chapterService.getChaptersByChineseBookId(chineseBookId).subscribe((chaps) => {
       if (chaps.length !== 0) {
         this.chapters = chaps;
+        this.spinner.hide();
       } 
+    }, (e) => {
+      this.spinner.hide();
     });
   }
 
