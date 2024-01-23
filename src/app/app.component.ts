@@ -88,14 +88,14 @@ export class AppComponent implements OnInit{
       } 
     }
 
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.addEventListener('message', (event) => {
-        // Xử lý phản hồi từ Service Worker
-        if (event.data.type === 'fetchResponse') {
-          console.log('Phản hồi từ Service Worker:', event.data.data);
-        }
-      });
-    }
+    // if ('serviceWorker' in navigator) {
+    //   navigator.serviceWorker.addEventListener('message', (event) => {
+    //     // Xử lý phản hồi từ Service Worker
+    //     if (event.data.type === 'fetchResponse') {
+    //       console.log('Phản hồi từ Service Worker:', event.data.data);
+    //     }
+    //   });
+    // }
 
     // //const sitemap = this.sitemapService.generateSitemap();
    
