@@ -9,7 +9,7 @@ import { BookShowListModel } from '../../models/book/book.list.model';
 import BookShowModel from '../../models/book/book.one.model';
 import { TitleService } from '../../services/title.service';
 import { forkJoin } from 'rxjs';
-import { NgHttpLoaderModule } from 'ng-http-loader';
+import { NgHttpLoaderModule, SpinnerVisibilityService } from 'ng-http-loader';
 import { RestoreScrollPositonDirective } from '../../directives/restore.scroll.positon.directive';
 
 @Component({
@@ -48,6 +48,7 @@ export class HomeComponent implements OnInit{
   constructor(
     private bookService: BookService,
     private titleService: TitleService,
+    private spinner: SpinnerVisibilityService
   ) {}
 
   ngOnInit(): void {
@@ -72,9 +73,11 @@ export class HomeComponent implements OnInit{
         this.bookListView = results.booksOrderByViews;
         this.bookListUpdateAt = results.booksOrderByUpdatedAt;
         this.bookListStatus = results.booksStatus; 
+        this.spinner.hide();
       },
       error: (error) => {
         // Xử lý lỗi nếu cần
+        this.spinner.hide();
       }
     });
   }

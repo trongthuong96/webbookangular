@@ -58,7 +58,7 @@ export class AccountComponent implements OnInit{
         } else {
           setTimeout(() => {
             this.getUserProfile();
-          }, 1000);
+          }, 2000);
         }
       }
     }

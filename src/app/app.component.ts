@@ -48,17 +48,7 @@ export class AppComponent implements OnInit{
     private cookieService: CookieService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-
-    // if ('serviceWorker' in navigator) {
-    //   console.log("xin chao")
-    //   navigator.serviceWorker.addEventListener('message', event => {
-    //     console.log("xin chao 1: " + event)
-    //     if (event.data && event.data.type === 'fetchResponse') {
-    //       console.log('Phản hồi từ Service Worker:', event.data.data);
-    //     }
-    //   }); 
-    // }
-
+    
     afterNextRender(() => {
         // csrf token
       this.csrfTokenService.refreshCsrfToken().subscribe(async (reponse) => {
@@ -71,7 +61,7 @@ export class AppComponent implements OnInit{
         if (bookRead === undefined || bookRead === null) {
          setTimeout(() => {
            this.GetBookReadingsByUserId();
-         }, 1000);
+         }, 2000);
        }
       }
     });
@@ -98,8 +88,7 @@ export class AppComponent implements OnInit{
       } 
     }
 
-    // //const sitemap = this.sitemapService.generateSitemap();
-   
+    // //const sitemap = this.sitemapService.generateSitemap();   
   }
 
   // get genres
