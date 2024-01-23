@@ -13,7 +13,6 @@ import { environment } from '../environments/environment.development';
 import { SignatureService } from './services/signature.service';
 import { CsrfTokenService } from './services/csrf-token.service';
 import { CookieService } from 'ngx-cookie-service';
-import { NavigationService } from './services/navigation.service';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +35,6 @@ export class AppComponent implements OnInit{
 
   // csrf token
   csrfTokenKey = makeStateKey<string>('csrfToken');
-  token = "";
 
   /**
    *
@@ -82,34 +80,28 @@ export class AppComponent implements OnInit{
     
     if (isPlatformBrowser(this.platformId)) {
 
+      this.getGenres();
+
       if (localStorage.getItem('darkLight') === "dark-theme") {
         this.darkLight = "dark-theme";
         this.checked = true;
       } 
     }
 
-    this.getGenres();
-   
     // //const sitemap = this.sitemapService.generateSitemap();
    
   }
 
   // get genres
   getGenres() {
-    if (isPlatformBrowser(this.platformId)) {
-      const storedGenresData = localStorage.getItem('genres_info');
-      if ( storedGenresData !== null && storedGenresData !== undefined && storedGenresData !== '') {
-        // Đọc dữ liệu từ Local Storage
-        this.genreListModel = JSON.parse(storedGenresData);
-      } else {
-        this.genreService.getGenres().subscribe(genres => {
-          this.genreListModel = genres;
-          localStorage.setItem("genres_info", JSON.stringify(this.genreListModel));
-        });
-      }
+    const storedGenresData = localStorage.getItem('genres_info');
+    if ( storedGenresData !== null && storedGenresData !== undefined && storedGenresData !== '') {
+      // Đọc dữ liệu từ Local Storage
+      this.genreListModel = JSON.parse(storedGenresData);
     } else {
       this.genreService.getGenres().subscribe(genres => {
         this.genreListModel = genres;
+        localStorage.setItem("genres_info", JSON.stringify(this.genreListModel));
       });
     }
   }
