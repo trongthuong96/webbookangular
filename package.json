@@ -29,6 +29,7 @@
     "express": "^4.18.2",
     "http-proxy-middleware": "^2.0.6",
     "localtunnel": "^2.0.2",
+    "ng-http-loader": "^15.0.0",
     "ngx-cookie-service": "^17.0.1",
     "rxjs": "~7.8.0",
     "sitemap": "^7.1.1",

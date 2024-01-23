@@ -1,4 +1,4 @@
-import { Component, OnInit, PLATFORM_ID, Inject, TransferState, afterNextRender, AfterViewInit } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, Inject, TransferState, AfterViewInit } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { BookService } from '../../services/book.service';
 import BookShowModel from '../../models/book/book.one.model';
@@ -14,13 +14,17 @@ import { DataChapCrawl } from '../../models/crawl/data.chap.crawl';
 import { filter, switchMap } from 'rxjs';
 import { BookReadingModel } from '../../models/book.reading/book.reading.model';
 import { environment } from '../../../environments/environment.development';
+import { NgHttpLoaderModule } from 'ng-http-loader';
+import { RestoreScrollPositonDirective } from '../../directives/restore.scroll.positon.directive';
 
 @Component({
   selector: 'app-book',
   standalone: true,
   imports: [
     CommonModule, 
-    RouterLink
+    RouterLink,
+    NgHttpLoaderModule,
+    RestoreScrollPositonDirective
   ],
   templateUrl: './book.component.html',
   styleUrl: './book.component.css'
@@ -35,8 +39,6 @@ export class BookComponent implements OnInit, AfterViewInit{
   // css
   reverseCheck = false;
   reverse = " ";
-  checkLoadingSpin = true;
-  checkLoadingSpinChap = true;
 
   // value body crawling
   uriValue?: string;
@@ -70,7 +72,6 @@ export class BookComponent implements OnInit, AfterViewInit{
     
     // Xử lý khi không có dữ liệu trong state
     this.route.paramMap.subscribe(params => {
-      this.checkLoadingSpin = true;
       this.slug = params.get('slug')?.toString()!;
 
       // get slug
@@ -145,7 +146,6 @@ export class BookComponent implements OnInit, AfterViewInit{
         this.reverseCheck = false;
         this.reverse = " ";
         this.book = book;
-        this.checkLoadingSpin = false;
         
         // chapter list
         this.chineseBookId = book.chineseBooks[0].id;
@@ -203,7 +203,6 @@ export class BookComponent implements OnInit, AfterViewInit{
 
   // get chapter by chinese book id
   GetChaptersByChineseBookId(chineseBookId: number) {
-    this.checkLoadingSpinChap = true;
     this.chineseBookId = chineseBookId;
     
 
@@ -227,9 +226,7 @@ export class BookComponent implements OnInit, AfterViewInit{
     this.chapterService.getChaptersByChineseBookId(chineseBookId).subscribe((chaps) => {
       if (chaps.length !== 0) {
         this.chapters = chaps;
-    } 
-      
-      this.checkLoadingSpinChap = false;
+      } 
     });
   }
 
@@ -239,7 +236,6 @@ export class BookComponent implements OnInit, AfterViewInit{
     var data = new DataChapCrawl();
     data.bookId = bookId;
     data.chineseBookId = chineseBookId;
-    this.checkLoadingSpinChap = true;
 
     this.chapterService.GetListChapCrawl(data).pipe(
       switchMap(() => {
@@ -248,11 +244,6 @@ export class BookComponent implements OnInit, AfterViewInit{
     ).subscribe(
       (chaps) => {
         this.chapters = chaps;
-        this.checkLoadingSpinChap = false;
-      },
-      (error) => {
-        this.checkLoadingSpinChap = false;
-        // Xử lý lỗi
       }
     );
   }

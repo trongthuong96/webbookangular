@@ -11,6 +11,8 @@ import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular
 import { SD } from '../../Utility/SD';
 import { UriModel } from '../../models/uri/uri.model';
 import { filter } from 'rxjs';
+import { NgHttpLoaderModule } from 'ng-http-loader';
+import { RestoreScrollPositonDirective } from '../../directives/restore.scroll.positon.directive';
 
 @Component({
   selector: 'app-search',
@@ -20,6 +22,8 @@ import { filter } from 'rxjs';
     RouterLink, 
     PaginationComponent, 
     ReactiveFormsModule, 
+    NgHttpLoaderModule,
+    RestoreScrollPositonDirective
   ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.css'
@@ -41,7 +45,6 @@ export class SearchComponent implements OnInit, AfterViewInit{
   currentPage: number = 1;
   totalPages!: number;
 
-  checkLoadingSpin = true;
   searchForm!: FormGroup;
 
   // form chapLength
@@ -147,24 +150,20 @@ export class SearchComponent implements OnInit, AfterViewInit{
 
   // get genre by id
   getBooksByGenreId(id: number, page: number) {
-    this.checkLoadingSpin = true;
     this.genreService.getBooksByGenreId(id, page).subscribe(genre => {
       this.genre = genre;
       if (genre) {
         this.totalPages! = genre!.totalPages;
         this.titleService.setTitle(genre.name);
       }
-      this.checkLoadingSpin = false;
     });
   }
 
   // get book by title
   getBookByTitle(title: string, page: number) {
-    this.checkLoadingSpin = true;
     this.bookService.GetBookByTitle(title, page).subscribe(bookTotal => {
       this.booksTotal = bookTotal;
       this.totalPages = this.booksTotal.totalPages;
-      this.checkLoadingSpin = false;
     });
   }
 
@@ -356,14 +355,10 @@ export class SearchComponent implements OnInit, AfterViewInit{
 
   GetBookSearchAll(keyword: string, status: number[], genre: number, chapLength: number, page: number) {
 
-    // loading
-    this.checkLoadingSpin = true;
-
     // find book
     this.bookService.GetBookSearchAll(keyword, status, genre, chapLength, page).subscribe (book => {
       this.booksTotal = book;
       this.totalPages = this.booksTotal.totalPages;
-      this.checkLoadingSpin = false;
     });
   }
 }

@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, Inject, OnInit, PLATFORM_ID, Renderer2, TransferState, afterNextRender, makeStateKey } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, afterNextRender, makeStateKey } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { GenreService } from './services/genre.service';
 import { GenreShowModel } from './models/genre/genre.model';
@@ -8,12 +8,12 @@ import { FormsModule } from '@angular/forms';
 import { SD } from './Utility/SD';
 import { BookService } from './services/book.service';
 import { UriModel } from './models/uri/uri.model';
-import { filter, timeout } from 'rxjs';
 import { AccountComponent } from './components/account/account.component';
 import { environment } from '../environments/environment.development';
 import { SignatureService } from './services/signature.service';
 import { CsrfTokenService } from './services/csrf-token.service';
 import { CookieService } from 'ngx-cookie-service';
+import { NavigationService } from './services/navigation.service';
 
 @Component({
   selector: 'app-root',
@@ -37,6 +37,7 @@ export class AppComponent implements OnInit{
   // csrf token
   csrfTokenKey = makeStateKey<string>('csrfToken');
   token = "";
+
   /**
    *
    */
@@ -44,12 +45,12 @@ export class AppComponent implements OnInit{
     private genreService: GenreService,
     private bookService: BookService,
     private router: Router,
-    private renderer: Renderer2,
     private csrfTokenService: CsrfTokenService,
     private signatureService: SignatureService,
     private cookieService: CookieService,
-    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
+   
     afterNextRender(() => {
         // csrf token
       this.csrfTokenService.refreshCsrfToken().subscribe(async (reponse) => {
@@ -65,12 +66,6 @@ export class AppComponent implements OnInit{
          }, 1000);
        }
       }
-      // scroll top
-      router.events.pipe(
-        filter(e => e instanceof NavigationEnd)
-      ).subscribe(() => {
-        window.scrollTo(0, 0);
-      });
     });
   }
 
@@ -91,9 +86,9 @@ export class AppComponent implements OnInit{
         this.darkLight = "dark-theme";
         this.checked = true;
       } 
-
-      this.getGenres();
     }
+
+    this.getGenres();
    
     // //const sitemap = this.sitemapService.generateSitemap();
    
@@ -101,18 +96,22 @@ export class AppComponent implements OnInit{
 
   // get genres
   getGenres() {
-      if(localStorage.getItem("genres_info")){
-          // Đọc dữ liệu từ Local Storage
-          var storedGenresData = localStorage.getItem('genres_info');
-          this.genreListModel = JSON.parse(storedGenresData!);
+    if (isPlatformBrowser(this.platformId)) {
+      const storedGenresData = localStorage.getItem('genres_info');
+      if ( storedGenresData !== null && storedGenresData !== undefined && storedGenresData !== '') {
+        // Đọc dữ liệu từ Local Storage
+        this.genreListModel = JSON.parse(storedGenresData);
       } else {
-        setTimeout(() => {
-          this.genreService.getGenres().subscribe( genres => {
-            this.genreListModel = genres;
-            localStorage.setItem("genres_info", JSON.stringify(this.genreListModel));
-          });
-        }, 1000);
+        this.genreService.getGenres().subscribe(genres => {
+          this.genreListModel = genres;
+          localStorage.setItem("genres_info", JSON.stringify(this.genreListModel));
+        });
       }
+    } else {
+      this.genreService.getGenres().subscribe(genres => {
+        this.genreListModel = genres;
+      });
+    }
   }
 
   // dark or light

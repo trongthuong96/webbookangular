@@ -9,7 +9,6 @@ import { UserProfileModel } from '../../models/user/user.profile.model';
 import { Router, RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment.development';
 import { SD } from '../../Utility/SD';
-import { timeout } from 'rxjs';
 
 @Component({
   selector: 'app-account',

@@ -14,7 +14,7 @@
     <button type="submit" class="primary">Add</button>
 </form>
 <br /> -->
-
+<ng-http-loader />
     <div class="section-stories-hot mb-3">
         <div class="container">
             <div class="row">
@@ -31,17 +31,10 @@
         
         
             <div class="row">
-                @if (checkLoadingSpin1) {
-                    <div class="d-flex justify-content-center align-items-center" style="height: 70vh;">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                }
                 <div class="col-12">
                     <div class="section-stories-hot__list">                  
                         @for (book of bookListView; track $index) {
-                            <div class="story-item">
+                            <div appRestoreScrollPositon class="story-item">
                                 <a [routerLink]= "['/truyen', book.slug]" [title]="book.title" class="d-block text-decoration-none">
                                     <div class="story-item__image">
                                         <img src="{{book.coverImage}}" loading="lazy" alt="{{book.title}}" class="img-fluid rounded" width="150"
@@ -98,15 +91,6 @@
                     </div>
 
                     <div class="row">
-                        @if (checkLoadingSpin2) {
-                            <div class="d-flex justify-content-center align-items-center" style="height: 70vh;">
-                                <div class="spinner-container text-center" style="width: 30%;">
-                                <div class="spinner-border text-primary" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                                </div>
-                            </div>
-                        }
                         <div class="col-12">
                             <div class="section-stories-new__list">
                                 @for (book of bookListUpdateAt; track $index) {
@@ -231,13 +215,6 @@
             </div>
 
             <div class="row">
-                @if (checkLoadingSpin3) {
-                    <div class="d-flex justify-content-center align-items-center" style="height: 300px;">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                }
                 <div class="col-12">
                     <div class="section-stories-full__list">
                         @for (book of bookListStatus; track $index) {
@@ -245,7 +222,7 @@
                                 <a 
                                     [routerLink]="['/truyen', book.slug]" 
                                     class="d-block story-item-full__image">
-                                    <img src="{{book?.coverImage}}" alt="{{book.title}}" class="img-fluid w-100 rounded"
+                                    <img src="{{book.coverImage}}" alt="{{book.title}}" class="img-fluid w-100 rounded"
                                         width="150" height="230" loading="lazy">
                                
                                     <h3 class="fs-6 story-item-full__name fw-bold text-center mb-0 rounded">

@@ -1,25 +1,34 @@
-import { ApplicationConfig, isDevMode } from '@angular/core';
-import { RouteReuseStrategy, provideRouter } from '@angular/router';
+import { ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core';
+import { InMemoryScrollingFeature, InMemoryScrollingOptions, provideRouter, withInMemoryScrolling } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideClientHydration, withHttpTransferCacheOptions } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
 import { SignatureInterceptor } from './config/SignatureInterceptor';
 import { ApiInterceptor } from './config/api.interceptor';
-import { CustomReuseStrategy } from './custom.reuse.strategy';
 import { IMAGE_CONFIG } from '@angular/common';
 import { provideServiceWorker } from '@angular/service-worker';
 import { CsrfInterceptor } from './config/CsrfInterceptor';
+import { NgHttpLoaderModule } from 'ng-http-loader';
+
+const scrollConfig: InMemoryScrollingOptions = {
+    scrollPositionRestoration: 'enabled',
+    anchorScrolling: 'enabled'
+  };
+  
+const inMemoryScrollingFeature: InMemoryScrollingFeature = withInMemoryScrolling(scrollConfig);
 
 export const appConfig: ApplicationConfig = {
+    
   providers: [
-    provideRouter(routes),
+    provideRouter(routes, inMemoryScrollingFeature),
     provideClientHydration(
         withHttpTransferCacheOptions({
         includePostRequests: true
     })),
     
     provideHttpClient(withFetch(), withInterceptorsFromDi()),
+    importProvidersFrom(NgHttpLoaderModule.forRoot()),
     {
         provide: HTTP_INTERCEPTORS,
         useClass: SignatureInterceptor,
@@ -36,17 +45,13 @@ export const appConfig: ApplicationConfig = {
       multi: true 
     },
     {
-        provide: RouteReuseStrategy,
-        useClass: CustomReuseStrategy,
-    },
-    {
         provide: IMAGE_CONFIG,
         useValue: {
             disableImageSizeWarning: true,
             disableImageLazyLoadWarning: true
         }
     },
-    provideServiceWorker('ngsw-worker.js', {
+    provideServiceWorker('ngsw.js', {
         enabled: !isDevMode(),
         registrationStrategy: 'registerWhenStable:30000'
     })

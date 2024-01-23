@@ -1,6 +1,6 @@
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { AfterViewInit, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { BookService } from '../../services/book.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LoginModel } from '../../models/user/login.model';
@@ -8,25 +8,32 @@ import { TimeAgoPipe } from '../../config/time-ago.pipe';
 import { BookShowListModel } from '../../models/book/book.list.model';
 import BookShowModel from '../../models/book/book.one.model';
 import { TitleService } from '../../services/title.service';
-import { filter, forkJoin, timeout } from 'rxjs';
-import { SwUpdate } from '@angular/service-worker';
+import { forkJoin } from 'rxjs';
+import { NgHttpLoaderModule } from 'ng-http-loader';
+import { RestoreScrollPositonDirective } from '../../directives/restore.scroll.positon.directive';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, ReactiveFormsModule, TimeAgoPipe, RouterLink, NgOptimizedImage],
+  imports: [
+    CommonModule, 
+    RouterOutlet, 
+    ReactiveFormsModule, 
+    TimeAgoPipe, 
+    RouterLink, 
+    NgOptimizedImage,
+    NgHttpLoaderModule,
+    RestoreScrollPositonDirective
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit, AfterViewInit{
+export class HomeComponent implements OnInit{
 
   book?: BookShowModel;
   bookListView: BookShowListModel[] = [];
   bookListUpdateAt: BookShowListModel[] = [];
   bookListStatus: BookShowListModel[] = [];
-  checkLoadingSpin1 = true;
-  checkLoadingSpin2 = true;
-  checkLoadingSpin3 = true;
 
   loginModel: LoginModel = new LoginModel();
   test: string | undefined | null;
@@ -41,9 +48,6 @@ export class HomeComponent implements OnInit, AfterViewInit{
   constructor(
     private bookService: BookService,
     private titleService: TitleService,
-    private swUpdate: SwUpdate,
-    private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
@@ -53,26 +57,6 @@ export class HomeComponent implements OnInit, AfterViewInit{
     this.titleService.setTitle("Truyện Mới - Nguồn Cung Cấp Truyện Đa Dạng và Dịch Nhanh");
 
   }
-
-  ngAfterViewInit(): void {
-    this.router.events.pipe(
-      filter(e => e instanceof NavigationEnd)
-    ).subscribe(() => {
-      if (this.router.url === "/") {
-
-        this.combineRequests(1);
-
-        if (this.swUpdate.isEnabled) {
-          this.swUpdate.checkForUpdate().then(() => {
-            this.swUpdate.activateUpdate().then(() => {
-              console.log('Update complete.');
-            });
-          });      
-        }
-       
-      }
-    });
-   }
 
   combineRequests(page: number): void {
     const booksOrderByViews$ = this.bookService.GetBooksOrderByViewsAt(page);
@@ -87,12 +71,7 @@ export class HomeComponent implements OnInit, AfterViewInit{
       next: (results: any) => {
         this.bookListView = results.booksOrderByViews;
         this.bookListUpdateAt = results.booksOrderByUpdatedAt;
-        this.bookListStatus = results.booksStatus;
-        
-        // Đặt các cờ loading ở đây nếu cần
-        this.checkLoadingSpin1 = false;
-        this.checkLoadingSpin2 = false;
-        this.checkLoadingSpin3 = false;    
+        this.bookListStatus = results.booksStatus; 
       },
       error: (error) => {
         // Xử lý lỗi nếu cần

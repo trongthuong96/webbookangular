@@ -1,11 +1,37 @@
 {
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
-  "index": "/index1.html",
+  "index": "/index.html",
   "dataGroups": [
     {
-      "name": "api-cache",
+      "name": "api-book-cache",
       "urls": [
-        "/api/*"
+        "/api/book*",
+        "/api/bookreading*"
+      ],
+      "cacheConfig": {
+        "maxSize": 1000000,
+        "timeout": "0u",
+        "maxAge": "365d",
+        "strategy": "freshness"
+      }
+    },
+    {
+      "name": "api-genre-cache",
+      "urls": [
+        "/api/Genre*",
+        "/api/crawling*"
+      ],
+      "cacheConfig": {
+        "maxSize": 1000000,
+        "timeout": "0u",
+        "maxAge": "365d",
+        "strategy": "performance"
+      }
+    },
+    {
+      "name": "api-chapter-cache",
+      "urls": [
+        "/api/chapter*"
       ],
       "cacheConfig": {
         "maxSize": 1000000,
@@ -22,7 +48,7 @@
       "resources": {
         "files": [
           "/favicon.ico",
-          "/index1.html",
+          "/index.html",
           "/manifest.webmanifest",
           "/*.css",
           "/*.js"
@@ -40,5 +66,13 @@
         ]
       }
     }
-  ]
+  ],
+
+  "navigationUrls": [
+    "/**",
+    "!/**/assets/**"
+  ],
+
+  "navigationRequestStrategy": "performance"
+  
 }

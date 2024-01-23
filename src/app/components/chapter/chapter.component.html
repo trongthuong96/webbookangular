@@ -1,11 +1,6 @@
 
-@if (chapterModel == undefined) {
-    <div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
-        <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-    </div>
-}
+<ng-http-loader />
+
 <div *ngIf="chapterModel != undefined" class="chapter-wrapper container my-5">
     <a [routerLink]="['/truyen', bookSlug]" class="text-decoration-none">
         <h1 class="text-center text-success"> {{ chapterModel.bookTitle }} </h1>
@@ -46,17 +41,9 @@
     </div>
     <hr class="chapter-end container-fluid">
 
-    @if (checkLoadingSpin) {
-        <div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-    }
-
     <div class="chapter-content mb-3">
     
-        <div *ngIf="!checkLoadingSpin" class="mt-2 lh-lg" style="font-size: 17px;" [innerHTML]="safeHtml"></div>
+        <div appRestoreScrollPositon class="mt-2 lh-lg" style="font-size: 17px;" [innerHTML]="safeHtml"></div>
 
         <hr class="chapter-start container-fluid">
         <div class="chapter-nav text-center">

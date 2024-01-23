@@ -8,6 +8,8 @@ import { DataCrawl } from '../../models/crawl/data.crawl';
 import { BookReadingModel } from '../../models/book.reading/book.reading.model';
 import { environment } from '../../../environments/environment.development';
 import { filter } from 'rxjs';
+import { NgHttpLoaderModule } from 'ng-http-loader';
+import { RestoreScrollPositonDirective } from '../../directives/restore.scroll.positon.directive';
 
 
 @Component({
@@ -16,6 +18,8 @@ import { filter } from 'rxjs';
   imports: [
     CommonModule, 
     RouterLink,
+    NgHttpLoaderModule,
+    RestoreScrollPositonDirective
   ],
   templateUrl: './chapter.component.html',
   styleUrl: './chapter.component.css'
@@ -26,7 +30,6 @@ export class ChapterComponent implements OnInit, AfterViewInit{
   bookSlug?: string;
   chapterIndex?: number;
   safeHtml?: SafeHtml;
-  checkLoadingSpin = true;
   chineseBookId?: number;
   bookId?: number;
 
@@ -101,11 +104,9 @@ export class ChapterComponent implements OnInit, AfterViewInit{
 
   // get content chapter
   getContentChapterCrawl(data: DataCrawl) {
-    this.checkLoadingSpin = true;
       this.chapterService.getContentChapCrawl(data).subscribe((chap) => {
         this.chapterModel = chap;
         this.safeHtml = this.sanitizer.bypassSecurityTrustHtml(this.chapterModel.content);
-        this.checkLoadingSpin = false;
         this.titleService.setTitle("Chương " + chap.chapNumber + ": " + chap.title);
 
         // bookRead localStorage
