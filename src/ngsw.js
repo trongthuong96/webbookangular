@@ -2,5 +2,11 @@
 importScripts('ngsw-worker.js');
 
 self.addEventListener('activate', event => {
-  event.waitUntil(self.registration.navigationPreload.enable());
+
+  event.waitUntil(
+    (async () => {
+      await self.registration.navigationPreload.enable();
+    })()
+  );
+
 });

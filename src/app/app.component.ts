@@ -48,7 +48,17 @@ export class AppComponent implements OnInit{
     private cookieService: CookieService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-   
+
+    // if ('serviceWorker' in navigator) {
+    //   console.log("xin chao")
+    //   navigator.serviceWorker.addEventListener('message', event => {
+    //     console.log("xin chao 1: " + event)
+    //     if (event.data && event.data.type === 'fetchResponse') {
+    //       console.log('Phản hồi từ Service Worker:', event.data.data);
+    //     }
+    //   }); 
+    // }
+
     afterNextRender(() => {
         // csrf token
       this.csrfTokenService.refreshCsrfToken().subscribe(async (reponse) => {
@@ -87,15 +97,6 @@ export class AppComponent implements OnInit{
         this.checked = true;
       } 
     }
-
-    // if ('serviceWorker' in navigator) {
-    //   navigator.serviceWorker.addEventListener('message', (event) => {
-    //     // Xử lý phản hồi từ Service Worker
-    //     if (event.data.type === 'fetchResponse') {
-    //       console.log('Phản hồi từ Service Worker:', event.data.data);
-    //     }
-    //   });
-    // }
 
     // //const sitemap = this.sitemapService.generateSitemap();
    
