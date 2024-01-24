@@ -96,7 +96,20 @@ export class BookComponent implements OnInit, AfterViewInit{
       filter(e => e instanceof NavigationEnd && (this.slug === this.router.url.split('/')[2]) && /^\/truyen\/[^\/]+$/.test(this.router.url)),
       
     ).subscribe(() => {
-      this.spinner.show();
+
+      console.log("xin chao")
+      if (this.book && this.book.slug === this.slug) {
+        this.book.chineseBooks.forEach(e => {
+          this.chapterService.getChaptersByChineseBookId(e.id).subscribe((chaps) => {
+            if (chaps.length !== 0) {
+              this.chapters = chaps;
+            } 
+          }, (e) => {
+            this.spinner.hide();
+          });
+        });
+      }    
+
       const booksRead = localStorage.getItem(environment.bookReading);
       if (booksRead) {
         this.bookListRead = JSON.parse(booksRead);
@@ -111,11 +124,7 @@ export class BookComponent implements OnInit, AfterViewInit{
             this.bookRead = existingBook;
           }
         }
-      }
-      
-      if (this.book) {
-        this.GetChaptersByChineseBookId(this.book.chineseBooks[0].id);
-      }      
+      } 
     });
   }
 
