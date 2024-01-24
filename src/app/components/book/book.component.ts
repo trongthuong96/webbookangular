@@ -115,12 +115,7 @@ export class BookComponent implements OnInit, AfterViewInit{
       
       if (this.book) {
         this.GetChaptersByChineseBookId(this.book.chineseBooks[0].id);
-      }
-
-      setTimeout(() => {
-        this.spinner.hide();
-      }, 500);
-      
+      }      
     });
   }
 
