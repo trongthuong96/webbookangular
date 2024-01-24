@@ -96,8 +96,6 @@ export class BookComponent implements OnInit, AfterViewInit{
       filter(e => e instanceof NavigationEnd && (this.slug === this.router.url.split('/')[2]) && /^\/truyen\/[^\/]+$/.test(this.router.url)),
       
     ).subscribe(() => {
-
-      console.log("xin chao")
       if (this.book && this.book.slug === this.slug) {
         this.book.chineseBooks.forEach(e => {
           this.chapterService.getChaptersByChineseBookId(e.id).subscribe((chaps) => {
@@ -108,6 +106,10 @@ export class BookComponent implements OnInit, AfterViewInit{
             this.spinner.hide();
           });
         });
+
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 10);
       }    
 
       const booksRead = localStorage.getItem(environment.bookReading);
