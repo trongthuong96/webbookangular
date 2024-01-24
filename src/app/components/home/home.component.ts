@@ -1,6 +1,6 @@
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { BookService } from '../../services/book.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LoginModel } from '../../models/user/login.model';
@@ -8,7 +8,7 @@ import { TimeAgoPipe } from '../../config/time-ago.pipe';
 import { BookShowListModel } from '../../models/book/book.list.model';
 import BookShowModel from '../../models/book/book.one.model';
 import { TitleService } from '../../services/title.service';
-import { forkJoin } from 'rxjs';
+import { filter, forkJoin } from 'rxjs';
 import { NgHttpLoaderModule, SpinnerVisibilityService } from 'ng-http-loader';
 import { RestoreScrollPositonDirective } from '../../directives/restore.scroll.positon.directive';
 
@@ -28,7 +28,7 @@ import { RestoreScrollPositonDirective } from '../../directives/restore.scroll.p
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit, AfterViewInit{
 
   book?: BookShowModel;
   bookListView: BookShowListModel[] = [];
@@ -48,8 +48,21 @@ export class HomeComponent implements OnInit{
   constructor(
     private bookService: BookService,
     private titleService: TitleService,
-    private spinner: SpinnerVisibilityService
+    private spinner: SpinnerVisibilityService,
+    private router: Router
   ) {}
+
+  ngAfterViewInit(): void {
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd && this.router.url === '/'))
+      .subscribe(() => {
+        // Thực hiện các hành động cần thiết khi route thay đổi
+        this.combineRequests(1);
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 10);
+    });
+  }
 
   ngOnInit(): void {
 

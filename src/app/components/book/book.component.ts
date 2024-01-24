@@ -11,7 +11,7 @@ import { UriModel } from '../../models/uri/uri.model';
 import { ChapterService } from '../../services/chapter.service';
 import { ChapterShowModel } from '../../models/chapter/chapter.show.model';
 import { DataChapCrawl } from '../../models/crawl/data.chap.crawl';
-import { filter, switchMap } from 'rxjs';
+import { filter, fromEvent, switchMap, take } from 'rxjs';
 import { BookReadingModel } from '../../models/book.reading/book.reading.model';
 import { environment } from '../../../environments/environment.development';
 import { NgHttpLoaderModule, SpinnerVisibilityService } from 'ng-http-loader';
@@ -92,27 +92,35 @@ export class BookComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit(): void {
-    
     this.router.events.pipe(
-      filter(e => e instanceof NavigationEnd)
-    ).subscribe(() => {
-      if (/^\/truyen\/[^\/]+$/.test(this.router.url)) {
-        const booksRead = localStorage.getItem(environment.bookReading);
-        if (booksRead) {
-          this.bookListRead = JSON.parse(booksRead);
-          if (this.bookListRead) {
-            // Kiểm tra xem có sách nào có các thuộc tính giống với sách cần thêm hay không
-            const existingBook = this.bookListRead.find(bookRead =>
-              bookRead.bookId === this.book!.id &&
-              bookRead.chineseBookId === this.chineseBookId
-            );
+      filter(e => e instanceof NavigationEnd && (this.slug === this.router.url.split('/')[2]) && /^\/truyen\/[^\/]+$/.test(this.router.url)),
       
-            if (existingBook) {
-              this.bookRead = existingBook;
-            }
+    ).subscribe(() => {
+      this.spinner.show();
+      const booksRead = localStorage.getItem(environment.bookReading);
+      if (booksRead) {
+        this.bookListRead = JSON.parse(booksRead);
+        if (this.bookListRead) {
+          // Kiểm tra xem có sách nào có các thuộc tính giống với sách cần thêm hay không
+          const existingBook = this.bookListRead.find(bookRead =>
+            bookRead.bookId === this.book!.id &&
+            bookRead.chineseBookId === this.chineseBookId
+          );
+    
+          if (existingBook) {
+            this.bookRead = existingBook;
           }
         }
       }
+      
+      if (this.book) {
+        this.GetChaptersByChineseBookId(this.book.chineseBooks[0].id);
+      }
+
+      setTimeout(() => {
+        this.spinner.hide();
+      }, 500);
+      
     });
   }
 
@@ -157,9 +165,6 @@ export class BookComponent implements OnInit, AfterViewInit{
         //}
 
         this.titleService.setTitle(this.book!.title);
-        this.GetBookAuthor(book.author.id!, 1);
-        this.GetBookUser(book.applicationUser.id!, 1);
-
       },
       (error) => {
         // Xử lý lỗi ở đây
@@ -186,20 +191,6 @@ export class BookComponent implements OnInit, AfterViewInit{
     } else {
       this.reverse = " ";
     }
-  }
-
-  //Book/Author/2?page=1
-  GetBookAuthor(authorId: number, page: number) {
-    this.bookService.GetBookAuthor(authorId, page).subscribe(book => {
-      this.bookByAuthor = book;
-    })
-  }
-
-  //Book/User/2?page=1
-  GetBookUser(userId: string, page: number) {
-    this.bookService.GetBookUser(userId, page).subscribe(book => {
-      this.bookByUser = book;
-    })
   }
 
   // get chapter by chinese book id
@@ -252,10 +243,4 @@ export class BookComponent implements OnInit, AfterViewInit{
     );
   }
 
-  // 
-  // reLoadPage() {
-  //   if (isPlatformBrowser(this.platformId)) {
-  //     window.scrollTo(0, 0);
-  //   }
-  // }
 }

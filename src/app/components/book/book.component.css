@@ -11,3 +11,14 @@ h1 {
    color: rgb(107, 107, 107);
 }
 
+@media (max-width:992px) {
+    .custom-col-max {
+      display: none !important;
+    }
+}
+  
+@media (min-width:992px) {
+    .custom-col-min {
+      display: none !important;
+    }
+}

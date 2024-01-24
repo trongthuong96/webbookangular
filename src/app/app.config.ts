@@ -1,5 +1,5 @@
 import { ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core';
-import { InMemoryScrollingFeature, InMemoryScrollingOptions, provideRouter, withInMemoryScrolling } from '@angular/router';
+import { InMemoryScrollingFeature, InMemoryScrollingOptions, RouteReuseStrategy, provideRouter, withInMemoryScrolling } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideClientHydration, withHttpTransferCacheOptions } from '@angular/platform-browser';
@@ -10,6 +10,7 @@ import { IMAGE_CONFIG } from '@angular/common';
 import { provideServiceWorker } from '@angular/service-worker';
 import { CsrfInterceptor } from './config/CsrfInterceptor';
 import { NgHttpLoaderModule } from 'ng-http-loader';
+import { CustomReuseStrategy } from './custom.reuse.strategy';
 
 const scrollConfig: InMemoryScrollingOptions = {
     scrollPositionRestoration: 'enabled',
@@ -44,6 +45,7 @@ export const appConfig: ApplicationConfig = {
       useClass: CsrfInterceptor, 
       multi: true 
     },
+    { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
     {
         provide: IMAGE_CONFIG,
         useValue: {

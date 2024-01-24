@@ -8,20 +8,24 @@ export const routes: Routes = [
             .then(mod => mod.HomeComponent),
         data: 
         { 
-            title: "Truyện Mới - Nguồn Cung Cấp Truyện Đa Dạng và Dịch Nhanh"
+            title: "Truyện Mới - Nguồn Cung Cấp Truyện Đa Dạng và Dịch Nhanh",
+            reuse: true
         } 
     },
     {
         path: 'truyen/:slug', loadComponent: () => import('./components/book/book.component')
-            .then(mod => mod.BookComponent)
+            .then(mod => mod.BookComponent),
+        data: { reuse: true } 
     },
     {
         path: 'truyen/:slug/:bookId/:chineseBookId/:chapterIndex', loadComponent: () => import('./components/chapter/chapter.component')
-            .then(mod => mod.ChapterComponent)
+            .then(mod => mod.ChapterComponent),
+        data: { reuse: true } 
     },
     {
         path: 'truyen', loadComponent: () => import('./components/search/search.component')
-            .then(mod => mod.SearchComponent)  
+            .then(mod => mod.SearchComponent),
+        data: { reuse: true } 
     },
     {
         path: 'nguon-nhung', loadComponent: () => import('./components/embeddable.website/embeddable.website.component')
