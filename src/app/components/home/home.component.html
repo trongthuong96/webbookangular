@@ -1,22 +1,33 @@
-<!-- <form [formGroup]="addBookForm" (submit)="SubmitAddBook()">
-    <label for="title">Title</label>
-    <input id="title" type="text" formControlName="title">
-
-    <label for="description">Description</label>
-    <input id="description" type="text" formControlName="description">
-
-    <label for="coverImage">CoverImage</label>
-    <input id="coverImage" type="text" formControlName="coverImage">
-
-    <label for="authorName">Author Name</label>
-    <input id="authorName" type="text" formControlName="authorName">
-
-    <button type="submit" class="primary">Add</button>
-</form>
-<br /> -->
 <ng-http-loader />
     <div class="section-stories-hot mb-3">
         <div class="container">
+            <div class="row mb-3">
+                <div class="d-flex justify-content-between mb-2">
+                    <h3 class="border-bottom border-secondary pb-1">
+                    <span class="fs-4 story-name">Truyện đã đọc</span>
+                    </h3>
+                </div>
+
+                <div class="list-books col-sm-12 col-md-12 col-lg-5">
+                    <ul class="list-group">
+                        @for (bookRead of bookListRead; track $index) {
+                            <li class="list-group-item">
+                                <a class="hover-title text-xm" [routerLink]="['/truyen', bookRead.bookSlug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }"> {{bookRead.bookTitle}} </a>
+                                <p>
+                                    <span class="text-xs text-secondary hide-text">
+                                        Chương {{bookRead.chapNumber}}: {{bookRead.chapTitle}}
+                                    </span>
+                                </p>
+                            </li>
+                        } @empty {
+                            <li class="list-group-item">
+                                <a href=""> Chưa có truyện đã đọc </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="head-title-global d-flex justify-content-between mb-2">
                     <div class="col-sm-12 col-md-7 col-lg-8 head-title-global__left d-flex align-items-center">
@@ -35,7 +46,7 @@
                     <div class="section-stories-hot__list">                  
                         @for (book of bookListView; track $index) {
                             <div appRestoreScrollPositon class="story-item">
-                                <a [routerLink]= "['/truyen', book.slug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }" [title]="book.title" class="d-block text-decoration-none">
+                                <a [routerLink]="['/truyen', book.slug]" [queryParams]="{ 'page': 1, 'arrange': 0 }" [title]="book.title" class="d-block text-decoration-none">
                                     <div class="story-item__image">
                                         <img src="{{book.coverImage}}" loading="lazy" alt="{{book.title}}" class="img-fluid rounded" width="150"
                                             height="230">
@@ -76,127 +87,93 @@
     </div>
     <div class="container">
         <div class="row align-items-start">
-            <!-- <div class="col-12 col-md-8 col-lg-9"> -->
-                <div class="section-stories-new mb-3 mt-2">
-                    <div class="row">
-                        <div class="head-title-global d-flex justify-content-between mb-2">
-                            <div class="col-6 col-md-4 col-lg-4 head-title-global__left d-flex align-items-center">
-                                <h1 class="me-2 mb-0 border-bottom border-secondary pb-1">
-                                    <p
-                                        class="d-block text-decoration-none text-dark fs-4 story-name"
-                                        title="Truyện Mới">Truyện Mới</p>
-                                </h1>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="section-stories-new__list">
-                                @for (book of bookListUpdateAt; track $index) {
-                                    
-                                    <div class="story-item-no-image">
-                                        <div class="story-item-no-image__categories ms-2 d-none d-lg-block">
-                                            <p class="mb-0 text-center">
-                                                @for (genre of book.genres; track $index) {
-                                                    @if ($index < 2) {
-                                                        <i
-                                                            title="{{ genre.name }}"
-                                                            class="hover-title text-decoration-none text-secondary category-name text-one-row text-xs"
-                                                        >
-                                                            {{ genre.name }} 
-                                                        </i>
-                                                 
-                                                    }
-                                                }
-                                            </p>
-                                        </div>
-
-                                        <div class="story-item-no-image__name align-items-center d-flex">
-
-                                            <img itemprop="image" loading="lazy"
-                                                class="ml-1 rounded" alt="" width="30px" height="40px" 
-                                                src="{{book.coverImage}}">
-
-                                            <h3 class="me-1 mb-0 d-flex justify-content-start align-items-center mx-2">
-                                                <a [routerLink]="['/truyen', book.slug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }" 
-                                                    title="{{ book.title }}"
-                                                    class="text-decoration-none text-dark fs-6 hover-title text-two-row story-name"> {{ book.title }} </a>
-                                            </h3>
-                                        </div>
-                                      
-                                        <div class="story-item-no-image__status ms-2 d-none d-lg-block">
-                                               <span class="badge text-bg-secondary1 text-light me-1 d-flex justify-content-center" style="font-size: 9px;">
-                                                    @if(book.status === 0) {
-                                                        <ng-container> Còn tiếp </ng-container>
-                                                    } @else if (book.status === 1) {
-                                                        <ng-container> Hoàn thành </ng-container>
-                                                    } @else {
-                                                        <ng-container> Tạm ngưng </ng-container>
-                                                    }
-                                                </span>
-                                        </div>
-
-                                        <div class="story-item-no-image__chapters ms-2">
-                                            @if(book.chapterLast !== undefined && book.chapterLast !== null){
-                                                <p 
-                                                    title="Chương {{ book.chapterLast.chapNumber }}"
-                                                    class="hover-title text-decoration-none text-secondary text-two-row text-xm">                                                
-                                                        Chương {{ book.chapterLast.chapNumber }}: {{ book.chapterLast.title }}                                               
-                                                </p>
-                                            }  @else {
-                                                Chưa có chương
-                                            }
-                                        </div>
-
-                                        <div class="story-item-no-image__updated-at ms-2 d-none d-lg-block">
-                                            <p 
-                                                title="{{ book.updatedAt | timeAgo }}"
-                                                class="mb-0 text-decoration-none text-secondary category-name text-one-row" style="font-size: small;">{{ book.updatedAt | timeAgo }}                                    
-                                            </p>
-                                        </div>
-                                    </div>
-        
-                                } @empty {
-                                    <p> Chưa có truyện! </p>
-                                }
-                            </div>
+            <div class="section-stories-new mb-3 mt-2">
+                <div class="row">
+                    <div class="head-title-global d-flex justify-content-between mb-2">
+                        <div class="col-6 col-md-4 col-lg-4 head-title-global__left d-flex align-items-center">
+                            <h1 class="me-2 mb-0 border-bottom border-secondary pb-1">
+                                <p
+                                    class="d-block text-decoration-none text-dark fs-4 story-name"
+                                    title="Truyện Mới">Truyện Mới</p>
+                            </h1>
                         </div>
                     </div>
                 </div>
-            <!-- </div> -->
 
-            <!-- <div class="col-12 col-md-4 col-lg-3 sticky-md-top">
                 <div class="row">
-
                     <div class="col-12">
-                        <div class="section-list-category bg-light p-2 rounded card-custom">
-                            <div class="head-title-global mb-2">
-                                <div class="col-12 col-md-12 head-title-global__left">
-                                    <h2 class="mb-0 border-bottom border-secondary pb-1">
-                                        <span href="#" class="d-block text-decoration-none text-dark fs-4"
-                                            title="Truyện đang đọc">ChatBox</span>
-                                    </h2>
-                                </div>
-                            </div>
-                            <div class="row"> -->
-                                <!-- Horizontal under breakpoint -->
-                                <!-- <iframe src="https://www5.cbox.ws/box/?boxid=948155&boxtag=06To6a" width="100%" height="450" allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto"></iframe>	 -->
-                                <!-- <ul class="list-category">
-                                    <li class="">
-                                        <a href="#" class="text-decoration-none text-dark hover-title">Ngôn Tình</a>
-                                    </li>
-                                    <li class="">
-                                        <a href="#" class="text-decoration-none text-dark hover-title">Trọng
-                                            Sinh</a>
-                                    </li>
+                        <div class="section-stories-new__list">
+                            @for (book of bookListUpdateAt; track $index) {
                                 
-                                </ul> -->
-                            <!-- </div>
+                                <div class="story-item-no-image">
+                                    <div class="story-item-no-image__categories ms-2 d-none d-lg-block">
+                                        <p class="mb-0 text-center">
+                                            @for (genre of book.genres; track $index) {
+                                                @if ($index < 2) {
+                                                    <i
+                                                        title="{{ genre.name }}"
+                                                        class="hover-title text-decoration-none text-secondary category-name text-one-row text-xs"
+                                                    >
+                                                        {{ genre.name }} 
+                                                    </i>
+                                                
+                                                }
+                                            }
+                                        </p>
+                                    </div>
+
+                                    <div class="story-item-no-image__name align-items-center d-flex">
+
+                                        <img itemprop="image" loading="lazy"
+                                            class="ml-1 rounded" alt="" width="30px" height="40px" 
+                                            src="{{book.coverImage}}">
+
+                                        <h3 class="me-1 mb-0 d-flex justify-content-start align-items-center mx-2">
+                                            <a [routerLink]="['/truyen', book.slug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }" 
+                                                title="{{ book.title }}"
+                                                class="text-decoration-none text-dark fs-6 hover-title text-two-row story-name"> {{ book.title }} </a>
+                                        </h3>
+                                    </div>
+                                    
+                                    <div class="story-item-no-image__status ms-2 d-none d-lg-block">
+                                            <span class="badge text-bg-secondary1 text-light me-1 d-flex justify-content-center" style="font-size: 9px;">
+                                                @if(book.status === 0) {
+                                                    <ng-container> Còn tiếp </ng-container>
+                                                } @else if (book.status === 1) {
+                                                    <ng-container> Hoàn thành </ng-container>
+                                                } @else {
+                                                    <ng-container> Tạm ngưng </ng-container>
+                                                }
+                                            </span>
+                                    </div>
+
+                                    <div class="story-item-no-image__chapters ms-2">
+                                        @if(book.chapterLast !== undefined && book.chapterLast !== null){
+                                            <p 
+                                                title="Chương {{ book.chapterLast.chapNumber }}"
+                                                class="hover-title text-decoration-none text-secondary text-two-row text-xm">                                                
+                                                    Chương {{ book.chapterLast.chapNumber }}: {{ book.chapterLast.title }}                                               
+                                            </p>
+                                        }  @else {
+                                            Chưa có chương
+                                        }
+                                    </div>
+
+                                    <div class="story-item-no-image__updated-at ms-2 d-none d-lg-block">
+                                        <p 
+                                            title="{{ book.updatedAt | timeAgo }}"
+                                            class="mb-0 text-decoration-none text-secondary category-name text-one-row" style="font-size: small;">{{ book.updatedAt | timeAgo }}                                    
+                                        </p>
+                                    </div>
+                                </div>
+    
+                            } @empty {
+                                <p> Chưa có truyện! </p>
+                            }
                         </div>
-                    </div> -->
-                <!-- </div> -->
-            <!-- </div> -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -209,7 +186,6 @@
                             <span class="d-block text-decoration-none text-dark fs-4 title-head-name"
                                 title="Truyện đã hoàn thành">Truyện đã hoàn thành</span>
                         </h2>
-                        <!-- <i class="fa-solid fa-fire-flame-curved"></i> -->
                     </div>
                 </div>
             </div>

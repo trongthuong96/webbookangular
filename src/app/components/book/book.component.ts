@@ -83,14 +83,15 @@ export class BookComponent implements OnInit, AfterViewInit{
 
       if (isNaN(page)) {
         this.currentPage = 1;
+      } else {
+        this.currentPage = page;
       }
 
       if (isNaN(arrange)) {
         this.arrange = 0;
+      } else {
+        this.arrange = arrange;
       }
-
-      this.currentPage = page;
-      this.arrange = arrange;
 
       if (this.arrange === 0) {
         this.reverseCheck = false;
@@ -269,6 +270,16 @@ export class BookComponent implements OnInit, AfterViewInit{
     var data = new DataChapCrawl();
     data.bookId = bookId;
     data.chineseBookId = chineseBookId;
+
+    this.currentPage = page;
+    this.arrange = arrange;
+
+    // Sử dụng Router để thay đổi URL với query parameter mới
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { page: this.currentPage, arrange: this.arrange },
+     // queryParamsHandling: 'merge',
+    });
 
     this.chapterService.GetListChapCrawl(data).pipe(
       switchMap(() => {

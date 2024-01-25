@@ -1,3 +1,24 @@
 .text-xm {
     font-size: 15px;
 }
+
+.list-books {
+    max-height: 300px; 
+    overflow-y: auto;
+}
+
+.list-books::-webkit-scrollbar {
+    width: 0.4em;
+}
+
+.list-books::-webkit-scrollbar-thumb {
+    background-color: #888;
+}
+
+.list-books::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+.list-group-item {
+    background-color: #d8d5d5;
+}
