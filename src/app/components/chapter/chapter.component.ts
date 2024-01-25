@@ -2,7 +2,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AfterViewInit, Component, HostListener, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ChapterShowModel } from '../../models/chapter/chapter.show.model';
 import { ChapterService } from '../../services/chapter.service';
-import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationExtras, Router, RouterLink } from '@angular/router';
 import { DomSanitizer, SafeHtml, Title } from '@angular/platform-browser';
 import { DataCrawl } from '../../models/crawl/data.crawl';
 import { BookReadingModel } from '../../models/book.reading/book.reading.model';
@@ -105,28 +105,33 @@ export class ChapterComponent implements OnInit, AfterViewInit{
 
   // get content chapter
   getContentChapterCrawl(data: DataCrawl) {
-      this.chapterService.getContentChapCrawl(data).subscribe((chap) => {
+    this.chapterService.getContentChapCrawl(data).subscribe({
+      next: (chap) => {
         this.chapterModel = chap;
         this.safeHtml = this.sanitizer.bypassSecurityTrustHtml(this.chapterModel.content);
         this.titleService.setTitle("Chương " + chap.chapNumber + ": " + chap.title);
-
+    
         // bookRead localStorage
         this.bookRead!.bookTitle = this.chapterModel.bookTitle;
         this.bookRead!.chapNumber = this.chapterModel.chapNumber;
         this.bookRead!.chapTitle = this.chapterModel.title;
         this.bookRead!.chapterIndex = this.chapterModel.chapterIndex;
         this.bookRead!.updatedAt = new Date();
-
+    
         if (isPlatformBrowser(this.platformId)) {
           this.addBookReadLocal();
         }
       
         this.spinner.hide();
       },
-      (error) => {
-        this.router.navigate(['/truyen',this.bookSlug]);
+      error: (error) => {
+        const navigationExtras: NavigationExtras = {
+          queryParams: { 'page': 1, 'arrange': 0 }
+        };
+        
+        this.router.navigate(['/truyen', this.bookSlug], navigationExtras);
       }
-    );
+    });
   }
 
   // pre or next page by key
@@ -146,7 +151,11 @@ export class ChapterComponent implements OnInit, AfterViewInit{
 
         if (this.chapterIndex! <= 1 ) {
 
-          this.router.navigate(['/truyen', this.bookSlug]);
+          const navigationExtras: NavigationExtras = {
+            queryParams: { 'page': 1, 'arrange': 0 }
+          };
+          
+          this.router.navigate(['/truyen', this.bookSlug], navigationExtras);
 
         } else {
 

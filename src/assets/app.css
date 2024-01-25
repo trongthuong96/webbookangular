@@ -820,7 +820,7 @@ main {
 @media (max-width:992px) {
     .story-detail__top--image .book-3d {
         margin: 0 auto 15px;
-        width: 15em;
+        width: 70%;
     }
 }
 

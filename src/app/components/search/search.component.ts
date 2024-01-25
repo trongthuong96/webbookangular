@@ -151,26 +151,32 @@ export class SearchComponent implements OnInit, AfterViewInit{
 
   // get genre by id
   getBooksByGenreId(id: number, page: number) {
-    this.genreService.getBooksByGenreId(id, page).subscribe(genre => {
+    this.genreService.getBooksByGenreId(id, page).subscribe({
+     next: (genre) => {
       this.genre = genre;
       if (genre) {
         this.totalPages! = genre!.totalPages;
         this.titleService.setTitle(genre.name);
         this.spinner.hide();
       }
-    }, (e) => {
+    }, 
+    error: (e) => {
       this.spinner.hide();
+    }
     });
   }
 
   // get book by title
   getBookByTitle(title: string, page: number) {
-    this.bookService.GetBookByTitle(title, page).subscribe(bookTotal => {
-      this.booksTotal = bookTotal;
-      this.totalPages = this.booksTotal.totalPages;
-      this.spinner.hide();
-    }, (e) => {
-      this.spinner.hide();
+    this.bookService.GetBookByTitle(title, page).subscribe({
+      next: (bookTotal) => {
+        this.booksTotal = bookTotal;
+        this.totalPages = this.booksTotal.totalPages;
+        this.spinner.hide();
+      },
+      error: (e) => {
+        this.spinner.hide();
+      }
     });
   }
 
@@ -199,7 +205,7 @@ export class SearchComponent implements OnInit, AfterViewInit{
        next: () => {
         setTimeout(() => {
           element.scrollIntoView({ behavior: 'auto' });
-        });
+        },5);
        }
      })
     }    
@@ -382,13 +388,15 @@ export class SearchComponent implements OnInit, AfterViewInit{
   GetBookSearchAll(keyword: string, status: number[], genre: number, chapLength: number, page: number) {
 
     // find book
-    this.bookService.GetBookSearchAll(keyword, status, genre, chapLength, page).subscribe (book => {
-      this.booksTotal = book;
-      this.totalPages = this.booksTotal.totalPages;
-      this.spinner.hide();
-    },
-    (e) => {
-      this.spinner.hide();
+    this.bookService.GetBookSearchAll(keyword, status, genre, chapLength, page).subscribe ({
+      next: (book) => {
+        this.booksTotal = book;
+        this.totalPages = this.booksTotal.totalPages;
+        this.spinner.hide();
+      },
+      error: (e) => {
+        this.spinner.hide();
+      }
     });
   }
 }

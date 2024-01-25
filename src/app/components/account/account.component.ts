@@ -88,17 +88,19 @@ export class AccountComponent implements OnInit{
   }
 
   login(user: LoginModel) {
-    this.accountService.login(user).subscribe((reponse) => {
-      this.token = reponse.token
-      this.cookieService.set(environment.UserCookie, this.token, undefined, "/" );
-      window.location.reload();
-    },
-    (e) => {
-      if (e.status === 401) {
-        alert("Tài khoản hoặc mật khẩu chưa đúng!");
-        return;
+    this.accountService.login(user).subscribe({
+      next: (reponse) => {
+        this.token = reponse.token
+        this.cookieService.set(environment.UserCookie, this.token, undefined, "/" );
+        window.location.reload();
+      },
+      error: (e) => {
+        if (e.status === 401) {
+          alert("Tài khoản hoặc mật khẩu chưa đúng!");
+          return;
+        }
       }
-    })
+    });
   }
   // end login user
 
@@ -152,17 +154,19 @@ export class AccountComponent implements OnInit{
   }
 
   register(userRegister: RegisterModel) {
-    this.accountService.register(userRegister).subscribe((reponse) => {
-      this.token = reponse.token
-      this.cookieService.set(environment.UserCookie, this.token, undefined, "/" );
-      window.location.reload();
-      alert(reponse.message);
-    },
-    (e) => {
-      if (e.error.message === "Email is already registered") {
-        alert("Đã tồn tại email này!");
-      } else if (e.error.message === "UserName is already registered") {
-        alert("Đã tồn tại tên tài khoản này!");
+    this.accountService.register(userRegister).subscribe({
+      next: (reponse) => {
+        this.token = reponse.token
+        this.cookieService.set(environment.UserCookie, this.token, undefined, "/" );
+        window.location.reload();
+        alert(reponse.message);
+      },
+      error: (e) => {
+        if (e.error.message === "Email is already registered") {
+          alert("Đã tồn tại email này!");
+        } else if (e.error.message === "UserName is already registered") {
+          alert("Đã tồn tại tên tài khoản này!");
+        }
       }
     });
   }

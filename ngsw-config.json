@@ -19,11 +19,10 @@
       "name": "api-genre-cache",
       "urls": [
         "/api/Genre*",
-        "/api/crawling*"
+        "/api/Crawling*"
       ],
       "cacheConfig": {
         "maxSize": 1000000,
-        "timeout": "0u",
         "maxAge": "365d",
         "strategy": "performance"
       }
@@ -35,7 +34,7 @@
       ],
       "cacheConfig": {
         "maxSize": 1000000,
-        "timeout": "1000u",
+        "timeout": "900u",
         "maxAge": "365d",
         "strategy": "freshness"
       }

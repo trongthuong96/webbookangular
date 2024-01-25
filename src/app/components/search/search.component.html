@@ -81,13 +81,13 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     @for (book of genre?.bookInGenreDtos; track $index) {
                         <div appRestoreScrollPositon class="flex space-x-3 py-2 px-3">
-                            <div class="flex-shrink-0"> <a [routerLink]="['/truyen', book.slug]"
+                            <div class="flex-shrink-0"> <a [routerLink]="['/truyen', book.slug]" [queryParams]="{ 'page': 1, 'arrange': 0 }" 
                                     class="text-title font-semibold"> <img class="h-32 w-24 shadow-lg rounded"
                                         src="{{book.coverImage}}"
                                         alt="" loading="lazy"> </a> </div>
                             <div class="grow space-y-2">
                                 <div class="flex items-center space-x-1"> <a
-                                        [routerLink]="['/truyen', book.slug]"
+                                        [routerLink]="['/truyen', book.slug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }" 
                                         class="text-title font-semibold hover-title"> {{book.title}}</a> </div>
                                 <div class="text-gray-500 text-sm text-overflow-multiple-lines text-dec" [innerHTML]="book.description"></div>
                                 <div class="mt-1 space-y-1">
@@ -150,13 +150,13 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 @for (book of booksTotal!.books; track $index) {
                     <div appRestoreScrollPositon class="flex space-x-3 py-2 px-3">
-                        <div class="flex-shrink-0"> <a [routerLink]="['/truyen', book.slug]"
+                        <div class="flex-shrink-0"> <a [routerLink]="['/truyen', book.slug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }" 
                                 class="text-title font-semibold"> <img class="h-32 w-24 shadow-lg rounded"
                                     src="{{book.coverImage}}"
                                     alt="Ta thật sự là Văn Sao Công" loading="lazy"> </a> </div>
                         <div class="grow space-y-2">
                             <div class="flex items-center space-x-1"> <a
-                                    [routerLink]="['/truyen', book.slug]"
+                                    [routerLink]="['/truyen', book.slug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }" 
                                     class="text-title font-semibold hover-title"> {{book.title}}</a> </div>
                             <div class="text-gray-500 text-sm text-overflow-multiple-lines text-dec" [innerHTML]="book.description"></div>
                             <div class="mt-1 space-y-1">

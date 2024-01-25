@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-pagination',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './pagination.component.html',
-  styleUrl: './pagination.component.css'
+  styleUrl: './pagination.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaginationComponent {
   @Input() totalPages: number = 20;
@@ -23,7 +24,6 @@ export class PaginationComponent {
         result.push('...');
       }
     }
-
     return result;
   }
 

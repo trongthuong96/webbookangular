@@ -168,16 +168,16 @@ export class UserProfileComponent implements OnInit{
 
   uploadImage(userProfile: UserProfileModel): void {
     if (this.selectedFile) {
-      this.imageService.uploadImage(this.selectedFile, "avatar").subscribe(
-        (response) => {
-          this.freeImageHost = response;
-          userProfile.avatar = this.freeImageHost.data.display_url;
-          this.editUserProfile(userProfile);
-        },
-        (error) => {
-          console.error('Error:', error.error.message);
-        }
-      );
+      this.imageService.uploadImage(this.selectedFile, "avatar").subscribe({
+        next: (response) => {
+            this.freeImageHost = response;
+            userProfile.avatar = this.freeImageHost.data.display_url;
+            this.editUserProfile(userProfile);
+          },
+        error: (error) => {
+            console.error('Error:', error.error.message);
+          }
+      });
     }
   }  
 }

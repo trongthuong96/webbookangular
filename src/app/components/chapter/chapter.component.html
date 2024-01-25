@@ -13,13 +13,13 @@
             <div class="chapter-actions chapter-actions-origin d-flex align-items-center justify-content-center">
             
                 @if (chapterIndex! <= 1) {
-                    <a class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [routerLink]="['/truyen', bookSlug]"> 
+                    <a class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [routerLink]="['/truyen', bookSlug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }"> 
                         <span>Chương</span> trước</a>
                 } @else {
                     <a class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [routerLink]="['/truyen', bookSlug, bookId, chineseBookId,  chapterIndex!-1]"> 
                         <span>Chương</span> trước</a>
                 }
-                <a class="btn btn-success chapter_jump me-1" [routerLink]="['/truyen', bookSlug]">
+                <a class="btn btn-success chapter_jump me-1" [routerLink]="['/truyen', bookSlug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }">
                     <span>
                         <i class="fa-solid fa-bars"></i>
                     </span>
@@ -51,14 +51,14 @@
                 <div class="chapter-actions chapter-actions-origin d-flex align-items-center justify-content-center">
                 
                         @if (chapterIndex! <= 1) {
-                            <a class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [routerLink]="['/truyen', bookSlug]"> 
+                            <a class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [routerLink]="['/truyen', bookSlug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }"> 
                                 <span>Chương</span> trước</a>
                         } @else {
                             <a class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [routerLink]="['/truyen', bookSlug, bookId, chineseBookId, chapterIndex!-1]"> 
                                 <span>Chương</span> trước</a>
                         }
                     
-                        <a class="btn btn-success chapter_jump me-1" [routerLink]="['/truyen', bookSlug]">
+                        <a class="btn btn-success chapter_jump me-1" [routerLink]="['/truyen', bookSlug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }">
                             <span>
                                 <i class="fa-solid fa-bars"></i>
                             </span>

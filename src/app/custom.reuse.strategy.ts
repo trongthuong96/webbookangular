@@ -70,8 +70,15 @@ export class CustomReuseStrategy implements RouteReuseStrategy {
     // Dùng map để chuyển đổi mỗi đoạn đường thành chuỗi
     const urlSegmentStrings = urlSegments.map(segment => segment.toString());
 
+    if (urlSegmentStrings[0] === 'truyen' &&  urlSegmentStrings[4] != undefined) {
+      urlSegmentStrings[2] = "chuong";
+      urlSegmentStrings[3] = "";
+      urlSegmentStrings[4] = "";
+    }
+
     // Sử dụng join để chuyển đổi mảng thành một chuỗi
     let key = urlSegmentStrings.join('-');
+
 
     // if (key === "truyen") {
     //   const genre = route.queryParams["the-loai"] || 'tl';

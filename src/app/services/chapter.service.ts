@@ -45,9 +45,9 @@ export class ChapterService {
     return this.http.get<ChapterShowModel[]>(`${this.urlBase}/list/${bookId}`);
   }
 
-  //api/Chapter/list-chinese/6
-  getChaptersByChineseBookId(chineseBookId: number): Observable<ChapterShowModel[]> {
-    return this.http.get<ChapterShowModel[]>(`${this.urlBase}/list-chinese/${chineseBookId}`);
+  //api/Chapter/list-chinese/6??page=1&pageSize=300&arrange=0
+  getChaptersByChineseBookId(chineseBookId: number, page: number, arrange: number): Observable<ChapterListResponse> {
+    return this.http.get<ChapterListResponse>(`${this.urlBase}/list-chinese/${chineseBookId}?page=${page}&pageSize=300&arrange=${arrange}`);
   }
 
   // getChaptersByChineseBookId(chineseBookId: number): Observable<ChapterShowModel[]> {
@@ -91,4 +91,9 @@ export class ChapterService {
     // Thực hiện request với phương thức GET và truyền tham số qua URL
     return this.http.get<ChapterShowModel>(`${environment.apiUrl}/Crawling/chap-content-crawl`, { params });
   }
+}
+
+class ChapterListResponse {
+  chapters: ChapterShowModel[] = [];
+  total!: number;
 }
