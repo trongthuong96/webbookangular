@@ -12,6 +12,7 @@ import { NgHttpLoaderModule, SpinnerVisibilityService } from 'ng-http-loader';
 import { RestoreScrollPositonDirective } from '../../directives/restore.scroll.positon.directive';
 import { BookReadingModel } from '../../models/book.reading/book.reading.model';
 import { environment } from '../../../environments/environment.development';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-home',
@@ -43,6 +44,7 @@ export class HomeComponent implements OnInit, AfterViewInit{
     private titleService: TitleService,
     private spinner: SpinnerVisibilityService,
     private router: Router,
+    private cookieService: CookieService,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 
@@ -78,6 +80,15 @@ export class HomeComponent implements OnInit, AfterViewInit{
     this.combineRequests(1);
 
     if (isPlatformBrowser(this.platformId)) {
+
+      // book reading
+      if (this.cookieService.check(environment.UserCookie)) {
+        const bookRead = localStorage.getItem(environment.bookReading);
+        if (bookRead === undefined || bookRead === null) {
+          this.GetBookReadingsByUserId();
+       }
+      }
+
       const booksRead = localStorage.getItem(environment.bookReading);
       if (booksRead) {
         this.bookListRead = JSON.parse(booksRead);
@@ -114,5 +125,13 @@ export class HomeComponent implements OnInit, AfterViewInit{
         this.spinner.hide();
       }
     });
+  }
+
+  // book reading
+  GetBookReadingsByUserId() {
+    this.bookService.GetBookReadingsByUserId().subscribe((bookList) => {
+      localStorage.setItem(environment.bookReading,  JSON.stringify(bookList));
+      this.bookListRead = bookList;
+    })
   }
 }

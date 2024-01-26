@@ -12,16 +12,21 @@
                     <ul class="list-group">
                         @for (bookRead of bookListRead; track $index) {
                             <li class="list-group-item">
-                                <a class="hover-title text-xm" [routerLink]="['/truyen', bookRead.bookSlug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }"> {{bookRead.bookTitle}} </a>
+                                <div class="d-flex align-items-center">
+                                    <a class="hover-title text-xm" [routerLink]="['/truyen', bookRead.bookSlug]" [queryParams]="{ 'page': 1, 'arrange': 0 }"> {{bookRead.bookTitle}} </a>
+                                    <span class="d-flex justify-content-end  flex-grow-1">
+                                        <i class="fa-regular fa-circle-xmark btn"></i>
+                                    </span>
+                                </div>
                                 <p>
-                                    <span class="text-xs text-secondary hide-text">
+                                    <span class="text-xs text-secondary">
                                         Chương {{bookRead.chapNumber}}: {{bookRead.chapTitle}}
                                     </span>
                                 </p>
                             </li>
                         } @empty {
                             <li class="list-group-item">
-                                <a href=""> Chưa có truyện đã đọc </a>
+                                <p> Chưa có truyện đã đọc </p>
                             </li>
                         }
                     </ul>

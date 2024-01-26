@@ -1,7 +1,6 @@
-import { Component, Inject, OnInit, PLATFORM_ID, afterNextRender, makeStateKey } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, makeStateKey } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
 import { GenreService } from './services/genre.service';
 import { GenreShowModel } from './models/genre/genre.model';
 import { FormsModule } from '@angular/forms';
@@ -9,15 +8,14 @@ import { SD } from './Utility/SD';
 import { BookService } from './services/book.service';
 import { UriModel } from './models/uri/uri.model';
 import { AccountComponent } from './components/account/account.component';
-import { environment } from '../environments/environment.development';
 import { SignatureService } from './services/signature.service';
 import { CsrfTokenService } from './services/csrf-token.service';
-import { CookieService } from 'ngx-cookie-service';
+import { Subject, firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, HomeComponent, RouterLink, FormsModule, AccountComponent],
+  imports: [CommonModule, RouterOutlet, RouterLink, FormsModule, AccountComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css' 
 })
@@ -35,6 +33,7 @@ export class AppComponent implements OnInit{
 
   // csrf token
   csrfTokenKey = makeStateKey<string>('csrfToken');
+  refreshCsrfTokenSubject = new Subject<void>();
 
   /**
    *
@@ -45,29 +44,10 @@ export class AppComponent implements OnInit{
     private router: Router,
     private csrfTokenService: CsrfTokenService,
     private signatureService: SignatureService,
-    private cookieService: CookieService,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-    
-    afterNextRender(() => {
-        // csrf token
-      this.csrfTokenService.refreshCsrfToken().subscribe(async (reponse) => {
-        this.csrfTokenService.setCsrfToken(await this.signatureService.decryptAESAsync(reponse.token));
-      });
+  ) {}
 
-      // book reading
-      if (this.cookieService.check(environment.UserCookie)) {
-        const bookRead = localStorage.getItem(environment.bookReading);
-        if (bookRead === undefined || bookRead === null) {
-         setTimeout(() => {
-           this.GetBookReadingsByUserId();
-         }, 2000);
-       }
-      }
-    });
-  }
-
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     // const timestamp = 1705293871.042;
     // const date = new Date(timestamp * 1000); // Convert from seconds to milliseconds
     // console.log(date.toLocaleString()); // Display the date in a readable format
@@ -76,9 +56,12 @@ export class AppComponent implements OnInit{
     // const date = new Date(dateString);
     // const timestamp = date.getTime() / 1000; // Chia cho 1000 để chuyển từ mili giây sang giây
     // console.log(timestamp);
-
     
     if (isPlatformBrowser(this.platformId)) {
+      // csrf token
+      await this.refreshCsrfToken();
+
+      this.refreshCsrfTokenSubject.next(); // Thông báo hoàn thành
 
       this.getGenres();
 
@@ -90,6 +73,12 @@ export class AppComponent implements OnInit{
 
     // //const sitemap = this.sitemapService.generateSitemap();   
   }
+  // csrf token
+  async refreshCsrfToken() {
+    const response = await firstValueFrom(this.csrfTokenService.refreshCsrfToken());
+    const decryptedToken = await this.signatureService.decryptAESAsync(response.token);
+    this.csrfTokenService.setCsrfToken(decryptedToken);
+  }
 
   // get genres
   getGenres() {
@@ -98,12 +87,10 @@ export class AppComponent implements OnInit{
       // Đọc dữ liệu từ Local Storage
       this.genreListModel = JSON.parse(storedGenresData);
     } else {
-      setTimeout(() => {
-        this.genreService.getGenres().subscribe(genres => {
-          this.genreListModel = genres;
-          localStorage.setItem("genres_info", JSON.stringify(this.genreListModel));
-        });
-      }, 1000)
+      this.genreService.getGenres().subscribe(genres => {
+        this.genreListModel = genres;
+        localStorage.setItem("genres_info", JSON.stringify(this.genreListModel));
+      });
     }
   }
 
@@ -137,12 +124,5 @@ export class AppComponent implements OnInit{
       this.router.navigate(['/truyen'], { queryParams: { 'tu-tim-kiem': this.value, 'page': 1 } });     
     }
     this.value = "";
-  }
-
-  // book reading
-  GetBookReadingsByUserId() {
-    this.bookService.GetBookReadingsByUserId().subscribe((bookList) => {
-      localStorage.setItem(environment.bookReading,  JSON.stringify(bookList));
-    })
   }
 }

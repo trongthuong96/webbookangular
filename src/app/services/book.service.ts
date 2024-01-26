@@ -116,4 +116,10 @@ export class BookService {
     const url = `${environment.apiUrl}/BookReading`;
     return this.http.get<BookReadingModel[]>(url);
   }
+
+  // delete bookreading /api/BookReading/{bookId}/{chineseBookId}
+  DeleteBookReading(bookId: number, chineseBookId: number): Observable<any> {
+    const url = `${environment.apiUrl}/BookReading/${bookId}/${chineseBookId}`;
+    return this.http.delete<any>(url);
+  }
 }

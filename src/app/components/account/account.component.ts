@@ -9,6 +9,8 @@ import { UserProfileModel } from '../../models/user/user.profile.model';
 import { Router, RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment.development';
 import { SD } from '../../Utility/SD';
+import { Subject, takeUntil } from 'rxjs';
+import { AppComponent } from '../../app.component';
 
 @Component({
   selector: 'app-account',
@@ -22,6 +24,7 @@ export class AccountComponent implements OnInit{
   loginModel: LoginModel = new LoginModel();
   registerModel: RegisterModel = new RegisterModel();
   userProfile: UserProfileModel = new UserProfileModel();
+  private ngUnsubscribe = new Subject<void>();
 
   token: string = "";
 
@@ -41,6 +44,7 @@ export class AccountComponent implements OnInit{
     private accountService: AccountService,
     private cookieService: CookieService,
     private router: Router,
+    private appComponent: AppComponent,
     @Inject(PLATFORM_ID) private platformId: Object
   ){}
 
@@ -56,9 +60,11 @@ export class AccountComponent implements OnInit{
           }
   
         } else {
-          setTimeout(() => {
-            this.getUserProfile();
-          }, 2000);
+          this.appComponent.refreshCsrfTokenSubject.pipe(
+            takeUntil(this.ngUnsubscribe)
+          ).subscribe(() => {
+            this.getUserProfile(); // Gọi hàm khi refresh token hoàn thành
+          });
         }
       }
     }
