@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, HostListener, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AccountService } from '../../services/account.service';
 import { LoginModel } from '../../models/user/login.model';
@@ -27,6 +27,9 @@ export class AccountComponent implements OnInit{
   private ngUnsubscribe = new Subject<void>();
 
   token: string = "";
+
+  //
+  isLoginOrRegister = 0;
 
   loginForm = new FormGroup({
     loginEmail: new FormControl(""),
@@ -197,5 +200,22 @@ export class AccountComponent implements OnInit{
     });
   }
 
-  
+  isLogin() {
+    this.isLoginOrRegister = 1
+  }
+
+  isRegister() {
+    this.isLoginOrRegister = 2;
+  }
+
+  @HostListener('keydown.enter') 
+  onEnter() {
+    if (this.isLoginOrRegister === 1) {
+      this.submitLogin(); 
+    }
+    
+    if (this.isLoginOrRegister === 2) {
+      this.submitRegister();
+    }
+  }
 }

@@ -90,6 +90,7 @@ export class HomeComponent implements OnInit, AfterViewInit{
       // book reading
       if (this.checkUserExist) {
         environment.bookReading = "bookReadingExistUser";
+        this.GetBookReadingsByUserId();
         this.appComponent.refreshCsrfTokenSubject.pipe(
           takeUntil(this.ngUnsubscribe)
         ).subscribe(() => {

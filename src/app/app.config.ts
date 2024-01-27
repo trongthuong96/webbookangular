@@ -5,7 +5,6 @@ import { routes } from './app.routes';
 import { provideClientHydration, withHttpTransferCacheOptions } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
 import { SignatureInterceptor } from './config/SignatureInterceptor';
-import { ApiInterceptor } from './config/api.interceptor';
 import { IMAGE_CONFIG } from '@angular/common';
 import { provideServiceWorker } from '@angular/service-worker';
 import { CsrfInterceptor } from './config/CsrfInterceptor';
@@ -33,11 +32,6 @@ export const appConfig: ApplicationConfig = {
     {
         provide: HTTP_INTERCEPTORS,
         useClass: SignatureInterceptor,
-        multi: true,
-    },
-    {
-        provide: HTTP_INTERCEPTORS,
-        useClass: ApiInterceptor,
         multi: true,
     },
     { 
