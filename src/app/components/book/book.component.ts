@@ -17,6 +17,7 @@ import { environment } from '../../../environments/environment.development';
 import { NgHttpLoaderModule, SpinnerVisibilityService } from 'ng-http-loader';
 import { RestoreScrollPositonDirective } from '../../directives/restore.scroll.positon.directive';
 import { PaginationComponent } from '../pagination/pagination.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-book',
@@ -61,6 +62,8 @@ export class BookComponent implements OnInit, AfterViewInit{
   totalPages!: number;
   arrange: number = 0;
 
+  checkUserExist: boolean = this.cookieService.check(environment.UserCookie);
+
   /**
    *
    */
@@ -70,12 +73,14 @@ export class BookComponent implements OnInit, AfterViewInit{
     private router: Router,
     private titleService: TitleService,
     private chapterService: ChapterService,
+    private cookieService: CookieService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private spinner: SpinnerVisibilityService
+    private spinner: SpinnerVisibilityService,
   ) 
   {}
 
   ngOnInit(): void {
+
     this.route.queryParams.subscribe(params => {
 
       const page = parseInt(params['page']);
@@ -115,7 +120,11 @@ export class BookComponent implements OnInit, AfterViewInit{
     });
    
     if (isPlatformBrowser(this.platformId)) {
-
+      
+      if (this.checkUserExist) {
+        environment.bookReading = "bookReadingExistUser";
+      }
+  
       // book read
       const booksRead = localStorage.getItem(environment.bookReading);
       if (booksRead) {

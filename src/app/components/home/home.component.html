@@ -15,7 +15,7 @@
                                 <div class="d-flex align-items-center">
                                     <a class="hover-title text-xm" [routerLink]="['/truyen', bookRead.bookSlug]" [queryParams]="{ 'page': 1, 'arrange': 0 }"> {{bookRead.bookTitle}} </a>
                                     <span class="d-flex justify-content-end  flex-grow-1">
-                                        <i class="fa-regular fa-circle-xmark btn"></i>
+                                        <i class="fa-regular fa-circle-xmark btn" (click)="DeleteBookReading(bookRead.bookId, bookRead.chineseBookId)"></i>
                                     </span>
                                 </div>
                                 <p>
@@ -32,6 +32,8 @@
                     </ul>
                 </div>
             </div>
+
+           <!-- <app-book-reading></app-book-reading> -->
 
             <div class="row">
                 <div class="head-title-global d-flex justify-content-between mb-2">

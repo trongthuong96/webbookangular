@@ -10,6 +10,7 @@ import { environment } from '../../../environments/environment.development';
 import { filter } from 'rxjs';
 import { NgHttpLoaderModule, SpinnerVisibilityService } from 'ng-http-loader';
 import { RestoreScrollPositonDirective } from '../../directives/restore.scroll.positon.directive';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Component({
@@ -39,7 +40,7 @@ export class ChapterComponent implements OnInit, AfterViewInit{
   // book read
   booksReadLocal: BookReadingModel[] = [];
   bookRead?: BookReadingModel;
-
+  checkUserExist: boolean = this.cookieService.check(environment.UserCookie);
   /**
    *
    */
@@ -49,11 +50,19 @@ export class ChapterComponent implements OnInit, AfterViewInit{
     private sanitizer: DomSanitizer,
     private router: Router,
     private titleService: Title,
+    private cookieService: CookieService,
     @Inject(PLATFORM_ID) private platformId: Object,
     private spinner: SpinnerVisibilityService
   ) {}
 
   ngOnInit(): void {
+
+    if (isPlatformBrowser(this.platformId)) {
+      if (this.checkUserExist) {
+        environment.bookReading = "bookReadingExistUser";
+      }
+    }
+
     this.bookRead = new BookReadingModel();
     this.route.paramMap.subscribe(params => {
       this.bookSlug = params.get('slug')?.toString()!;
@@ -170,6 +179,7 @@ export class ChapterComponent implements OnInit, AfterViewInit{
 
   // bookRead localStorage
   addBookReadLocal() {
+    console.log("chap" + environment.bookReading)
     const tempBooks = localStorage.getItem(environment.bookReading);
     
     if (tempBooks !== 'null' && tempBooks !== null) {

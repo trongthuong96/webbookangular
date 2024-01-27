@@ -36,8 +36,10 @@ export class HomeComponent implements OnInit, AfterViewInit{
   bookListView: BookShowListModel[] = [];
   bookListUpdateAt: BookShowListModel[] = [];
   bookListStatus: BookShowListModel[] = [];
-   // book read lacalStorage
-   bookListRead!: BookReadingModel[];
+  // book read lacalStorage
+  bookListRead!: BookReadingModel[];
+
+  checkUserExist: boolean = this.cookieService.check(environment.UserCookie);
 
   constructor(
     private bookService: BookService,
@@ -54,17 +56,15 @@ export class HomeComponent implements OnInit, AfterViewInit{
       .subscribe(() => {
         // Thực hiện các hành động cần thiết khi route thay đổi
 
-        if (isPlatformBrowser(this.platformId)) {
-          const booksRead = localStorage.getItem(environment.bookReading);
-          if (booksRead) {
-            this.bookListRead = JSON.parse(booksRead);
-            // Sắp xếp theo giảm dần theo updatedAt
-            this.bookListRead.sort((a, b) => {
-              const dateA = new Date(a.updatedAt).getTime();
-              const dateB = new Date(b.updatedAt).getTime();
-              return dateB - dateA;
-            });
-          }
+        // book reading
+        const booksRead = localStorage.getItem(environment.bookReading);
+        if (booksRead) {
+          this.bookListRead = JSON.parse(booksRead);
+          this.bookListRead.sort((a, b) => {
+            const dateA = new Date(a.updatedAt).getTime();
+            const dateB = new Date(b.updatedAt).getTime();
+            return dateB - dateA;
+          });
         }
 
         this.combineRequests(1);
@@ -82,21 +82,19 @@ export class HomeComponent implements OnInit, AfterViewInit{
     if (isPlatformBrowser(this.platformId)) {
 
       // book reading
-      if (this.cookieService.check(environment.UserCookie)) {
-        const bookRead = localStorage.getItem(environment.bookReading);
-        if (bookRead === undefined || bookRead === null) {
+      if (this.checkUserExist) {
+          environment.bookReading = "bookReadingExistUser";
           this.GetBookReadingsByUserId();
-       }
-      }
-
-      const booksRead = localStorage.getItem(environment.bookReading);
-      if (booksRead) {
-        this.bookListRead = JSON.parse(booksRead);
-        this.bookListRead.sort((a, b) => {
-          const dateA = new Date(a.updatedAt).getTime();
-          const dateB = new Date(b.updatedAt).getTime();
-          return dateB - dateA;
-        });
+      } else {
+        const booksRead = localStorage.getItem(environment.bookReading);
+        if (booksRead) {
+          this.bookListRead = JSON.parse(booksRead);
+          this.bookListRead.sort((a, b) => {
+            const dateA = new Date(a.updatedAt).getTime();
+            const dateB = new Date(b.updatedAt).getTime();
+            return dateB - dateA;
+          });
+        }
       }
     }
 
@@ -130,8 +128,24 @@ export class HomeComponent implements OnInit, AfterViewInit{
   // book reading
   GetBookReadingsByUserId() {
     this.bookService.GetBookReadingsByUserId().subscribe((bookList) => {
-      localStorage.setItem(environment.bookReading,  JSON.stringify(bookList));
       this.bookListRead = bookList;
+      localStorage.setItem(environment.bookReading, JSON.stringify(this.bookListRead));
     })
+  }
+
+  // delete book reading
+  DeleteBookReading(bookId: number, chineseBookId: number) {
+    if (this.checkUserExist) {
+      this.bookService.DeleteBookReading(bookId, chineseBookId).subscribe({
+        next: () => {}
+      });
+
+      this.bookListRead = this.bookListRead.filter(book => !(book.bookId === bookId && book.chineseBookId === chineseBookId));
+      localStorage.setItem(environment.bookReading, JSON.stringify(this.bookListRead));
+
+    } else {
+      this.bookListRead = this.bookListRead.filter(book => !(book.bookId === bookId && book.chineseBookId === chineseBookId));
+      localStorage.setItem(environment.bookReading, JSON.stringify(this.bookListRead));
+    }
   }
 }
