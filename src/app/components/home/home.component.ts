@@ -71,6 +71,10 @@ export class HomeComponent implements OnInit, AfterViewInit{
           });
         }
 
+        if (this.checkUserExist) {
+          this.bookService.GetBookReadingsByUserId().subscribe();
+        }
+
         this.combineRequests(1);
 
         setTimeout(() => {
@@ -86,7 +90,6 @@ export class HomeComponent implements OnInit, AfterViewInit{
     if (isPlatformBrowser(this.platformId)) {
 
       // book reading
-      console.log(this.checkUserExist)
       if (this.checkUserExist) {
         environment.bookReading = "bookReadingExistUser";
         this.appComponent.refreshCsrfTokenSubject.pipe(
