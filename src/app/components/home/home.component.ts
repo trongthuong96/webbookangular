@@ -83,9 +83,10 @@ export class HomeComponent implements OnInit, AfterViewInit{
 
       // book reading
       if (this.checkUserExist) {
-          environment.bookReading = "bookReadingExistUser";
-          this.GetBookReadingsByUserId();
-      } else {
+        environment.bookReading = "bookReadingExistUser";
+        this.GetBookReadingsByUserId(); // Gọi hàm khi refresh token hoàn thành
+      } 
+      else {
         const booksRead = localStorage.getItem(environment.bookReading);
         if (booksRead) {
           this.bookListRead = JSON.parse(booksRead);

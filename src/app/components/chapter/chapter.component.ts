@@ -179,7 +179,6 @@ export class ChapterComponent implements OnInit, AfterViewInit{
 
   // bookRead localStorage
   addBookReadLocal() {
-    console.log("chap" + environment.bookReading)
     const tempBooks = localStorage.getItem(environment.bookReading);
     
     if (tempBooks !== 'null' && tempBooks !== null) {
