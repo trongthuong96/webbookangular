@@ -6,7 +6,7 @@
       "name": "api-book-cache",
       "urls": [
         "/api/book*",
-        "/api/bookreading*"
+        "/api/BookReading*"
       ],
       "cacheConfig": {
         "maxSize": 1000000,
@@ -18,7 +18,7 @@
     {
       "name": "api-genre-cache",
       "urls": [
-        "/api/Genre*",
+        "/api/genre*",
         "/api/Crawling*"
       ],
       "cacheConfig": {
