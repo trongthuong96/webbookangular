@@ -85,8 +85,6 @@ export class HomeComponent implements OnInit, AfterViewInit{
 
   ngOnInit(): void {
 
-    this.combineRequests(1);
-
     if (isPlatformBrowser(this.platformId)) {
 
       // book reading
@@ -96,6 +94,7 @@ export class HomeComponent implements OnInit, AfterViewInit{
           takeUntil(this.ngUnsubscribe)
         ).subscribe(() => {
           this.GetBookReadingsByUserId(); // Gọi hàm khi refresh token hoàn thành
+          this.combineRequests(1);
         });
 
       } else {
@@ -110,6 +109,8 @@ export class HomeComponent implements OnInit, AfterViewInit{
         }
       }
     }
+    
+    this.combineRequests(1);
 
     this.titleService.setTitle("Truyện Mới - Nguồn Cung Cấp Truyện Đa Dạng và Dịch Nhanh");
 
