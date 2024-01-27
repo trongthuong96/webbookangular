@@ -7,12 +7,13 @@ import { TimeAgoPipe } from '../../config/time-ago.pipe';
 import { BookShowListModel } from '../../models/book/book.list.model';
 import BookShowModel from '../../models/book/book.one.model';
 import { TitleService } from '../../services/title.service';
-import { filter, forkJoin } from 'rxjs';
+import { Subject, filter, forkJoin, takeUntil } from 'rxjs';
 import { NgHttpLoaderModule, SpinnerVisibilityService } from 'ng-http-loader';
 import { RestoreScrollPositonDirective } from '../../directives/restore.scroll.positon.directive';
 import { BookReadingModel } from '../../models/book.reading/book.reading.model';
 import { environment } from '../../../environments/environment.development';
 import { CookieService } from 'ngx-cookie-service';
+import { AppComponent } from '../../app.component';
 
 @Component({
   selector: 'app-home',
@@ -41,12 +42,15 @@ export class HomeComponent implements OnInit, AfterViewInit{
 
   checkUserExist: boolean = this.cookieService.check(environment.UserCookie);
 
+  private ngUnsubscribe = new Subject<void>();
+
   constructor(
     private bookService: BookService,
     private titleService: TitleService,
     private spinner: SpinnerVisibilityService,
     private router: Router,
     private cookieService: CookieService,
+    private appComponent: AppComponent,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 
@@ -82,11 +86,16 @@ export class HomeComponent implements OnInit, AfterViewInit{
     if (isPlatformBrowser(this.platformId)) {
 
       // book reading
+      console.log(this.checkUserExist)
       if (this.checkUserExist) {
         environment.bookReading = "bookReadingExistUser";
-        this.GetBookReadingsByUserId(); // Gọi hàm khi refresh token hoàn thành
-      } 
-      else {
+        this.appComponent.refreshCsrfTokenSubject.pipe(
+          takeUntil(this.ngUnsubscribe)
+        ).subscribe(() => {
+          this.GetBookReadingsByUserId(); // Gọi hàm khi refresh token hoàn thành
+        });
+
+      } else {
         const booksRead = localStorage.getItem(environment.bookReading);
         if (booksRead) {
           this.bookListRead = JSON.parse(booksRead);
