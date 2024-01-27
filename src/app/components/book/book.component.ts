@@ -158,6 +158,8 @@ export class BookComponent implements OnInit, AfterViewInit{
     
           if (existingBook) {
             this.bookRead = existingBook;
+          } else {
+            this.bookRead = undefined;
           }
         }
       } 
