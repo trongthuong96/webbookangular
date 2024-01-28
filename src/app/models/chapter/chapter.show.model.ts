@@ -6,4 +6,5 @@ export class ChapterShowModel {
     updatedAt!: Date;
     views!: number;
     bookTitle!: string;
+    chapterIndexMax!: number;
 }

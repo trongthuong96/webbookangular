@@ -172,7 +172,19 @@ export class ChapterComponent implements OnInit, AfterViewInit{
         }
        
       } else if (event.key === 'ArrowRight') {
-        this.router.navigate(['/truyen', this.bookSlug, this.bookId, this.chineseBookId, this.chapterIndex! + 1]);
+
+        if (this.chapterIndex! >= this.chapterModel!.chapterIndexMax ) {
+
+          const navigationExtras: NavigationExtras = {
+            queryParams: { 'page': 1, 'arrange': 0 }
+          };
+          
+          this.router.navigate(['/truyen', this.bookSlug], navigationExtras);
+
+        } else {
+
+          this.router.navigate(['/truyen', this.bookSlug, this.bookId, this.chineseBookId, this.chapterIndex! + 1]);
+        }
       }
     }
   } 

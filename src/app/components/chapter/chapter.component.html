@@ -12,13 +12,11 @@
         <div class="chapter-nav text-center">
             <div class="chapter-actions chapter-actions-origin d-flex align-items-center justify-content-center">
             
-                @if (chapterIndex! <= 1) {
-                    <a class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [routerLink]="['/truyen', bookSlug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }"> 
-                        <span>Chương</span> trước</a>
-                } @else {
-                    <a class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [routerLink]="['/truyen', bookSlug, bookId, chineseBookId,  chapterIndex!-1]"> 
-                        <span>Chương</span> trước</a>
-                }
+                <button class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [disabled]="chapterIndex! <= 1" 
+                    [routerLink]="chapterIndex! > 1 ? ['/truyen', bookSlug, bookId, chineseBookId, chapterIndex! - 1] : null">
+                    <span>Chương</span> trước
+                </button>
+            
                 <a class="btn btn-success chapter_jump me-1" [routerLink]="['/truyen', bookSlug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }">
                     <span>
                         <i class="fa-solid fa-bars"></i>
@@ -35,8 +33,11 @@
 
                     </ul>
                 </div>
-                <a class="btn btn-success chapter-next" [routerLink]="['/truyen', bookSlug, bookId, chineseBookId, chapterIndex!+1]">
-                    <span>Chương</span> tiếp</a>
+                <button class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [disabled]="chapterIndex! >= chapterModel.chapterIndexMax" 
+                    [routerLink]="chapterIndex! < chapterModel.chapterIndexMax ? ['/truyen', bookSlug, bookId, chineseBookId, chapterIndex! + 1] : null">
+                    <span>Chương</span> tiếp
+                </button>
+                
             </div>
         </div>
         <hr class="chapter-end container-fluid">
@@ -50,13 +51,10 @@
             
                 <div class="chapter-actions chapter-actions-origin d-flex align-items-center justify-content-center">
                 
-                        @if (chapterIndex! <= 1) {
-                            <a class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [routerLink]="['/truyen', bookSlug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }"> 
-                                <span>Chương</span> trước</a>
-                        } @else {
-                            <a class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [routerLink]="['/truyen', bookSlug, bookId, chineseBookId, chapterIndex!-1]"> 
-                                <span>Chương</span> trước</a>
-                        }
+                    <button class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [disabled]="chapterIndex! <= 1" 
+                        [routerLink]="chapterIndex! > 1 ? ['/truyen', bookSlug, bookId, chineseBookId, chapterIndex! - 1] : null">
+                        <span>Chương</span> trước
+                    </button>
                     
                         <a class="btn btn-success chapter_jump me-1" [routerLink]="['/truyen', bookSlug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }">
                             <span>
@@ -73,8 +71,10 @@
                         
                         </ul>
                     </div>
-                    <a class="btn btn-success chapter-next" [routerLink]="['/truyen', bookSlug, bookId, chineseBookId, chapterIndex!+1]">
-                        <span>Chương</span> tiếp</a>
+                    <button class="btn btn-success mt-2 mb-2 me-1 me-1 chapter-prev" [disabled]="chapterIndex! >= chapterModel.chapterIndexMax" 
+                        [routerLink]="chapterIndex! < chapterModel.chapterIndexMax ? ['/truyen', bookSlug, bookId, chineseBookId, chapterIndex! + 1] : null">
+                        <span>Chương</span> tiếp
+                    </button>
                 </div>
             </div>
             <hr class="chapter-end container-fluid">
