@@ -8,8 +8,6 @@ import { AccountService } from '../../services/account.service';
 import { ImageService } from '../../services/image.service';
 import { FreeImageHost } from '../../models/image/freeImage.model';
 import { SD } from '../../Utility/SD';
-import { parseISO } from 'date-fns';
-
 
 @Component({
   selector: 'app-user.profile',
@@ -61,15 +59,8 @@ export class UserProfileComponent implements OnInit{
         // Chuyển đổi chuỗi thành đối tượng
         this.userProfile = JSON.parse(storedUserProfile);
 
-      // Chuyển đổi createdAt
-      let dateStringWithZ = this.userProfile.createdAt + 'Z';
-      this.createdAt = parseISO(dateStringWithZ);
-
-      // Xử lý updatedAt
-      const formattedValue = this.userProfile.updatedAt.toString().replace("Z", "");
-      dateStringWithZ = formattedValue + 'Z';
-
-      this.updatedAt = parseISO(dateStringWithZ);
+        this.createdAt = this.userProfile.createdAt;
+        this.updatedAt = this.userProfile.updatedAt;
 
         this.profileForm.get('inputFullName')!.setValue(this.userProfile.fullName);
         this.profileForm.get('inputEmail')!.setValue(this.userProfile.email);
@@ -124,22 +115,22 @@ export class UserProfileComponent implements OnInit{
   // edit
   editUserProfile(userProfile: UserProfileModel) {
    
-      this.accountService.editUserProfile(userProfile).subscribe(
-        (response) => {
-          localStorage.setItem(environment.UserProfileLocal, JSON.stringify(this.userProfile));
-          window.location.reload();
-          this.waitingForResponse = false;
-          alert("Lưu thành công!");
-        },
-        (error) => {
-          if (error.error.message === "FullName is already in use") {
-            alert("Tên hiển thị đã tồn tại!");
-          } else if (error.error.message === "Email already exists") {
-            alert("Email đã tồn tại!");
-          }
-          this.waitingForResponse = false;
+    this.accountService.editUserProfile(userProfile).subscribe({
+      next: (response) => {
+        localStorage.setItem(environment.UserProfileLocal, JSON.stringify(this.userProfile));
+        window.location.reload();
+        this.waitingForResponse = false;
+        alert("Lưu thành công!");
+      },
+      error: (error) => {
+        if (error.error.message === "FullName is already in use") {
+          alert("Tên hiển thị đã tồn tại!");
+        } else if (error.error.message === "Email already exists") {
+          alert("Email đã tồn tại!");
         }
-      );
+        this.waitingForResponse = false;
+      }
+    });
     
   }
 

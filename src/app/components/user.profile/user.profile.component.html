@@ -91,13 +91,13 @@
 
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputCreatedAt">Ngày tạo <i class="text-xs">(chỉ xem)</i></label>
-                                <input class="form-control" id="inputCreatedAt" type="text"  [value]="createdAt | date: 'HH:mm:ss dd/MM/yyyy' : 'GMT+7' "
+                                <input class="form-control" id="inputCreatedAt" type="text"  [value]="createdAt | date: 'HH:mm:ss dd/MM/yyyy' "
                                    disabled>
                             </div>
 
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputUpdatedAt">Ngày cập nhập <i class="text-xs">(chỉ xem)</i></label>
-                                <input class="form-control" id="inputUpdatedAt" type="text" [value]="updatedAt | date:'HH:mm:ss dd/MM/yyyy' : 'GMT+7' "
+                                <input class="form-control" id="inputUpdatedAt" type="text" [value]="updatedAt | date:'HH:mm:ss dd/MM/yyyy'"
                                     disabled>
                             </div>
                            

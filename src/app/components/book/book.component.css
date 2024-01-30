@@ -22,3 +22,33 @@ h1 {
       display: none !important;
     }
 }
+
+.avatar-xs {
+  width: 32px;
+  height: 32px;
+}
+
+.btn-send {
+  position: absolute;
+  top: 0;
+  right: 0.5rem;
+  bottom: 0;
+  margin: auto;
+  font-size: 1.25rem;
+}
+
+.form-control {
+  padding-left: 2rem;
+  padding-right: 3rem;
+  height: 60px;
+  overflow: hidden;
+}
+
+.comment-input-block {
+  position: relative;
+}
+
+.reply-form {
+  display: none;
+  margin-left: 50px;
+}

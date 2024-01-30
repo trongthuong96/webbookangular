@@ -167,7 +167,26 @@
                 </div>
 
                 <div class="story-detail__list-chapter">
-                    <div class="head-title-global justify-content-between mb-2">
+                    <div class="group-tabs">
+                        <div class="head-title-global justify-content-between mb-2">
+                            <div class="row">
+                                <div class="col-12 col-md-12 col-lg-12 head-title-global__left">
+                                    <h3 class="me-2 mb-0 border-bottom border-secondary pb-1">
+                                          <!-- Nav tabs -->
+                                        <ul class="nav nav-tabs" id="myTabs">
+                                            <li class="nav-item">
+                                                <a class="d-block text-decoration-none text-dark fs-5 title-head-name nav-link active" id="chapListScroll chap-tab" data-bs-toggle="tab" href="#chapList" role="tab" aria-controls="chapList" aria-selected="true">Ds.chương</a>
+                                            </li>
+                                            <!-- <li class="nav-item">
+                                                <a class="d-block text-decoration-none text-dark fs-5 title-head-name nav-link" id="comment-tab" data-bs-toggle="tab" href="#comment" role="tab" aria-controls="comment" aria-selected="false">Bình luận</a>
+                                            </li> -->
+                                        </ul>
+                                    </h3>
+                                </div> 
+                            </div>
+                        </div>
+                  
+                    <!-- <div class="head-title-global justify-content-between mb-2">
                         <div class="row">
                             <div class="col-12 col-md-12 col-lg-12 head-title-global__left">
                                 <h2 class="me-2 mb-0 border-bottom border-secondary pb-1">
@@ -177,67 +196,152 @@
                                 </h2>
                             </div> 
                         </div>
-                    </div>
+                    </div> -->
                    <!-- Mới thêm -->
-                   <div class="flex items-center justify-between text-sm bg-gray-200 dark:bg-gray-600 text-black rounded-full px-3 py-1 mb-2">
-                        <ul class="space-x-1 space-y-1"> 
-                            @for (site of book?.chineseBooks; track $index) {
-                                <li class="inline"> 
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="chapList" role="tabpanel" aria-labelledby="chapList">
+                            <div class="flex items-center justify-between text-sm bg-gray-200 dark:bg-gray-600 text-black rounded-full px-3 py-1 mb-2">
+                                <ul class="space-x-1 space-y-1"> 
+                                    @for (site of book?.chineseBooks; track $index) {
+                                        <li class="inline"> 
 
-                                    <!-- Kiểm tra xem site nào đang mở thì in đậm -->
-                                    @if (site.id === chineseBookId) {
-                                        <button class="btn btn-secondary inline-flex items-center rounded-full px-4 text-xs font-medium space-x-1 cursor-not-allowed"> 
-                                            <span class="text-xs font-medium"> {{site.chineseSiteName}} </span>
-                                        </button> 
-                                    } @else {
-                                        <button (click)="GetChaptersByChineseBookId(site.id, 1, 0)" class="btn btn-outline-secondary inline-flex items-center rounded-full px-4 text-xs font-medium space-x-1"> 
-                                            <span class="text-xs font-medium"> {{site.chineseSiteName}} </span>
-                                        </button> 
-                                    }
-                                </li> 
-                            }
-                        </ul> 
-                        <div class="flex justify-center space-x-3 md:mt-0"> 
-                            <span type="button" (click)="reverseChapters()">
-                                @if(!reverseCheck) {
-                                    <i class="fa-solid fa-arrow-up-wide-short"></i>
-                                } @else {
-                                    <i class="fa-solid fa-arrow-up-short-wide"></i>
-                                }
-                            </span>
-                            <span type="button" (click)="GetListChapCrawl(book!.id, chineseBookId!, 1, 0)"> 
-                                <i class="fa fa-refresh" aria-hidden="true"></i>
-                            </span>
-                        </div>
-                    </div>
-                   <!-- Mới thêm -->
-                    <div *ngIf="chapters != undefined" class="story-detail__list-chapter--list">
-                        <div class="container">
-                            <div class="row d-flex">
-                                
-                                <!-- Sử dụng col-md-6 để tạo 2 cột khi màn hình có kích thước medium trở lên -->
-                                @for (chapter of chapters; track $index) {
-                                    <div appRestoreScrollPositon class="col-sm-12 col-md-6 col-lg-4 story-detail__list-chapter--list__item">
-                                        <div class="mb-3">
-                                            @if (bookRead !== null && bookRead !== undefined && (chapter.chapterIndex) <= bookRead!.chapterIndex) {
-                                                <a [routerLink]="['/truyen', book!.slug, book!.id, chineseBookId, chapter.chapterIndex]" class="text-decoration-none text-custom hover-title">
-                                                    Chương {{chapter.chapNumber}}: {{chapter.title}}
-                                                </a>
+                                            <!-- Kiểm tra xem site nào đang mở thì in đậm -->
+                                            @if (site.id === chineseBookId) {
+                                                <button class="btn btn-secondary inline-flex items-center rounded-full px-4 text-xs font-medium space-x-1 cursor-not-allowed"> 
+                                                    <span class="text-xs font-medium"> {{site.chineseSiteName}} </span>
+                                                </button> 
                                             } @else {
-                                                <a [routerLink]="['/truyen', book!.slug, book!.id, chineseBookId, chapter.chapterIndex]" class="text-decoration-none hover-title">
-                                                    Chương {{chapter.chapNumber}}: {{chapter.title}}
-                                                </a>
+                                                <button (click)="GetChaptersByChineseBookId(site.id, 1, 0)" class="btn btn-outline-secondary inline-flex items-center rounded-full px-4 text-xs font-medium space-x-1"> 
+                                                    <span class="text-xs font-medium"> {{site.chineseSiteName}} </span>
+                                                </button> 
                                             }
-                                           
-                                        </div>
-                                    </div>
-                                }
+                                        </li> 
+                                    }
+                                </ul> 
+                                <div class="flex justify-center space-x-3 md:mt-0"> 
+                                    <span type="button" (click)="reverseChapters()">
+                                        @if(!reverseCheck) {
+                                            <i class="fa-solid fa-arrow-up-wide-short"></i>
+                                        } @else {
+                                            <i class="fa-solid fa-arrow-up-short-wide"></i>
+                                        }
+                                    </span>
+                                    <span type="button" (click)="GetListChapCrawl(book!.id, chineseBookId!, 1, 0)"> 
+                                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                                    </span>
+                                </div>
                             </div>
-                             <!-- Your component content here -->
-                            <ng-container *ngIf="totalPages > 0">
-                                <app-pagination [totalPages]="totalPages" [currentPage]="currentPage" (pageChange)="handlePageChange($event)" (click)="scrollChangePage()"></app-pagination>
-                            </ng-container>
+                        <!-- Mới thêm -->
+                            <div *ngIf="chapters != undefined" class="story-detail__list-chapter--list">
+                                <div class="container">
+                                    <div class="row d-flex">
+                                        
+                                        <!-- Sử dụng col-md-6 để tạo 2 cột khi màn hình có kích thước medium trở lên -->
+                                        @for (chapter of chapters; track $index) {
+                                            <div appRestoreScrollPositon class="col-sm-12 col-md-6 col-lg-4 story-detail__list-chapter--list__item">
+                                                <div class="mb-3">
+                                                    @if (bookRead !== null && bookRead !== undefined && (chapter.chapterIndex) <= bookRead!.chapterIndex) {
+                                                        <a [routerLink]="['/truyen', book!.slug, book!.id, chineseBookId, chapter.chapterIndex]" class="text-decoration-none text-custom hover-title">
+                                                            Chương {{chapter.chapNumber}}: {{chapter.title}}
+                                                        </a>
+                                                    } @else {
+                                                        <a [routerLink]="['/truyen', book!.slug, book!.id, chineseBookId, chapter.chapterIndex]" class="text-decoration-none hover-title">
+                                                            Chương {{chapter.chapNumber}}: {{chapter.title}}
+                                                        </a>
+                                                    }
+                                                
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                    <!-- Your component content here -->
+                                    <ng-container *ngIf="totalPages > 0">
+                                        <app-pagination [totalPages]="totalPages" [currentPage]="currentPage" (pageChange)="handlePageChange($event)" (click)="scrollChangePage()"></app-pagination>
+                                    </ng-container>
+                                </div>
+                            </div>
                         </div>
+                        <div class="tab-pane fade show active" id="comment" role="tabpanel" aria-labelledby="comment-tab">
+
+                            <form class="mb-3">
+                                <div class="comment-input-block">
+                                  <textarea class="form-control" placeholder="Bình luận của bạn..."></textarea>
+                              
+                                  <button class="btn btn-send" type="button">
+                                    <i class="fas fa-paper-plane"></i>
+                                  </button>
+                              
+                                </div>
+                            </form>
+
+                            <div class="comment">
+                                <div class="d-flex">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="avatar-xs rounded-circle me-2" alt="avatar">
+                                    <div class="flex-fill">
+                                    <h6>John Smith <small><i>Posted on February 19, 2023</i></small></h6>
+                                    <p>This book is awesome! I couldn't stop reading.</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="flex-grow-1"></div>
+                                
+                                    <button class="btn btn-sm rounded-3 d-flex align-items-center px-2 mr-1 text-dec">
+                                        <i class="fa-regular fa-thumbs-up"></i>&nbsp;0
+                                    </button> 
+                                    <button class="btn btn-sm btn-reply rounded-3 d-flex align-items-center px-2 mr-1 text-dec" (click)="onClickReply(replyForm)">
+                                        <i class="fa-solid fa-reply"></i>&nbsp;Trả lời
+                                    </button>
+                                    <button class="btn btn-sm rounded-3 d-flex align-items-center px-2 text-dec">
+                                        <i class="fa-solid fa-trash-can"></i>&nbsp;Xóa
+                                    </button>
+                                
+                                </div>
+                                <!-- Form trả lời -->
+                                <form #replyForm class="mb-3 reply-form">
+                                    <div class="comment-input-block">
+                                    <textarea class="form-control" placeholder="Bình luận của bạn..."></textarea>
+                                    <button class="btn btn-send" type="button">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                    </div>
+                                </form>
+                            </div>
+                              
+                            <div class="comment">
+                                <div class="d-flex">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="avatar-xs rounded-circle me-2" alt="avatar">
+                                    <div class="flex-fill">
+                                    <h6>John Smith <small><i>Posted on February 19, 2023</i></small></h6>
+                                    <p>This book is awesome! I couldn't stop reading.</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="flex-grow-1"></div>
+                                
+                                    <button class="btn btn-sm rounded-3 d-flex align-items-center px-2 mr-1 text-dec">
+                                        <i class="fa-regular fa-thumbs-up"></i>&nbsp;0
+                                    </button> 
+                                    <button class="btn btn-sm btn-reply rounded-3 d-flex align-items-center px-2 mr-1 text-dec" (click)="onClickReply(replyForm1)">
+                                        <i class="fa-solid fa-reply"></i>&nbsp;Trả lời
+                                    </button>
+                                    <button class="btn btn-sm rounded-3 d-flex align-items-center px-2 text-dec">
+                                        <i class="fa-solid fa-trash-can"></i>&nbsp;Xóa
+                                    </button>
+                                
+                                </div>
+                                <!-- Form trả lời -->
+                                <form #replyForm1 class="mb-3 reply-form">
+                                    <div class="comment-input-block">
+                                    <textarea class="form-control" placeholder="Bình luận của bạn..."></textarea>
+                                    <button class="btn btn-send" type="button">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                    </div>
+                                </form>
+                            </div>
+                          
+                          </div>
                     </div>
                 </div>
                 <hr>

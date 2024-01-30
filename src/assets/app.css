@@ -995,4 +995,8 @@ main {
 
 .dark-theme .text-while {
     color: white;
-  }
+}
+
+.dark-theme .nav-tabs .nav-link.active {
+    background-color: rgb(41, 40, 40);
+}

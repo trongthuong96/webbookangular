@@ -9,9 +9,8 @@ import { vi } from 'date-fns/locale';
 })
 export class TimeAgoPipe implements PipeTransform {
   transform(value: Date | string): string {
-    const formattedValue = value.toString().replace("Z", "");
-    const inputDate = new Date(formattedValue + 'Z');
-    const distance = formatDistanceToNow(inputDate, { addSuffix: true, locale: vi });
+    const formattedValue = value.toLocaleString();
+    const distance = formatDistanceToNow(formattedValue, { addSuffix: true, locale: vi });
 
     return distance.replace('khoảng ', '');
   }

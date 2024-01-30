@@ -336,4 +336,15 @@ export class BookComponent implements OnInit, AfterViewInit{
     }    
   }
 
+  // comment reply
+  onClickReply(replyForm: HTMLFormElement) {
+    // Toggle reply form
+    if(replyForm.style.display === 'block') {
+      replyForm.style.display = 'none';
+    } else {
+      replyForm.style.display = 'block';
+    }
+  }
+
+
 }

@@ -73,8 +73,8 @@ export class ChapterService {
   //   }
   // }
 
-   /// /api/Crawling/list-chap-crawl
-   GetListChapCrawl(data: DataChapCrawl): Observable<any> {
+  /// /api/Crawling/list-chap-crawl
+  GetListChapCrawl(data: DataChapCrawl): Observable<any> {
     this.cache.delete(data.chineseBookId);
     const url = `${environment.apiUrl}/Crawling/list-chap-crawl`;
     return this.http.post(url, data);
