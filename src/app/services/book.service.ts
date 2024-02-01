@@ -28,12 +28,12 @@ export class BookService {
 
   // find book orderby views Book/OrderByViews/1
   GetBooksOrderByViewsAt(page: number): Observable<BookShowListModel[]> {
-    return this.http.get<BookShowListModel[]>(`${this.urlBase}/orderbyviews/${page}`);
+    return this.http.get<BookShowListModel[]>(`${this.urlBase}/orderByViews/${page}`);
   }
 
   // find book orderby views Book/OrderByViews/1
   GetBooksOrderByUpdatedAt(page: number): Observable<BookShowListModel[]> {
-    return this.http.get<BookShowListModel[]>(`${this.urlBase}/orderbyUpdatedAt/${page}`);
+    return this.http.get<BookShowListModel[]>(`${this.urlBase}/orderByUpdatedAt/${page}`);
   }
 
   // book with slug
@@ -84,42 +84,42 @@ export class BookService {
 
   // Status/1
   GetBookStatus(page: number): Observable<BookShowListModel[]> {
-    return this.http.get<BookShowListModel[]>(`${this.urlBase}/Status/${page}`);
+    return this.http.get<BookShowListModel[]>(`${this.urlBase}/status/${page}`);
   }
 
   // Book/Author/2?page=1
   GetBookAuthor(authorId: number, page: number): Observable<BookShowListModel[]> {
-    const url = `${this.urlBase}/Author/${authorId}?page=${page}`;
+    const url = `${this.urlBase}/author/${authorId}?page=${page}`;
     return this.http.get<BookShowListModel[]>(url);
   }
 
   // Book/User/2?page=1
   GetBookUser(userId: string, page: number): Observable<BookShowListModel[]> {
-    const url = `${this.urlBase}/User/${userId}?page=${page}`;
+    const url = `${this.urlBase}/user/${userId}?page=${page}`;
     return this.http.get<BookShowListModel[]>(url);
   }
 
   //api/Crawling/book by metruyencv
   GetBookCrawlMetruyencv(uri: UriModel): Observable<BookShowModel> {
-    const url = `${environment.apiUrl}/Crawling/book`;
+    const url = `${environment.apiUrl}/crawling/book`;
     return this.http.post<BookShowModel>(url, uri);
   }
 
   ////api/Crawling/book-listchap-crawl crawl trang 69shu fanqie
   GetBookAndListChapterCrawl(uri: UriModel): Observable<string> {
-    const url = `${environment.apiUrl}/Crawling/book-listchap-crawl`;
+    const url = `${environment.apiUrl}/crawling/book-listchap-crawl`;
     return this.http.post(url, uri, { responseType: 'text' });
   }
 
   //api/BookReading
   GetBookReadingsByUserId(): Observable<BookReadingModel[]> {
-    const url = `${environment.apiUrl}/BookReading`;
+    const url = `${environment.apiUrl}/bookReading`;
     return this.http.get<BookReadingModel[]>(url);
   }
 
   // delete bookreading /api/BookReading/{bookId}/{chineseBookId}
   DeleteBookReading(bookId: number, chineseBookId: number): Observable<any> {
-    const url = `${environment.apiUrl}/BookReading/${bookId}/${chineseBookId}`;
+    const url = `${environment.apiUrl}/bookReading/${bookId}/${chineseBookId}`;
     return this.http.delete<any>(url);
   }
 }

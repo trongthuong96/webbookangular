@@ -6,7 +6,8 @@
       "name": "api-book-cache",
       "urls": [
         "/api/book*",
-        "/api/BookReading*"
+        "/api/genre/*",
+        "/api/bookReading*"
       ],
       "cacheConfig": {
         "maxSize": 1000000,
@@ -18,8 +19,8 @@
     {
       "name": "api-genre-cache",
       "urls": [
-        "/api/genre*",
-        "/api/Crawling*"
+        "/api/genre",
+        "/api/crawling*"
       ],
       "cacheConfig": {
         "maxSize": 1000000,
@@ -30,7 +31,7 @@
     {
       "name": "api-chapter-cache",
       "urls": [
-        "/api/chapter*"
+        "/api/chapter/list-chinese/*"
       ],
       "cacheConfig": {
         "maxSize": 1000000,
