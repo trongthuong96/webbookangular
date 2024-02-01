@@ -15,17 +15,17 @@ export const routes: Routes = [
     {
         path: 'truyen/:slug', loadComponent: () => import('./components/book/book.component')
             .then(mod => mod.BookComponent),
-        data: { reuse: true } 
+        //data: { reuse: true } 
     },
     {
         path: 'truyen/:slug/:bookId/:chineseBookId/:chapterIndex', loadComponent: () => import('./components/chapter/chapter.component')
             .then(mod => mod.ChapterComponent),
-        data: { reuse: true } 
+        //data: { reuse: true } 
     },
     {
         path: 'truyen', loadComponent: () => import('./components/search/search.component')
             .then(mod => mod.SearchComponent),
-        data: { reuse: true } 
+        //data: { reuse: true } 
     },
     {
         path: 'nguon-nhung', loadComponent: () => import('./components/embeddable.website/embeddable.website.component')

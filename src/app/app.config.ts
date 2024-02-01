@@ -11,17 +11,13 @@ import { CsrfInterceptor } from './config/CsrfInterceptor';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { CustomReuseStrategy } from './custom.reuse.strategy';
 
-const scrollConfig: InMemoryScrollingOptions = {
-    scrollPositionRestoration: 'enabled',
-    anchorScrolling: 'enabled'
-  };
-  
-const inMemoryScrollingFeature: InMemoryScrollingFeature = withInMemoryScrolling(scrollConfig);
-
 export const appConfig: ApplicationConfig = {
     
   providers: [
-    provideRouter(routes, inMemoryScrollingFeature),
+    provideRouter(routes,  withInMemoryScrolling({
+      scrollPositionRestoration: 'enabled',
+      anchorScrolling: 'enabled'
+    })),
     provideClientHydration(
         withHttpTransferCacheOptions({
         includePostRequests: true
@@ -40,13 +36,13 @@ export const appConfig: ApplicationConfig = {
       multi: true 
     },
     { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
-    {
-        provide: IMAGE_CONFIG,
-        useValue: {
-            disableImageSizeWarning: true,
-            disableImageLazyLoadWarning: true
-        }
-    },
+    // {
+    //     provide: IMAGE_CONFIG,
+    //     useValue: {
+    //         disableImageSizeWarning: true,
+    //         disableImageLazyLoadWarning: true
+    //     }
+    // },
     provideServiceWorker('ngsw.js', {
         enabled: !isDevMode(),
         registrationStrategy: 'registerWhenStable:30000'

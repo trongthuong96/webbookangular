@@ -78,13 +78,84 @@
             </div>
 
             <div *ngIf="genreParam !== undefined && genres !== undefined" class="box-content">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    @for (book of genre?.bookInGenreDtos; track $index) {
-                        <div appRestoreScrollPositon class="flex space-x-3 py-2 px-3">
-                            <div class="flex-shrink-0"> <a [routerLink]="['/truyen', book.slug]" [queryParams]="{ 'page': 1, 'arrange': 0 }" 
+                <div *ngIf="genre?.bookInGenreDtos!.length > 0">
+                    <div appRestoreScrollPositon class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        @for (book of genre?.bookInGenreDtos; track $index) {
+                            <div class="flex space-x-3 py-2 px-3">
+                                <div class="flex-shrink-0"> <a [routerLink]="['/truyen', book.slug]" [queryParams]="{ 'page': 1, 'arrange': 0 }" 
+                                        class="text-title font-semibold"> <img class="h-32 w-24 shadow-lg rounded"
+                                            src="{{book.coverImage}}"
+                                            alt="" loading="lazy"> </a> </div>
+                                <div class="grow space-y-2">
+                                    <div class="flex items-center space-x-1"> <a
+                                            [routerLink]="['/truyen', book.slug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }" 
+                                            class="text-title font-semibold hover-title"> {{book.title}}</a> </div>
+                                    <div class="text-gray-500 text-sm text-overflow-multiple-lines text-dec" [innerHTML]="book.description"></div>
+                                    <div class="mt-1 space-y-1">
+                                        <div class="flex justify-between text-gray-500">
+                                            <div class="flex items-center space-x-1"> 
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd"
+                                                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                                        clip-rule="evenodd"></path>
+                                                </svg> 
+                                                <a [routerLink]="['/']"
+                                                    target="_blank"><span class="text-xs hover-title text-dec"> {{book.authorName}} </span></a> </div>
+                                            <div> 
+                                                <span class="text-xs bg-gray-200 py-1 px-2 truncate">
+                                                    @if (book.status === 0) {
+                                                        Còn tiếp
+                                                    } @else if (book.status === 1) {
+                                                        Hoàn thành
+                                                    } @else {
+                                                        Tạm ngưng
+                                                    }
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between text-gray-500">
+                                            <div class="flex items-center space-x-1"> 
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path
+                                                        d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z">
+                                                    </path>
+                                                </svg> 
+                                                <a [routerLink]="['/truyen']" [queryParams]="{ 'the-loai': genre?.id  }" target="_blank">
+                                                    <span class="text-xs truncate text-dec"> 
+                                                        {{genre?.name}}
+                                                    </span>
+                                                </a>
+                                            </div>
+                                            <div class="d-flex">
+                                                @if(book.chapterLast !== null) {
+                                                    <p class="text-xs py-1 px-2 text-dec truncate"> 
+                                                        {{book.chapterLast.chapterIndex}} <i class="far fa-copyright"></i>
+                                                    </p>
+                                                } @else {
+                                                    <a class="text-xs py-1 px-2 text-dec truncate">0 <i class="far fa-copyright"></i></a>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="(bookParam !== undefined || keyword !== undefined) && booksTotal !== undefined" class="box-content">
+            <div *ngIf="booksTotal.books.length > 0">
+                <div appRestoreScrollPositon class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @for (book of booksTotal!.books; track $index) {
+                        <div class="flex space-x-3 py-2 px-3">
+                            <div class="flex-shrink-0"> <a [routerLink]="['/truyen', book.slug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }" 
                                     class="text-title font-semibold"> <img class="h-32 w-24 shadow-lg rounded"
                                         src="{{book.coverImage}}"
-                                        alt="" loading="lazy"> </a> </div>
+                                        alt="Ta thật sự là Văn Sao Công" loading="lazy"> </a> </div>
                             <div class="grow space-y-2">
                                 <div class="flex items-center space-x-1"> <a
                                         [routerLink]="['/truyen', book.slug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }" 
@@ -121,17 +192,21 @@
                                                     d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z">
                                                 </path>
                                             </svg> 
-                                            <a [routerLink]="['/truyen']" [queryParams]="{ 'the-loai': genre?.id  }" target="_blank">
-                                                <span class="text-xs truncate text-dec"> 
-                                                    {{genre?.name}}
-                                                </span>
-                                            </a>
+                                            @for (genre of book.genres; track $index) {
+                                                <a target="_blank" [routerLink]="['/truyen']" [queryParams]="{ 'the-loai': genre.id  }">
+                                                    <span class="text-xs truncate text-dec"> 
+                                                        
+                                                            {{genre.name}} &nbsp;
+                                                        
+                                                    </span>
+                                                </a>
+                                            }
                                         </div>
-                                        <div class="d-flex">
+                                        <div>
                                             @if(book.chapterLast !== null) {
-                                                <p class="text-xs py-1 px-2 text-dec truncate"> 
+                                                <a class="text-xs py-1 px-2 text-dec truncate"> 
                                                     {{book.chapterLast.chapterIndex}} <i class="far fa-copyright"></i>
-                                                </p>
+                                                </a>
                                             } @else {
                                                 <a class="text-xs py-1 px-2 text-dec truncate">0 <i class="far fa-copyright"></i></a>
                                             }
@@ -140,83 +215,10 @@
                                 </div>
                             </div>
                         </div>
+                    } @empty {
+                        <p>Chưa có truyện</p>
                     }
-                    
                 </div>
-            </div>
-        </div>
-
-        <div *ngIf="(bookParam !== undefined || keyword !== undefined) && booksTotal !== undefined" class="box-content">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                @for (book of booksTotal!.books; track $index) {
-                    <div appRestoreScrollPositon class="flex space-x-3 py-2 px-3">
-                        <div class="flex-shrink-0"> <a [routerLink]="['/truyen', book.slug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }" 
-                                class="text-title font-semibold"> <img class="h-32 w-24 shadow-lg rounded"
-                                    src="{{book.coverImage}}"
-                                    alt="Ta thật sự là Văn Sao Công" loading="lazy"> </a> </div>
-                        <div class="grow space-y-2">
-                            <div class="flex items-center space-x-1"> <a
-                                    [routerLink]="['/truyen', book.slug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }" 
-                                    class="text-title font-semibold hover-title"> {{book.title}}</a> </div>
-                            <div class="text-gray-500 text-sm text-overflow-multiple-lines text-dec" [innerHTML]="book.description"></div>
-                            <div class="mt-1 space-y-1">
-                                <div class="flex justify-between text-gray-500">
-                                    <div class="flex items-center space-x-1"> 
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd"
-                                                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                                                clip-rule="evenodd"></path>
-                                        </svg> 
-                                        <a [routerLink]="['/']"
-                                            target="_blank"><span class="text-xs hover-title text-dec"> {{book.authorName}} </span></a> </div>
-                                    <div> 
-                                        <span class="text-xs bg-gray-200 py-1 px-2 truncate">
-                                            @if (book.status === 0) {
-                                                Còn tiếp
-                                            } @else if (book.status === 1) {
-                                                Hoàn thành
-                                            } @else {
-                                                Tạm ngưng
-                                            }
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="flex justify-between text-gray-500">
-                                    <div class="flex items-center space-x-1"> 
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                            <path
-                                                d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z">
-                                            </path>
-                                        </svg> 
-                                        @for (genre of book.genres; track $index) {
-                                            <a target="_blank" [routerLink]="['/truyen']" [queryParams]="{ 'the-loai': genre.id  }">
-                                                <span class="text-xs truncate text-dec"> 
-                                                    
-                                                        {{genre.name}} &nbsp;
-                                                    
-                                                </span>
-                                            </a>
-                                        }
-                                    </div>
-                                    <div>
-                                        @if(book.chapterLast !== null) {
-                                            <a class="text-xs py-1 px-2 text-dec truncate"> 
-                                                {{book.chapterLast.chapterIndex}} <i class="far fa-copyright"></i>
-                                            </a>
-                                        } @else {
-                                            <a class="text-xs py-1 px-2 text-dec truncate">0 <i class="far fa-copyright"></i></a>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                } @empty {
-                    <p>Chưa có truyện</p>
-                }
-                
             </div>
         </div>
 

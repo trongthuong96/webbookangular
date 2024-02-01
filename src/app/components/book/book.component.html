@@ -169,13 +169,13 @@
                 <div class="story-detail__list-chapter">
                     <div class="group-tabs">
                         <div class="head-title-global justify-content-between mb-2">
-                            <div class="row">
+                            <div class="row" id="chapListScroll">
                                 <div class="col-12 col-md-12 col-lg-12 head-title-global__left">
                                     <h3 class="me-2 mb-0 border-bottom border-secondary pb-1">
                                           <!-- Nav tabs -->
                                         <ul class="nav nav-tabs" id="myTabs">
                                             <li class="nav-item">
-                                                <a class="d-block text-decoration-none text-dark fs-5 title-head-name nav-link active" id="chapListScroll chap-tab" data-bs-toggle="tab" href="#chapList" role="tab" aria-controls="chapList" aria-selected="true">Ds.chương</a>
+                                                <a class="d-block text-decoration-none text-dark fs-5 title-head-name nav-link active" id="chap-tab" data-bs-toggle="tab" href="#chapList" role="tab" aria-controls="chapList" aria-selected="true">Ds.chương</a>
                                             </li>
                                             <!-- <li class="nav-item">
                                                 <a class="d-block text-decoration-none text-dark fs-5 title-head-name nav-link" id="comment-tab" data-bs-toggle="tab" href="#comment" role="tab" aria-controls="comment" aria-selected="false">Bình luận</a>
@@ -234,12 +234,12 @@
                             </div>
                         <!-- Mới thêm -->
                             <div *ngIf="chapters != undefined" class="story-detail__list-chapter--list">
-                                <div class="container">
-                                    <div class="row d-flex">
+                                <div class="container" *ngIf="chapters.length > 0">
+                                    <div appRestoreScrollPositon class="row d-flex">
                                         
                                         <!-- Sử dụng col-md-6 để tạo 2 cột khi màn hình có kích thước medium trở lên -->
                                         @for (chapter of chapters; track $index) {
-                                            <div appRestoreScrollPositon class="col-sm-12 col-md-6 col-lg-4 story-detail__list-chapter--list__item">
+                                            <div class="col-sm-12 col-md-6 col-lg-4 story-detail__list-chapter--list__item">
                                                 <div class="mb-3">
                                                     @if (bookRead !== null && bookRead !== undefined && (chapter.chapterIndex) <= bookRead!.chapterIndex) {
                                                         <a [routerLink]="['/truyen', book!.slug, book!.id, chineseBookId, chapter.chapterIndex]" class="text-decoration-none text-custom hover-title">
@@ -262,7 +262,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade show active" id="comment" role="tabpanel" aria-labelledby="comment-tab">
+                        <div class="tab-pane fade" id="comment" role="tabpanel" aria-labelledby="comment-tab">
 
                             <form class="mb-3">
                                 <div class="comment-input-block">

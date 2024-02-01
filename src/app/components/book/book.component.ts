@@ -30,7 +30,7 @@ import { CookieService } from 'ngx-cookie-service';
     PaginationComponent
   ],
   templateUrl: './book.component.html',
-  styleUrl: './book.component.css'
+  styleUrl: './book.component.css',
 })
 export class BookComponent implements OnInit, AfterViewInit{
   book?: BookShowModel;
@@ -226,6 +226,7 @@ export class BookComponent implements OnInit, AfterViewInit{
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { page: this.currentPage, arrange: this.arrange },
+      replaceUrl: true
      // queryParamsHandling: 'merge',
     });
   }
@@ -314,6 +315,7 @@ export class BookComponent implements OnInit, AfterViewInit{
       relativeTo: this.route,
       queryParams: { page: this.currentPage, arrange: this.arrange},
       queryParamsHandling: 'merge',
+      replaceUrl: true
     });
   }
 
@@ -330,7 +332,7 @@ export class BookComponent implements OnInit, AfterViewInit{
        next: () => {
         setTimeout(() => {
           element.scrollIntoView({ behavior: 'auto' });
-        },15);
+        });
        }
      })
     }    

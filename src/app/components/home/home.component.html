@@ -49,14 +49,14 @@
         
         
             <div class="row">
-                <div class="col-12">
-                    <div class="section-stories-hot__list">                  
+                <div *ngIf="bookListView.length > 0" class="col-12">
+                    <div appRestoreScrollPositon class="section-stories-hot__list">                  
                         @for (book of bookListView; track $index) {
-                            <div appRestoreScrollPositon class="story-item">
+                            <div class="story-item">
                                 <a [routerLink]="['/truyen', book.slug]" [queryParams]="{ 'page': 1, 'arrange': 0 }" [title]="book.title" class="d-block text-decoration-none">
                                     <div class="story-item__image">
-                                        <img src="{{book.coverImage}}" loading="lazy" alt="{{book.title}}" class="img-fluid rounded" width="150"
-                                            height="230">
+                                        <img [ngSrc]="book.coverImage" alt="{{book.title}}" class="img-fluid rounded" [width]="150"
+                                            [height]="230">
                                     </div>
                                     <h3 class="story-item__name story-name rounded"><div class="text-two-row">{{book.title}}</div></h3>
 
@@ -131,9 +131,8 @@
 
                                     <div class="story-item-no-image__name align-items-center d-flex">
 
-                                        <img itemprop="image" loading="lazy"
-                                            class="ml-1 rounded" alt="" width="30px" height="40px" 
-                                            src="{{book.coverImage}}">
+                                        <img itemprop="image" [ngSrc]="book.coverImage"
+                                            class="ml-1 rounded" alt="anh" [width]="30" [height]="40">
 
                                         <h3 class="me-1 mb-0 d-flex justify-content-start align-items-center mx-2">
                                             <a [routerLink]="['/truyen', book.slug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }" 
@@ -205,8 +204,8 @@
                                 <a 
                                     [routerLink]="['/truyen', book.slug]"  [queryParams]="{ 'page': 1, 'arrange': 0 }" 
                                     class="d-block story-item-full__image">
-                                    <img src="{{book.coverImage}}" alt="{{book.title}}" class="img-fluid w-100 rounded"
-                                        width="150" height="230" loading="lazy">
+                                    <img [ngSrc]="book.coverImage" alt="{{book.title}}" class="img-fluid w-100 rounded"
+                                        [width]="150" [height]="230">
                                
                                     <h3 class="fs-6 story-item-full__name fw-bold text-center mb-0 rounded">
                                         <p 
