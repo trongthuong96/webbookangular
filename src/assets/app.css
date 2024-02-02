@@ -1000,3 +1000,7 @@ main {
 .dark-theme .nav-tabs .nav-link.active {
     background-color: rgb(41, 40, 40);
 }
+
+.dark-theme .border-dashed-custom {
+    border-top: 1px dashed #e6e3e3 !important; 
+}

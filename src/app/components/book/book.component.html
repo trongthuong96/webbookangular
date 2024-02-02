@@ -177,9 +177,25 @@
                                             <li class="nav-item">
                                                 <a class="d-block text-decoration-none text-dark fs-5 title-head-name nav-link active" id="chap-tab" data-bs-toggle="tab" href="#chapList" role="tab" aria-controls="chapList" aria-selected="true">Ds.chương</a>
                                             </li>
-                                            <!-- <li class="nav-item">
-                                                <a class="d-block text-decoration-none text-dark fs-5 title-head-name nav-link" id="comment-tab" data-bs-toggle="tab" href="#comment" role="tab" aria-controls="comment" aria-selected="false">Bình luận</a>
-                                            </li> -->
+                                            <li class="nav-item">
+                                                @if (commentsParent === undefined) {
+                                                    <a class="d-block text-decoration-none text-dark fs-5 title-head-name nav-link" 
+                                                        id="comment-tab" data-bs-toggle="tab" href="#comment" role="tab" 
+                                                        aria-controls="comment" aria-selected="false"
+                                                        (click)="getCommentsParent(book!.id, 1, 20)">
+                                                    
+                                                        Bình luận
+                                                    </a>
+                                                } @else {
+                                                    <a class="d-block text-decoration-none text-dark fs-5 title-head-name nav-link active" 
+                                                        id="comment-tab" data-bs-toggle="tab" href="#comment" role="tab" 
+                                                        aria-controls="comment" aria-selected="false">
+
+                                                        Bình luận
+                                                    </a>
+                                                }                                           
+                                                  
+                                            </li>
                                         </ul>
                                     </h3>
                                 </div> 
@@ -264,81 +280,99 @@
                         </div>
                         <div class="tab-pane fade" id="comment" role="tabpanel" aria-labelledby="comment-tab">
 
-                            <form class="mb-3">
+                            <form [formGroup]="commentForm" (submit)="addCommentParent(book!.id)" class="mb-3">
                                 <div class="comment-input-block">
-                                  <textarea class="form-control" placeholder="Bình luận của bạn..."></textarea>
+                                  <textarea class="form-control" formControlName="content" placeholder="Bình luận của bạn..."></textarea>
                               
-                                  <button class="btn btn-send" type="button">
+                                  <button class="btn btn-send" type="submit">
                                     <i class="fas fa-paper-plane"></i>
                                   </button>
                               
                                 </div>
                             </form>
 
-                            <div class="comment">
-                                <div class="d-flex">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="avatar-xs rounded-circle me-2" alt="avatar">
-                                    <div class="flex-fill">
-                                    <h6>John Smith <small><i>Posted on February 19, 2023</i></small></h6>
-                                    <p>This book is awesome! I couldn't stop reading.</p>
+                            @for (comment of commentsParent; track $index) {
+                                <div class="comment mb-2">
+                                    <div class="d-flex">
+                                        <img [src]="comment.avatar ? comment.avatar : 'assets/images/avatar.png'" class="avatar-xs rounded-circle me-2" alt="avatar">
+                                        <div class="flex-fill">
+                                        <h6 class="mb-2"> <span  style="font-weight: bold;"> {{comment.fullName}} </span> <small><i> {{comment.createdAt | timeAgo}} </i></small></h6>
+                                        <p> {{comment.content}} </p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="d-flex">
-                                    <div class="flex-grow-1"></div>
-                                
-                                    <button class="btn btn-sm rounded-3 d-flex align-items-center px-2 mr-1 text-dec">
-                                        <i class="fa-regular fa-thumbs-up"></i>&nbsp;0
-                                    </button> 
-                                    <button class="btn btn-sm btn-reply rounded-3 d-flex align-items-center px-2 mr-1 text-dec" (click)="onClickReply(replyForm)">
-                                        <i class="fa-solid fa-reply"></i>&nbsp;Trả lời
-                                    </button>
-                                    <button class="btn btn-sm rounded-3 d-flex align-items-center px-2 text-dec">
-                                        <i class="fa-solid fa-trash-can"></i>&nbsp;Xóa
-                                    </button>
-                                
-                                </div>
-                                <!-- Form trả lời -->
-                                <form #replyForm class="mb-3 reply-form">
-                                    <div class="comment-input-block">
-                                    <textarea class="form-control" placeholder="Bình luận của bạn..."></textarea>
-                                    <button class="btn btn-send" type="button">
-                                        <i class="fas fa-paper-plane"></i>
-                                    </button>
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1 ml-4">
+                                            @if (comment.count > 0 && (commentsChild === undefined || comment.id !== commentsChild[0].parentId)) {
+                                                <div class="mr-auto text-xs ml-6 mt-2" style="font-weight: bold;">
+                                                    <button (click)="getCommentsChild(comment.id, 1, 10, replyForm)">Xem {{comment.count}} trả lời</button>
+                                                </div>
+                                            }
+                                        </div>
+                                    
+                                        <!-- <button class="btn btn-sm rounded-3 d-flex align-items-center px-2 mr-1 text-dec">
+                                            <i class="fa-regular fa-thumbs-up"></i>&nbsp;0
+                                        </button>  -->
+                                        <button class="btn btn-sm btn-reply rounded-3 d-flex align-items-center px-2 mr-1 text-dec" (click)="onClickReply(replyForm)">
+                                            <i class="fa-solid fa-reply"></i>&nbsp;Trả lời
+                                        </button>
+                                        <button *ngIf="comment.userId === userProfile.id" (click)="deleteCommentParent(comment.id)" class="btn btn-sm rounded-3 d-flex align-items-center px-2 text-dec">
+                                            <i class="fa-solid fa-trash-can"></i>&nbsp;Xóa
+                                        </button>                                    
                                     </div>
-                                </form>
-                            </div>
-                              
-                            <div class="comment">
-                                <div class="d-flex">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="avatar-xs rounded-circle me-2" alt="avatar">
-                                    <div class="flex-fill">
-                                    <h6>John Smith <small><i>Posted on February 19, 2023</i></small></h6>
-                                    <p>This book is awesome! I couldn't stop reading.</p>
-                                    </div>
+                                    
+                                    @if (commentsChild !== undefined && commentsChild.length > 0 && comment.id === commentsChild[0].parentId) {
+                                        @for (commentChild of commentsChild; track $index) {
+                                            <div class="ml-4">
+                                                <hr class="ml-6 border-dashed-custom">
+                                                <div class="d-flex mt-3 ml-6">
+                                                    <img [src]="commentChild.avatar" class="avatar-xs rounded-circle me-2" alt="avatar">
+                                                    <div class="flex-fill">
+                                                        <h6 class="mb-2"> <span class="text-sm" style="font-weight: bold;"> {{commentChild.fullName}} </span> <small><i> {{commentChild.createdAt | timeAgo}} </i></small></h6>
+                                                        <p> {{commentChild.content}} </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex">
+                                                <div class="flex-grow-1"></div>
+                                            
+                                                <!-- <button class="btn btn-sm rounded-3 d-flex align-items-center px-2 mr-1 text-dec">
+                                                    <i class="fa-regular fa-thumbs-up"></i>&nbsp;0
+                                                </button>  -->
+                                                <button *ngIf="commentChild.userId === userProfile.id" (click)="deleteCommentChild(commentChild.id)" class="btn btn-sm rounded-3 d-flex align-items-center px-2 text-dec">
+                                                    <i class="fa-solid fa-trash-can"></i>&nbsp;Xóa
+                                                </button>                                    
+                                            </div>
+                                        }
+                                       
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1 ml-4">
+                                                @if (comment.count > 0 && (commentsChild === undefined || commentsChild!.length < comment.count || comment.id !== commentsChild[0].parentId)) {
+                                                    <div class="mr-auto text-xs ml-6 mt-2" style="font-weight: bold;">
+                                                        <button (click)="getCommentsChildPush(comment.id, pageCommentsChild, 10)">Xem thêm trả lời</button>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                    
+                                    <!-- Form trả lời -->
+                                    <form [formGroup]="commentReplyForm" #replyForm (submit)="addCommentChild(comment.id, comment.bookId)" class="mt-2 mb-3 reply-form">
+                                        <div class="comment-input-block">
+                                        <textarea class="form-control" formControlName="contentReply" placeholder="Bình luận của bạn..."></textarea>
+                                        <button class="btn btn-send" type="submit">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="d-flex">
-                                    <div class="flex-grow-1"></div>
-                                
-                                    <button class="btn btn-sm rounded-3 d-flex align-items-center px-2 mr-1 text-dec">
-                                        <i class="fa-regular fa-thumbs-up"></i>&nbsp;0
-                                    </button> 
-                                    <button class="btn btn-sm btn-reply rounded-3 d-flex align-items-center px-2 mr-1 text-dec" (click)="onClickReply(replyForm1)">
-                                        <i class="fa-solid fa-reply"></i>&nbsp;Trả lời
-                                    </button>
-                                    <button class="btn btn-sm rounded-3 d-flex align-items-center px-2 text-dec">
-                                        <i class="fa-solid fa-trash-can"></i>&nbsp;Xóa
-                                    </button>
-                                
-                                </div>
-                                <!-- Form trả lời -->
-                                <form #replyForm1 class="mb-3 reply-form">
-                                    <div class="comment-input-block">
-                                    <textarea class="form-control" placeholder="Bình luận của bạn..."></textarea>
-                                    <button class="btn btn-send" type="button">
-                                        <i class="fas fa-paper-plane"></i>
-                                    </button>
-                                    </div>
-                                </form>
+                                <hr class="mb-2">
+                            }
+
+                            <div *ngIf="pageCommentsParend < totalCommentParent" class="text-center mt-4">
+                                <button class="btn btn-outline-secondary font-weight-semibold cursor-pointer"
+                                    (click)="getCommentsParentPush(book!.id, pageCommentsParend, 20)">
+                                    Xem thêm bình luận
+                                </button>
                             </div>
                           
                           </div>

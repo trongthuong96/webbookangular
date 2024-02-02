@@ -52,3 +52,7 @@ h1 {
   display: none;
   margin-left: 50px;
 }
+
+.border-dashed-custom {
+  border-top: 1px dashed #313131; 
+}

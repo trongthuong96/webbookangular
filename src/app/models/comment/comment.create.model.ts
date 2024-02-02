@@ -1,5 +1,5 @@
 export class CommentCreateModel {
     content!: string;
     bookId!: number;
-    parentId!: number;
+    parentId: number | null = null;
 }
