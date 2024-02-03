@@ -110,28 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
         textarea.style.height = textarea.scrollHeight + 'px';
     }
 
-    // // Lắng nghe sự kiện click trên nút "Trả lời"
-    // const btnReply = document.querySelectorAll('.btn-reply');
-
-    // if (btnReply) {
-    //     console.log("test1")
-    //     btnReply.forEach(function (btnReplyChild) {
-    //         btnReplyChild.addEventListener('click', function () {
-    //             console.log("test1")
-    //             // Tìm form trả lời ở cấp dưới
-    //             var replyForm = this.closest('.comment').querySelector('.reply-form');
-        
-    //             // Hiển thị hoặc ẩn form trả lời tùy thuộc vào trạng thái hiện tại
-    //             if (replyForm.style.display === 'block') {
-    //             replyForm.style.display = 'none';
-    //             } else {
-    //             replyForm.style.display = 'block';
-    //             }
-    //         });
-    //     });
-    // }
-
-  });
+});
 
 function eyeIcon(btn) {
 // Đổi icon eye <i class="fa-regular fa-eye-slash"></i>

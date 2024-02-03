@@ -1,0 +1,41 @@
+a.star {
+    font-size: 18px;
+    color: #f0f1f4;
+    text-shadow: -1px 0 #e8ae0a,0 1px #e8ae0a,1px 0 #e8ae0a,0 -1px #e8ae0a;
+    cursor: pointer;
+    line-height: 1;
+    transition: all .1s ease
+}
+
+a.star.vote-hover {
+    color: #ef9207
+}
+
+a.star:active {
+    color: #ecd30d
+}
+
+a.star.vote-active {
+    color: #e8ae0a
+}
+
+
+/* Khi hover vào, thêm vote-hover */
+a.star:hover {
+    color: #ef9207;
+}
+
+/* Khi được chọn, thêm vote-active */
+a.star.vote-active {
+    color: #e8ae0a;
+}
+
+/* Khi được chọn và hover vào, giữ nguyên màu sắc của vote-active */
+a.star.vote-active:hover {
+    color: #e8ae0a;
+}
+
+/* Khi ấn vào, thêm màu sắc khác */
+a.star:active {
+    color: #ecd30d;
+}

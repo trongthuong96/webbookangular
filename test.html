@@ -1,47 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 
-<!-- Đăng Ký Modal -->
-<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="registerModalLabel">Đăng Ký</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-
-      <div class="modal-body">
-          <form id="registrationForm">
-              <!-- Your registration form fields go here -->
-              <div class="form-group mb-4">
-                  <label for="registerEmail">Email</label>
-                  <input type="text" class="form-control" id="registerEmail" placeholder="Nhập email">
-              </div>
-              <div class="form-group mb-4">
-                  <label for="registerPassword">Mật Khẩu: <p class="text-xs">Ít nhất có: 6 ký tự, 1 hoa, 1 thường, 1 đặc biệt, 1 số</p></label>
-                  <div class="input-group">
-                      <input type="password" class="form-control" id="registerPassword" placeholder="Nhập mật khẩu">
-                      <button type="button" class="btn btn-secondary btn-sm show-password-btn">
-                          <i class="fas fa-eye"></i>
-                      </button>
-                  </div>
-              </div>
-              
-              
-              <div class="form-group mb-4">
-                  <label for="registerPasswordConfirm">Xác Nhận Mật Khẩu</label>
-                  <div class="input-group">
-                      <input type="password" class="form-control" id="registerPasswordConfirm" placeholder="Nhập lại mật khẩu">
-                      <button type="button" class="btn btn-secondary btn-sm show-passwordConfirm-btn">
-                          <i class="fas fa-eye"></i>
-                      </button>
-                  </div>
-                  <small id="passwordMatchError" class="form-text text-danger d-none">Mật khẩu không khớp.</small>
-              </div>
-
-              <button type="button" class="btn btn-primary" id="registerButton">Đăng Ký</button>
-          </form>
-      </div>
+  <link rel="stylesheet" href="test.css">
+  <link rel="stylesheet" href="src/assets/bootstrap.min.css">
+  <link rel="stylesheet" href="src/assets/fontawesome.all.min.css">
+  
+  <style>
+    /* CSS khác ở đây */
+  </style>
+</head>
+<body>
+  <div id="cate-rating" class="cate-rating">
+    <div class="stars" id="stars-container">
+      <a data-value="1" id="star-1" class="star" title="Không Còn gì để nói"
+        ><i class="fa-solid fa-star"></i></a>
+      <a data-value="2" id="star-2" class="star" title="Dở"
+        ><i class="fa-solid fa-star"></i></a>
+      <a data-value="3" id="star-3" class="star" title="Không Hay"
+        ><i class="fa-solid fa-star"></i></a>
+      <a data-value="4" id="star-4" class="star" title="Không Hay Lắm"
+        ><i class="fa-solid fa-star"></i></a>
+      <a data-value="5" id="star-5" class="star" title="Bình Thường"
+        ><i class="fa-solid fa-star"></i></a>
+      <a data-value="6" id="star-6" class="star" title="Tạm Thôi"
+        ><i class="fa-solid fa-star"></i></a>
+      <a data-value="7" id="star-7" class="star" title="Ổn Đấy"
+        ><i class="fa-solid fa-star"></i></a>
+      <a data-value="8" id="star-8" class="star" title="Hay"
+        ><i class="fa-solid fa-star"></i></a>
+      <a data-value="9" id="star-9" class="star" title="Rất Hay"
+        ><i class="fa-solid fa-star"></i></a>
+      <a data-value="10" id="star-10" class="star" title="Tuyệt Vời Luôn!"
+        ><i class="fa-solid fa-star"></i></a>
+      <p id="vote-desc">
+        Đánh giá: <span class="blue">9.1/10</span> từ <b>507</b> lượt
+      </p>
     </div>
+    <div class="clearfix"></div>
   </div>
-</div>
+  
+  <script src="src/assets/jquery.min.js"></script>
+  <script src="src/assets/popper.min.js"></script>
+  <script src="src/assets/bootstrap.min.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var starsContainer = document.getElementById('stars-container');
+      var stars = starsContainer.querySelectorAll('a.star');
+
+      stars.forEach(function (star, index) {
+        star.addEventListener('mouseover', function () {
+          // Thêm vote-hover cho các sao từ 0 đến sao được chọn
+          for (var i = 0; i <= index; i++) {
+            stars[i].classList.add('vote-hover');
+          }
+
+          // Chuyển tất cả các sao có vote-active thành vote-active1
+          stars.forEach(function (s) {
+            if (s.classList.contains('vote-active')) {
+              s.classList.replace('vote-active', 'vote-active1');
+            }
+          });
+        });
+
+        star.addEventListener('mouseout', function () {
+          // Xóa tất cả lớp vote-hover khi rời khỏi sao
+          stars.forEach(function (s, i) {
+            s.classList.remove('vote-hover');
+            s.classList.replace('vote-active1', 'vote-active');
+          });
+
+          // Thêm lại vote-hover cho các sao từ 0 đến sao được chọn
+       
+        });
+
+        star.addEventListener('click', function () {
+          // Xóa tất cả lớp vote-active trước khi thêm vào sao được chọn
+          stars.forEach(function (s) {
+            s.classList.remove('vote-active1');
+          });
+
+          // Thêm vote-active cho các sao từ 0 đến sao được chọn
+          for (var i = 0; i <= index; i++) {
+            stars[i].classList.add('vote-active1');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
