@@ -110,6 +110,11 @@ export class RatingComponent implements OnInit, AfterViewInit {
     //   stars[i].classList.add('vote-active1');
     // }
 
+    if (!this.checkUserExist) {
+      alert('Đăng nhập để đánh giá truyện!');
+      return;
+    }
+
     // Hiển thị hộp thoại alert và nhập nội dung đánh giá
     const reviewContent = window.prompt(`Bạn đã chọn đánh giá ${star.value}/10. Nhập nội dung đánh giá:`);
     if (reviewContent !== null) {
@@ -118,11 +123,6 @@ export class RatingComponent implements OnInit, AfterViewInit {
       this.ratingCreate = new RatingCreateModel();
 
       if (this.bookId === 0) {
-        return;
-      }
-
-      if (!this.checkUserExist) {
-        alert('Đăng nhập để đánh giá truyện!');
         return;
       }
 
