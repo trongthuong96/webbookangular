@@ -444,6 +444,12 @@ export class BookComponent implements OnInit, AfterViewInit{
 
   // add comment parent
   addCommentParent(bookId: number) {
+
+    if (!this.checkUserExist) {
+      alert('Đăng nhập để bình luận!');
+      return;
+    }
+
     let comment: CommentCreateModel = new CommentCreateModel();
     
     if (this.commentForm.invalid) {
@@ -471,6 +477,12 @@ export class BookComponent implements OnInit, AfterViewInit{
 
    // add comment child
    addCommentChild(commentId: number, bookId: number) {
+    
+    if (!this.checkUserExist) {
+      alert('Đăng nhập để bình luận!');
+      return;
+    }
+
     let comment: CommentCreateModel = new CommentCreateModel();
     
     if (this.commentReplyForm.invalid) {
