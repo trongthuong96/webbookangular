@@ -218,7 +218,9 @@
                             </div>
                         </div>
                         @if (book !== undefined) {
-                            <app-comment [bookId]="book.id" [commentsParent]="commentsParent" [totalCommentParent]="totalCommentParent"></app-comment>
+                            <div class="tab-pane fade" id="comment" role="tabpanel" aria-labelledby="comment-tab">
+                                <app-comment [bookId]="book.id" [commentsParent]="commentsParent" [totalCommentParent]="totalCommentParent"></app-comment>
+                            </div>
                         }
                     </div>
                 </div>

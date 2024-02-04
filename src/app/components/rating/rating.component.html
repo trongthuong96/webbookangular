@@ -1,9 +1,9 @@
 <div id="cate-rating" class="cate-rating rate-story mb-2 mt-1">
     <div class="stars text-center" #starsContainer>
         @for (star of stars; track $index) {
-            <a  *ngIf="ratingAvg !== undefined"
+            <a 
                 [id]="'star-' + star.value"
-                class="star me-1" [ngClass]="$index <= (ratingAvg.ratingValueAvg - 1) ? 'vote-active' : ''"
+                class="star me-1" [ngClass]="ratingAvg !== undefined && $index <= (ratingAvg.ratingValueAvg - 1) ? 'vote-active' : ''"
                 [title]="star.title"
                 (mouseover)="onMouseOver(star)"
                 (mouseout)="onMouseOut(star)"
